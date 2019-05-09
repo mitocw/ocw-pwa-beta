@@ -16,9 +16,12 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.0.0-beta.1",
+    "@material-ui/icons": "^4.0.0-beta.0",
     "gatsby": "^2.4.2",
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "typeface-roboto": "0.0.54"
   }
 }
