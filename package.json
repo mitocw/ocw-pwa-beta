@@ -1,0 +1,24 @@
+{
+  "name": "ocw-pwa",
+  "version": "0.1.0",
+  "description": "OCW Progressive Web Application",
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop",
+    "start": "npm run develop",
+    "serve": "gatsby serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mitocw/ocw-pwa-beta"
+  },
+  "author": "Daniel Seaton and Jean-Michel Claus",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "gatsby": "^2.4.2",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  }
+}
