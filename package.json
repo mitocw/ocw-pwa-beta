@@ -18,7 +18,9 @@
   "dependencies": {
     "@material-ui/core": "^4.0.0-beta.1",
     "@material-ui/icons": "^4.0.0-beta.0",
+    "@material-ui/styles": "^4.0.0-beta.1",
     "gatsby": "^2.4.2",
+    "gatsby-plugin-material-ui": "^2.0.0-beta.0",
     "gatsby-plugin-sass": "^2.0.11",
     "node-sass": "^4.12.0",
     "prop-types": "^15.7.2",
