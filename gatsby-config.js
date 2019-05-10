@@ -5,5 +5,6 @@ module.exports = {
     author: 'Daniel Seaton and Jean-Michel Claus',
   },
   plugins: [
+    'gatsby-plugin-sass',
   ],
 };
