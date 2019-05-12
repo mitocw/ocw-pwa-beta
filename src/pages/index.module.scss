@@ -1,0 +1,25 @@
+:global {
+  @import "@material/card/mdc-card";
+}
+@import "@material/card/mixins";
+
+.default-card {
+  padding: 1rem;
+}
+
+$fill: #90caf9;
+$fill-hover: #64b5f6;
+
+.styled-card {
+  @include mdc-card-fill-color($fill);
+  max-width: 300px;
+  margin: 1rem auto 0;
+  padding: 1rem;
+  
+  &:hover {
+    @include mdc-card-fill-color($fill-hover);
+    @include mdc-card-shape-radius(50px);
+    cursor: pointer;
+  }
+}
+
