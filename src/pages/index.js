@@ -1,10 +1,12 @@
 import React from 'react';
+import SEO from "../components/seo";
 import Layout from "../components/layout"
 import Card from "@material/react-card";
 import styles from './index.module.scss';
 
 const IndexPage = () => (
   <Layout>
+    <SEO />
     <Card className={styles.defaultCard}>
       <>
         Default Card
