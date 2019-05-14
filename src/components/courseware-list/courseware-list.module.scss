@@ -1,0 +1,26 @@
+@import '../../styles/mixins/breakpoints';
+
+.courseware-list {
+  margin: 0 auto;
+  padding: 1rem;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr;
+  grid-gap: 1rem;
+  
+  @include media-breakpoint-up(sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include media-breakpoint-up(md) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include media-breakpoint-up(lg) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @include media-breakpoint-up(xl) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+}
