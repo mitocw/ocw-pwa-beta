@@ -16,7 +16,7 @@ git clone <this repository>
 Create a .contentful.json configuration file in the root directory of this github repository.
 ```JSON
 {
-  "spaceId": "<Insert Space ID provided by Contentful>"
+  "spaceId": "<Insert Space ID provided by Contentful>",
   "accessToken": "<Insert Access Token provided by Contentful>"
 }
 ```
