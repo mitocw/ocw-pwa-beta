@@ -76,5 +76,9 @@ module.exports = {
         },
       },
     },
+    {
+      resolve: 'gatsby-plugin-stylelint',
+      options: { files: ['**/*.scss'] },
+    },
   ],
 };
