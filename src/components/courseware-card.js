@@ -1,23 +1,22 @@
 import React, { useCallback } from 'react';
 import Card, { CardMedia } from '@material/react-card';
-
+import { navigate } from 'gatsby';
 import styles from './courseware-card.module.scss';
 
-const CoursewareCard = ({ node }) => {
+const CoursewareCard = ({ courseware }) => {
   const cardHandleClick = useCallback(
     () => {
-      /* global window */
-      window.location.href = node.coursePath;
-    }, [],
+      navigate(`courseware/?course_uid=${courseware.courseUid}`);
+    },
   );
   return (
-    <Card className={styles.card} key={node.courseUid} onClick={cardHandleClick}>
+    <Card className={styles.card} onClick={cardHandleClick}>
       <CardMedia
-          title={node.courseTitle}
+          title={courseware.courseTitle}
           wide
-          imageUrl={node.courseImagePath}
+          imageUrl={courseware.courseImagePath}
       />
-      <h5>{node.courseTitle}</h5>
+      <h5>{courseware.courseTitle}</h5>
     </Card>
   );
 };
