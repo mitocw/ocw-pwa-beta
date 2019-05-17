@@ -33,8 +33,8 @@ module.exports = {
         path: `${__dirname}/src/images`,
       },
     },
-      'gatsby-transformer-sharp',
-      'gatsby-plugin-sharp',
+    'gatsby-transformer-sharp',
+    'gatsby-plugin-sharp',
     {
       resolve: 'gatsby-plugin-sass',
       options: {
@@ -51,7 +51,7 @@ module.exports = {
         background_color: '#a31f34',        // MIT colors: http://web.mit.edu/graphicidentity/colors.html
         theme_color: '#a31f34',
         display: 'standalone',
-        icon: `src/images/MIT-logo.svg`,    // MIT logos: http://web.mit.edu/graphicidentity/download-logos.html
+        icon: 'src/images/MIT-logo.svg',    // MIT logos: http://web.mit.edu/graphicidentity/download-logos.html
       },
     },
     'gatsby-plugin-offline',

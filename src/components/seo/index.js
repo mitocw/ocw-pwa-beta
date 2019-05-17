@@ -1,14 +1,13 @@
 import React from 'react';
-import {Helmet} from 'react-helmet';
+import { Helmet } from 'react-helmet';
 
-const SEO = ({siteTitle, siteDescription}) => {
-  return (
-    <Helmet>
-      <html lang='en-US' />
-      <title>{siteTitle}</title>
-      <meta name='description' content={siteDescription} />
-    </Helmet>
-  );
-}
+const SEO = ({ siteTitle, siteDescription }) => (
+  <Helmet>
+    <html lang="en-US" />
+    <title>{siteTitle}</title>
+    <meta name="description" content={siteDescription} />
+  </Helmet>
+);
+
 
 export default SEO;

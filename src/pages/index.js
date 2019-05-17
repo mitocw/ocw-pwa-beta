@@ -4,13 +4,13 @@ import SEO from '../components/seo';
 import Layout from '../components/layout';
 import CoursewareList from '../components/courseware-list';
 
-const IndexPage = ({data}) => {
-  const siteMetadata = data.site.siteMetadata;
+const IndexPage = ({ data }) => {
+  const { siteMetadata } = data.site;
   const coursewares = data.allContentfulAutoCourseware.edges;
 
   return (
     <Layout>
-      <SEO 
+      <SEO
         siteTitle={siteMetadata.title}
         siteDescription={siteMetadata.description}
       />
