@@ -3,9 +3,8 @@ import useSiteMetadata from '../hooks/use-site-metadata';
 import useContentfulData from '../hooks/use-contentful-data';
 import SEO from '../components/seo';
 import Layout from '../components/layout';
+import shortid from '../scripts/shortid';
 import styles from './courseware.module.scss';
-
-const shortid = require('shortid');
 
 const CoursewarePage = ({ location }) => {
   const { title, description } = useSiteMetadata();
@@ -23,7 +22,7 @@ const CoursewarePage = ({ location }) => {
   }
   let result;
   if (courseware) {
-    // Get the fields of interest form valid courseware
+    // Get the fields of interest from valid courseware
     const {
       courseTitle,
       courseImagePath,
@@ -76,7 +75,7 @@ const CoursewarePage = ({ location }) => {
       </Layout>
     );
   } else {
-    // Empty page for server rendered, error message for erroneous courseUid param
+    // Empty page for server rendered; error message for erroneous courseUid param
     result = location.href ? (<p>Not a valid course identificator</p>) : null;
   }
 
