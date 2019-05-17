@@ -3,7 +3,7 @@ import { useStaticQuery, graphql } from 'gatsby';
 const useContentfulData = () => {
   const CONTENTFUL_QUERY = graphql`
     {
-      allContentfulCourseware(sort: { fields: [courseTitle], order: ASC }) {
+      allContentfulAutoCourseware(sort: { fields: [courseTitle], order: ASC }) {
         edges {
           node {
             courseUid
@@ -47,9 +47,9 @@ const useContentfulData = () => {
       }
     }
   `;
-  const { allContentfulCourseware } = useStaticQuery(CONTENTFUL_QUERY);
+  const { allContentfulAutoCourseware } = useStaticQuery(CONTENTFUL_QUERY);
 
-  return allContentfulCourseware.edges; // Returns an array of nodes
+  return allContentfulAutoCourseware.edges; // Returns an array of nodes
 };
 
 export default useContentfulData;
