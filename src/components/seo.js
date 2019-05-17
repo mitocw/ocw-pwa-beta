@@ -9,5 +9,4 @@ const SEO = ({ siteTitle, siteDescription }) => (
   </Helmet>
 );
 
-
 export default SEO;

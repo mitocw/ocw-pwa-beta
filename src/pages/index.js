@@ -1,18 +1,19 @@
 import React from 'react';
-import { graphql } from 'gatsby';
+import useSiteMetadata from '../hooks/use-site-metadata';
+import useContentfulData from '../hooks/use-contentful-data';
 import SEO from '../components/seo';
 import Layout from '../components/layout';
 import CoursewareList from '../components/courseware-list';
 
-const IndexPage = ({ data }) => {
-  const { siteMetadata } = data.site;
-  const coursewares = data.allContentfulAutoCourseware.edges;
+const IndexPage = () => {
+  const { title, description } = useSiteMetadata();
+  const coursewares = useContentfulData();
 
   return (
     <Layout>
       <SEO
-        siteTitle={siteMetadata.title}
-        siteDescription={siteMetadata.description}
+        siteTitle={title}
+        siteDescription={description}
       />
       <CoursewareList coursewares={coursewares} />
     </Layout>
@@ -20,35 +21,3 @@ const IndexPage = ({ data }) => {
 };
 
 export default IndexPage;
-
-export const query = graphql`
-  query {
-    site {
-      siteMetadata {
-        title
-      }
-    }
-    allContentfulAutoCourseware(sort: { fields: [courseTitle], order: ASC }) {
-      edges {
-        node {
-          courseUid
-          courseTitle
-          courseImagePath
-          coursePath
-          department {
-            name
-          }
-          speciality {
-            title
-          }
-          subtopic {
-            title
-          }
-          term
-          trackingTitle
-          year
-        }
-      }
-    }
-  }
-`;

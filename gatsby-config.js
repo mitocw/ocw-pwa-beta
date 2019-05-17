@@ -80,5 +80,9 @@ module.exports = {
       resolve: 'gatsby-plugin-stylelint',
       options: { files: ['**/*.scss'] },
     },
+    {
+      resolve: 'gatsby-plugin-create-client-paths',
+      options: { prefixes: ['/courseware/*'] },
+    },
   ],
 };
