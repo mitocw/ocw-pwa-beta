@@ -1,6 +1,18 @@
 .footer {
-  background: #0d47a1;
-  color: white;
+  background: #F8F6F4;
+  color: black;
   margin: 0 auto;
   padding: 1rem;
+}
+
+.column {
+  float: left;
+  padding: 5px;
+}
+
+/* Clear floats after image containers */
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
 }
