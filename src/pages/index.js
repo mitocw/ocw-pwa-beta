@@ -6,14 +6,14 @@ import Layout from '../components/layout';
 import CoursewareList from '../components/courseware-list';
 
 const IndexPage = () => {
-  const { title, description } = useSiteMetadata();
+  const { siteMetadata } = useSiteMetadata();
   const coursewares = useContentfulData();
 
   return (
     <Layout>
       <SEO
-        siteTitle={title}
-        siteDescription={description}
+        siteTitle={siteMetadata.title}
+        siteDescription={siteMetadata.description}
       />
       <CoursewareList coursewares={coursewares} />
     </Layout>

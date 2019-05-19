@@ -3,53 +3,49 @@ import { useStaticQuery, graphql } from 'gatsby';
 const useContentfulData = () => {
   const CONTENTFUL_QUERY = graphql`
     {
-      allContentfulAutoCourseware(sort: { fields: [courseTitle], order: ASC }) {
+      allContentfulCourseware(sort: { fields: [trackingTitle], order: ASC }) {
         edges {
           node {
-            courseUid
-            courseTitle
+            id
             trackingTitle
-            courseImagePath
-            coursePath
-            instructors {
-              name
-            }
+            title
             masterCourseNumber
-            year
-            term
-            level
+            imageSrc
+            imageDescription {
+              imageDescription
+            }
+            description {
+              description
+            }
             department {
+              depNo
+            }
+            url
+            shortUrl
+            courseLevel
+            departmentNumber
+            instructors {
+              directoryTitle
+              firstName
+              lastName
+            }
+            tags {
               name
             }
-            plainTextDescription {
-              plainTextDescription
-            }
-            topic {
-              title
-            }
-            subtopic {
-              title
-            }
-            speciality {
-              title
-            }
-            pdf_resource {
-              path
-            }
-            media_resource {
-              path
-            }
-            assignments {
-              id
-            }
+            toSemester
+            fromSemester
+            toYear
+            fromYear
+            sortAs
+            language
           }
         }
       }
     }
   `;
-  const { allContentfulAutoCourseware } = useStaticQuery(CONTENTFUL_QUERY);
+  const { allContentfulCourseware } = useStaticQuery(CONTENTFUL_QUERY);
 
-  return allContentfulAutoCourseware.edges; // Returns an array of nodes
+  return allContentfulCourseware.edges; // Returns an array of nodes
 };
 
 export default useContentfulData;

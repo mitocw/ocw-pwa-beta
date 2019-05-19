@@ -7,15 +7,15 @@ import shortid from '../scripts/shortid';
 import styles from './courseware.module.scss';
 
 const CoursewarePage = ({ location }) => {
-  const { title, description } = useSiteMetadata();
+  const { siteMetadata } = useSiteMetadata();
   const coursewares = useContentfulData();
   // During build, location.search is an empty string
   const hasParams = (location.search !== '');
-  const courseUid = hasParams ? (new URL(location.href)).searchParams.get('course_uid') : null;
+  const coursewareUid = hasParams ? (new URL(location.href)).searchParams.get('courseware_uid') : null;
   let courseware = null;
-  if (courseUid) {
+  if (coursewareUid) {
     coursewares.forEach((el) => {
-      if (el.node.courseUid === courseUid) {
+      if (el.node.id === coursewareUid) {
         courseware = el.node;
       }
     });
@@ -24,19 +24,23 @@ const CoursewarePage = ({ location }) => {
   if (courseware) {
     // Get the fields of interest from valid courseware
     const {
-      courseTitle,
-      courseImagePath,
+      trackingTitle,
+      imageSrc,
+      imageDescription,
+      departmentNumber,
       masterCourseNumber,
-      term,
-      year,
-      coursewareLevel,
-      coursewareDescription,
-      coursePath,
+      fromSemester,
+      fromYear,
+      courseLevel,
+      description,
+      url,
     } = courseware;
     let instructors;
     if (courseware.instructors) {
       instructors = courseware.instructors.map(instructor => (
-        <p key={shortid.generate()}>{instructor.name}</p>
+        <p key={shortid.generate()}>
+          {`${instructor.directoryTitle} ${instructor.firstName} ${instructor.lastName}`}
+        </p>
       ));
     } else {
       instructors = (<p>N/A</p>);
@@ -45,31 +49,34 @@ const CoursewarePage = ({ location }) => {
     result = (
       <Layout>
         <SEO
-          siteTitle={title}
-          siteDescription={description}
+          siteTitle={siteMetadata.title}
+          siteDescription={siteMetadata.description}
         />
         <div className={styles.courseware}>
           <div className={styles.title}>
-            <h4>{courseTitle}</h4>
+            <h4>{trackingTitle}</h4>
             <div className={styles.imageContainer}>
-              <img src={courseImagePath} alt={courseTitle} />
+              <img src={imageSrc} alt={trackingTitle} />
             </div>
+            <p>
+              {imageDescription.imageDescription}
+            </p>
           </div>
           <div className={styles.metadata}>
             <h4>Instructor(s)</h4>
-            {courseware ? instructors : null}
+            {instructors}
             <h4>MIT Course Number</h4>
-            <p>{masterCourseNumber}</p>
+            <p>{`${departmentNumber}.${masterCourseNumber}`}</p>
             <h4>As Taught In</h4>
-            <p>{`${term} ${year}`}</p>
+            <p>{`${fromSemester} ${fromYear}`}</p>
             <h4>Level</h4>
-            <p>{coursewareLevel}</p>
+            <p>{courseLevel}</p>
           </div>
           <div className={styles.description}>
             <h4>Course Description</h4>
             {/* eslint-disable react/no-danger */}
-            <div dangerouslySetInnerHTML={{ __html: `${coursewareDescription}` }} />
-            <a href={coursePath}>Course Link</a>
+            <div dangerouslySetInnerHTML={{ __html: `${description.description}` }} />
+            <a href={`https://ocw.mit.edu/${url}`}>Course Link</a>
           </div>
         </div>
       </Layout>

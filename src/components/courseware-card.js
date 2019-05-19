@@ -6,17 +6,17 @@ import styles from './courseware-card.module.scss';
 const CoursewareCard = ({ courseware }) => {
   const cardHandleClick = useCallback(
     () => {
-      navigate(`courseware/?course_uid=${courseware.courseUid}`);
+      navigate(`courseware/?courseware_uid=${courseware.id}`);
     },
   );
   return (
     <Card className={styles.card} onClick={cardHandleClick}>
       <CardMedia
-          title={courseware.courseTitle}
+          title={courseware.trackingTitle}
           wide
-          imageUrl={courseware.courseImagePath}
+          imageUrl={courseware.imageSrc}
       />
-      <h5>{courseware.courseTitle}</h5>
+      <h5>{courseware.trackingTitle}</h5>
     </Card>
   );
 };
