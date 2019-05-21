@@ -3,7 +3,9 @@ import useSiteMetadata from '../hooks/use-site-metadata';
 import useCoursewareData from '../hooks/use-courseware-data';
 import SEO from '../components/seo';
 import Layout from '../components/layout';
-import shortid from '../scripts/shortid';
+import CoursewareHeader from '../components/courseware-header';
+import CoursewareImage from '../components/courseware-image';
+import CoursewareMetadata from '../components/courseware-metadata';
 import styles from './courseware.module.scss';
 
 const CoursewarePage = ({ location }) => {
@@ -16,9 +18,10 @@ const CoursewarePage = ({ location }) => {
   if (courseware) {
     // Get the fields of interest from valid courseware
     const {
-      trackingTitle,
+      title,
       imageSrc,
       imageDescription,
+      instructors,
       departmentNumber,
       masterCourseNumber,
       fromSemester,
@@ -26,17 +29,25 @@ const CoursewarePage = ({ location }) => {
       courseLevel,
       description,
       url,
+      coursePages,
     } = courseware;
-    let instructors;
-    if (courseware.instructors) {
-      instructors = courseware.instructors.map(instructor => (
-        <p key={shortid.generate()}>
-          {`${instructor.directoryTitle} ${instructor.firstName} ${instructor.lastName}`}
-        </p>
-      ));
-    } else {
-      instructors = (<p>N/A</p>);
-    }
+
+    // TODO: move into separate component
+    const courseDescriptionEl = (
+      <>
+        <h4>Course Description</h4>
+        {/* eslint-disable react/no-danger */}
+        <div dangerouslySetInnerHTML={{ __html: `${description.description}` }} />
+        <a href={`https://ocw.mit.edu/${url}`}>Course Link</a>
+      </>
+    );
+    // TODO: move into separate component
+    const coursePagesEl = coursePages.map(coursePage => (
+      <>
+        <h4>{coursePage.title}</h4>
+        <div dangerouslySetInnerHTML={{ __html: `${coursePage.text.text}` }} />
+      </>
+    ));
 
     result = (
       <Layout>
@@ -45,30 +56,30 @@ const CoursewarePage = ({ location }) => {
           siteDescription={siteMetadata.description}
         />
         <div className={styles.courseware}>
-          <div className={styles.title}>
-            <h4>{trackingTitle}</h4>
-            <div className={styles.imageContainer}>
-              <img src={imageSrc} alt={trackingTitle} />
-            </div>
-            <p>
-              {imageDescription.imageDescription}
-            </p>
-          </div>
-          <div className={styles.metadata}>
-            <h4>Instructor(s)</h4>
-            {instructors}
-            <h4>MIT Course Number</h4>
-            <p>{`${departmentNumber}.${masterCourseNumber}`}</p>
-            <h4>As Taught In</h4>
-            <p>{`${fromSemester} ${fromYear}`}</p>
-            <h4>Level</h4>
-            <p>{courseLevel}</p>
-          </div>
+          <CoursewareHeader
+            className={styles.header}
+            url={courseware.url}
+            title={title}
+          />
+          <CoursewareImage
+            className={styles.image}
+            imageSrc={imageSrc}
+            imageDescription={imageDescription.imageDescription}
+          />
+          <CoursewareMetadata
+            className={styles.metadata}
+            instructors={instructors}
+            departmentNumber={departmentNumber}
+            masterCourseNumber={masterCourseNumber}
+            fromSemester={fromSemester}
+            fromYear={fromYear}
+            courseLevel={courseLevel}
+          />
           <div className={styles.description}>
-            <h4>Course Description</h4>
-            {/* eslint-disable react/no-danger */}
-            <div dangerouslySetInnerHTML={{ __html: `${description.description}` }} />
-            <a href={`https://ocw.mit.edu/${url}`}>Course Link</a>
+            {courseDescriptionEl}
+          </div>
+          <div className={styles.pages}>
+            {coursePagesEl}
           </div>
         </div>
       </Layout>

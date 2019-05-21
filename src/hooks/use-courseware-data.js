@@ -38,6 +38,22 @@ const useCoursewareData = (coursewareUid) => {
             fromYear
             sortAs
             language
+            coursePages {
+              id
+              trackingTitle
+              title
+              url
+              shortUrl
+              coursePageType
+              text {
+                text
+              }
+              files {
+                id
+                title
+                fileType
+              }
+            }
           }
         }
       }
