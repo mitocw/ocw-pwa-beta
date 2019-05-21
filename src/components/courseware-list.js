@@ -3,9 +3,9 @@ import CoursewareCard from './courseware-card';
 import shortid from '../scripts/shortid';
 import styles from './courseware-list.module.scss';
 
-const CoursewareList = ({ coursewares }) => {
-  const coursewareCards = coursewares.map(({ node: courseware }) => (
-    <CoursewareCard courseware={courseware} key={shortid()} />
+const CoursewareList = ({ coursewareUids }) => {
+  const coursewareCards = coursewareUids.map(coursewareUid => (
+    <CoursewareCard coursewareUid={coursewareUid} key={shortid()} />
   ));
 
   return (

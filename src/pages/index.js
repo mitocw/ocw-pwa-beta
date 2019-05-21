@@ -1,13 +1,13 @@
 import React from 'react';
 import useSiteMetadata from '../hooks/use-site-metadata';
-import useContentfulData from '../hooks/use-contentful-data';
+import useIndexPageData from '../hooks/use-index-page-data';
 import SEO from '../components/seo';
 import Layout from '../components/layout';
 import CoursewareList from '../components/courseware-list';
 
 const IndexPage = () => {
   const { siteMetadata } = useSiteMetadata();
-  const coursewares = useContentfulData();
+  const coursewareUids = useIndexPageData();
 
   return (
     <Layout>
@@ -15,7 +15,7 @@ const IndexPage = () => {
         siteTitle={siteMetadata.title}
         siteDescription={siteMetadata.description}
       />
-      <CoursewareList coursewares={coursewares} />
+      <CoursewareList coursewareUids={coursewareUids} />
     </Layout>
   );
 };

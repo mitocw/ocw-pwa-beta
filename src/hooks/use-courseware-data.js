@@ -1,6 +1,6 @@
 import { useStaticQuery, graphql } from 'gatsby';
 
-const useContentfulData = () => {
+const useCoursewareData = (coursewareUid) => {
   const CONTENTFUL_QUERY = graphql`
     {
       allContentfulCourseware(sort: { fields: [trackingTitle], order: ASC }) {
@@ -44,8 +44,11 @@ const useContentfulData = () => {
     }
   `;
   const { allContentfulCourseware } = useStaticQuery(CONTENTFUL_QUERY);
-
-  return allContentfulCourseware.edges; // Returns an array of nodes
+  /*
+    We cannot use parameters in our graphQL query, useStaticQuery doesn't allow it as its name
+    indicates. So we query all and filter afterwards with regard to coursewareUid.
+  */
+  return allContentfulCourseware.edges.filter(obj => obj.node.id === coursewareUid)[0].node;
 };
 
-export default useContentfulData;
+export default useCoursewareData;

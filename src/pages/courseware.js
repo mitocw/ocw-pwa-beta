@@ -1,6 +1,6 @@
 import React from 'react';
 import useSiteMetadata from '../hooks/use-site-metadata';
-import useContentfulData from '../hooks/use-contentful-data';
+import useCoursewareData from '../hooks/use-courseware-data';
 import SEO from '../components/seo';
 import Layout from '../components/layout';
 import shortid from '../scripts/shortid';
@@ -8,18 +8,10 @@ import styles from './courseware.module.scss';
 
 const CoursewarePage = ({ location }) => {
   const { siteMetadata } = useSiteMetadata();
-  const coursewares = useContentfulData();
   // During build, location.search is an empty string
   const hasParams = (location.search !== '');
   const coursewareUid = hasParams ? (new URL(location.href)).searchParams.get('courseware_uid') : null;
-  let courseware = null;
-  if (coursewareUid) {
-    coursewares.forEach((el) => {
-      if (el.node.id === coursewareUid) {
-        courseware = el.node;
-      }
-    });
-  }
+  const courseware = coursewareUid ? useCoursewareData(coursewareUid) : null;
   let result;
   if (courseware) {
     // Get the fields of interest from valid courseware
