@@ -10,7 +10,7 @@ const Footer = () => (
       of charge. With more than 2,400 courses available, OCW is
       delivering on the promise of open sharing of knowledge.
     </p>
-    <p>  
+    <p>
       <a href="http://ocw.mit.edu/about/">Learn More</a>
     </p>
     <div className={styles.row}>

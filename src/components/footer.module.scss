@@ -6,13 +6,10 @@
 }
 
 .column {
-  float: left;
-  padding: 5px;
+  padding: 0.5rem;
 }
 
-/* Clear floats after image containers */
-.row::after {
-  content: "";
-  clear: both;
-  display: table;
+.row {
+  display: flex;
+  flex-wrap: wrap;
 }
