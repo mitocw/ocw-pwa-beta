@@ -1,0 +1,24 @@
+h4 {
+  margin: 0; // TODO: remove when proper CSS reset has been chosen
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icon {
+  svg {
+    vertical-align: middle;
+    width: 2em;
+    height: 2em;
+  }
+}
+
+.collapsible {
+  cursor: pointer;
+  border: solid 1px darkgray;
+  border-radius: 5px;
+  padding: 0.5rem;
+}

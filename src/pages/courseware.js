@@ -6,6 +6,9 @@ import Layout from '../components/layout';
 import CoursewareHeader from '../components/courseware-header';
 import CoursewareImage from '../components/courseware-image';
 import CoursewareMetadata from '../components/courseware-metadata';
+import CoursewareDescription from '../components/courseware-description';
+import CoursewarePages from '../components/courseware-pages';
+import validate from '../scripts/validate';
 import styles from './courseware.module.scss';
 
 const CoursewarePage = ({ location }) => {
@@ -32,23 +35,6 @@ const CoursewarePage = ({ location }) => {
       coursePages,
     } = courseware;
 
-    // TODO: move into separate component
-    const courseDescriptionEl = (
-      <>
-        <h4>Course Description</h4>
-        {/* eslint-disable react/no-danger */}
-        <div dangerouslySetInnerHTML={{ __html: `${description.description}` }} />
-        <a href={`https://ocw.mit.edu/${url}`}>Course Link</a>
-      </>
-    );
-    // TODO: move into separate component
-    const coursePagesEl = coursePages.map(coursePage => (
-      <>
-        <h4>{coursePage.title}</h4>
-        <div dangerouslySetInnerHTML={{ __html: `${coursePage.text.text}` }} />
-      </>
-    ));
-
     result = (
       <Layout>
         <SEO
@@ -64,7 +50,7 @@ const CoursewarePage = ({ location }) => {
           <CoursewareImage
             className={styles.image}
             imageSrc={imageSrc}
-            imageDescription={imageDescription.imageDescription}
+            imageDescription={validate('imageDescription', imageDescription)}
           />
           <CoursewareMetadata
             className={styles.metadata}
@@ -75,12 +61,15 @@ const CoursewarePage = ({ location }) => {
             fromYear={fromYear}
             courseLevel={courseLevel}
           />
-          <div className={styles.description}>
-            {courseDescriptionEl}
-          </div>
-          <div className={styles.pages}>
-            {coursePagesEl}
-          </div>
+          <CoursewareDescription
+            className={styles.description}
+            description={description}
+            url={url}
+          />
+          <CoursewarePages
+            className={styles.pages}
+            coursePages={coursePages}
+          />
         </div>
       </Layout>
     );

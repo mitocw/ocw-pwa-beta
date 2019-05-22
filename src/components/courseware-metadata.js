@@ -1,5 +1,6 @@
 import React from 'react';
 import shortid from '../scripts/shortid';
+import validate from '../scripts/validate';
 import styles from './courseware-metadata.module.scss';
 
 const CoursewareMetadata = ({
@@ -13,7 +14,7 @@ const CoursewareMetadata = ({
 }) => {
   const instructorsEl = instructors.map(instructor => (
     <p key={shortid.generate()}>
-      {`${instructor.directoryTitle} ${instructor.firstName} ${instructor.lastName}`}
+      {`${validate('directoryTitle', instructor.directoryTitle)} ${instructor.firstName} ${instructor.lastName}`}
     </p>
   ));
 

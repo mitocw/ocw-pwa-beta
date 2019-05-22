@@ -48,11 +48,6 @@ const useCoursewareData = (coursewareUid) => {
               text {
                 text
               }
-              files {
-                id
-                title
-                fileType
-              }
             }
           }
         }
