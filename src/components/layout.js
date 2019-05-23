@@ -16,7 +16,7 @@ const breakpoints = {
 
 const Layout = ({ children }) => (
   <ReactBreakpoints breakpoints={breakpoints}>
-    <div>
+    <div className={styles.app}>
       <Header />
       <main className={styles.main}>{children}</main>
       <Footer />

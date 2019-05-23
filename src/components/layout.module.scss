@@ -11,6 +11,10 @@
   @include extract-colors($a11y-palette);
 }
 
+.app {
+  font-family: 'Roboto', sans-serif;
+}
+
 .main {
   background: color(main-background);
   margin: 0 auto;
