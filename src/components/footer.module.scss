@@ -1,6 +1,16 @@
+@import '../styles/functions/color';
+
 .footer {
-  background: #0d47a1;
-  color: white;
+  background: color(footer-background);
   margin: 0 auto;
   padding: 1rem;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.column {
+  padding: 0.5rem;
 }

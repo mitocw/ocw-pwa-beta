@@ -1,76 +1,75 @@
 import React from 'react';
 import useSiteMetadata from '../hooks/use-site-metadata';
-import useContentfulData from '../hooks/use-contentful-data';
+import useCoursewareData from '../hooks/use-courseware-data';
 import SEO from '../components/seo';
 import Layout from '../components/layout';
-import shortid from '../scripts/shortid';
+import CoursewareHeader from '../components/courseware-header';
+import CoursewareImage from '../components/courseware-image';
+import CoursewareMetadata from '../components/courseware-metadata';
+import CoursewareDescription from '../components/courseware-description';
+import CoursewarePages from '../components/courseware-pages';
+import validate from '../scripts/validate';
 import styles from './courseware.module.scss';
 
 const CoursewarePage = ({ location }) => {
-  const { title, description } = useSiteMetadata();
-  const coursewares = useContentfulData();
+  const { siteMetadata } = useSiteMetadata();
   // During build, location.search is an empty string
   const hasParams = (location.search !== '');
-  const courseUid = hasParams ? (new URL(location.href)).searchParams.get('course_uid') : null;
-  let courseware = null;
-  if (courseUid) {
-    coursewares.forEach((el) => {
-      if (el.node.courseUid === courseUid) {
-        courseware = el.node;
-      }
-    });
-  }
+  const coursewareUid = hasParams ? (new URL(location.href)).searchParams.get('courseware_uid') : null;
+  const courseware = coursewareUid ? useCoursewareData(coursewareUid) : null;
   let result;
   if (courseware) {
     // Get the fields of interest from valid courseware
     const {
-      courseTitle,
-      courseImagePath,
+      title,
+      imageSrc,
+      imageDescription,
+      instructors,
+      departmentNumber,
       masterCourseNumber,
-      term,
-      year,
-      coursewareLevel,
-      coursewareDescription,
-      coursePath,
+      fromSemester,
+      fromYear,
+      courseLevel,
+      description,
+      url,
+      coursePages,
     } = courseware;
-    let instructors;
-    if (courseware.instructors) {
-      instructors = courseware.instructors.map(instructor => (
-        <p key={shortid.generate()}>{instructor.name}</p>
-      ));
-    } else {
-      instructors = (<p>N/A</p>);
-    }
 
     result = (
       <Layout>
         <SEO
-          siteTitle={title}
-          siteDescription={description}
+          siteTitle={siteMetadata.title}
+          siteDescription={siteMetadata.description}
         />
         <div className={styles.courseware}>
-          <div className={styles.title}>
-            <h4>{courseTitle}</h4>
-            <div className={styles.imageContainer}>
-              <img src={courseImagePath} alt={courseTitle} />
-            </div>
-          </div>
-          <div className={styles.metadata}>
-            <h4>Instructor(s)</h4>
-            {courseware ? instructors : null}
-            <h4>MIT Course Number</h4>
-            <p>{masterCourseNumber}</p>
-            <h4>As Taught In</h4>
-            <p>{`${term} ${year}`}</p>
-            <h4>Level</h4>
-            <p>{coursewareLevel}</p>
-          </div>
-          <div className={styles.description}>
-            <h4>Course Description</h4>
-            {/* eslint-disable react/no-danger */}
-            <div dangerouslySetInnerHTML={{ __html: `${coursewareDescription}` }} />
-            <a href={coursePath}>Course Link</a>
-          </div>
+          <CoursewareHeader
+            className={styles.header}
+            url={courseware.url}
+            title={title}
+          />
+          <CoursewareImage
+            className={styles.image}
+            imageSrc={imageSrc}
+            imageDescription={validate('imageDescription', imageDescription)}
+          />
+          <CoursewareMetadata
+            className={styles.metadata}
+            instructors={instructors}
+            departmentNumber={departmentNumber}
+            masterCourseNumber={masterCourseNumber}
+            fromSemester={fromSemester}
+            fromYear={fromYear}
+            courseLevel={courseLevel}
+          />
+          <CoursewareDescription
+            className={styles.description}
+            description={description}
+            url={url}
+          />
+          <CoursewarePages
+            className={styles.pages}
+            coursePages={coursePages}
+          />
         </div>
       </Layout>
     );

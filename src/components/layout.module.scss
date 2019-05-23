@@ -1,4 +1,17 @@
+@import '../styles/colors';
+@import '../styles/mixins/colors';
+@import '../styles/functions/color';
+
+// Assign our Sass colors to CSS variables
+:root {
+  @include extract-colors($default-palette);
+}
+
+:root[theme='a11y'] {
+  @include extract-colors($a11y-palette);
+}
+
 .main {
-  background: #e0e0e0;
+  background: color(main-background);
   margin: 0 auto;
 }

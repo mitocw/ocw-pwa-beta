@@ -1,26 +1,52 @@
 /* eslint-disable no-multi-spaces */
 let contentfulConfig;
+let contentfulOptions;
+const isContentDelivery = false;
+const contentDeliveryHost = 'cdn.contentful.com';
+const contentPreviewHost = 'preview.contentful.com';
 
 try {
-  // Load the Contentful config from the .contentful.json
+  /*
+    Load the Contentful config from ./.contentful.json
+    It must have the following structure:
+    {
+      "spaceId": space-id,
+      "contentDeliveryAccessToken": content-delivery-api-access-token,
+      "contentPreviewAccessToken": content-preview-api-access-token,
+    }
+  */
   // eslint-disable-next-line global-require
-  contentfulConfig = require('./.contentful')
+  contentfulConfig = require('./.contentful');
+  if (isContentDelivery) {
+    contentfulOptions = {
+      spaceId: contentfulConfig.spaceId,
+      accessToken: contentfulConfig.contentDeliveryAccessToken,
+      host: contentDeliveryHost,
+    };
+  } else {
+    contentfulOptions = {
+      spaceId: contentfulConfig.spaceId,
+      accessToken: contentfulConfig.contentPreviewAccessToken,
+      host: contentPreviewHost,
+    };
+  }
 } catch (_) {
   // eslint-disable-next-line no-console
-  console.log('Could not find contenful configuaration file');
+  console.log('Could not find contenful configuration file');
 }
 
 // Overwrite the Contentful config with environment variables if they exist
-contentfulConfig = {
-  spaceId: process.env.CONTENTFUL_SPACE_ID || contentfulConfig.spaceId,
-  accessToken: process.env.CONTENTFUL_DELIVERY_TOKEN || contentfulConfig.accessToken,
+contentfulOptions = {
+  spaceId: process.env.CONTENTFUL_SPACE_ID || contentfulOptions.spaceId,
+  accessToken: process.env.CONTENTFUL_DELIVERY_TOKEN || contentfulOptions.accessToken,
+  host: process.env.CONTENTFUL_HOST || contentfulOptions.host,
 };
 
-const { spaceId, accessToken } = contentfulConfig;
+const { spaceId, accessToken, host } = contentfulOptions;
 
-if (!spaceId || !accessToken) {
+if (!spaceId || !accessToken || !host) {
   throw new Error(
-    'Contentful spaceId and the delivery token need to be provided.'
+    'Contentful spaceId, delivery token, and host need to be provided.',
   );
 }
 
@@ -62,7 +88,7 @@ module.exports = {
     'gatsby-plugin-offline',
     {
       resolve: 'gatsby-source-contentful',
-      options: contentfulConfig,
+      options: contentfulOptions,
     },
     {
       resolve: 'gatsby-plugin-eslint',

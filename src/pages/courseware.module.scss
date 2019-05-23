@@ -8,20 +8,26 @@
   grid-template-columns: 1fr;
   grid-gap: 1rem;
   grid-template-areas:
-    'title'
+    'header'
+    'image'
     'metadata'
-    'description';
+    'description'
+    'pages';
   
   @include media-breakpoint-up(sm) {
     grid-template-columns: 300px 1fr;
     grid-template-areas:
-      'title       metadata'
-      'description description';
+      'header      header'
+      'image       metadata'
+      'description description'
+      'pages       pages';
   }
 }
 
-.title {
-  grid-area: title;
+.header {
+  grid-area: header;
+  border-bottom: 2px solid gray;
+  margin-bottom: 1rem;
 }
 
 .metadata {
@@ -36,12 +42,6 @@
   grid-area: description;
 }
 
-.image-container {
-  width: 300px;
-  height: 300px;
-
-  img {
-    width: 100%;
-    height: 300px;
-  }
+.pages {
+  grid-area: pages;
 }

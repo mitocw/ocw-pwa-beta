@@ -14,7 +14,7 @@ const useSiteMetadata = () => {
   `;
   const { site } = useStaticQuery(METADATA_QUERY);
 
-  return site.siteMetadata;
+  return site;
 };
 
 export default useSiteMetadata;

@@ -1,0 +1,7 @@
+@import '../styles/mixins/breakpoints';
+
+.instructors-header {
+  @include media-breakpoint-down(sm) {
+    margin-top: 1em;
+  }
+}
