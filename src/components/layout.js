@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactBreakpoints from 'react-breakpoints';
+import 'normalize.css';
 import 'typeface-roboto';
 import Header from './header';
 import Footer from './footer';

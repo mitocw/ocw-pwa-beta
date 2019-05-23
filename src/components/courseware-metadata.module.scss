@@ -1,9 +1,6 @@
 @import '../styles/mixins/breakpoints';
 
 .instructors-header {
-  // TODO: remove all below when proper CSS reset has been chosen
-  margin: 0;
-  padding: 0;
   @include media-breakpoint-down(sm) {
     margin-top: 1em;
   }
