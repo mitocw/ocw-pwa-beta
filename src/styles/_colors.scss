@@ -1,0 +1,56 @@
+// Color names come from the following sites:
+// http://chir.ag/projects/name-that-color
+// or
+// http://veli.ee/colorpedia/
+
+// Our current palette
+$silver-chalice: #a8a8a8;
+$botticelli: #d7e5ef;
+$silver: #cccccc;
+$pampas: #f8f6f4;
+$shiraz: #b30838;
+$alto: #e0e0e0;
+
+// For theme switcher demo only
+$cerulean: #0cb0d1;
+$blue-chill: #0a90aa;
+$deep-cerulean: #0a75aa;
+
+// Sass nested palette maps, use quotes otherwise messes up with CSS values
+$default-palette: (
+  'header': (
+    'background':                   $shiraz
+  ),
+  'main': (
+    'background':                   $alto
+  ),
+  'collapsible': (
+    'border':                       $silver-chalice
+  ),
+  'footer': (
+    'background':                   $pampas
+  ),
+  'card': (
+    'background':                   $botticelli,
+    'hover-box-shadow':             $silver                
+  )
+);
+
+$a11y-palette: (
+  'header': (
+    'background':                   $blue-chill
+  ),
+  'main': (
+    'background':                   $cerulean
+  ),
+  'collapsible': (
+    'border':                       darken($cerulean, 20%)
+  ),
+  'footer': (
+    'background':                   lighten($blue-chill, 10%)
+  ),
+  'card': (
+    'background':                   $deep-cerulean,
+    'hover-box-shadow':             darken($deep-cerulean, 10%)                
+  )
+);

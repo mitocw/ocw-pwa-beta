@@ -1,3 +1,5 @@
+@import '../styles/functions/color';
+
 h4 {
   margin: 0;
 }
@@ -18,7 +20,7 @@ h4 {
 
 .collapsible {
   cursor: pointer;
-  border: solid 1px darkgray;
+  border: solid 1px color(collapsible-border);
   border-radius: 5px;
   padding: 0.5rem;
 }

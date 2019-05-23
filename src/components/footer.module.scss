@@ -1,15 +1,16 @@
+@import '../styles/functions/color';
+
 .footer {
-  background: #F8F6F4;
-  color: black;
+  background: color(footer-background);
   margin: 0 auto;
   padding: 1rem;
-}
-
-.column {
-  padding: 0.5rem;
 }
 
 .row {
   display: flex;
   flex-wrap: wrap;
+}
+
+.column {
+  padding: 0.5rem;
 }

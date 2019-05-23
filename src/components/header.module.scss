@@ -1,7 +1,21 @@
+/* stylelint-disable selector-pseudo-class-no-unknown  */
+:global {
+  @import '@material/button/mdc-button';
+}
+@import '@material/button/mixins';
+@import '../styles/functions/color';
+
 .header {
-  background: #b30838;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  background: color(header-background);
   color: white;
   font-weight: bold;
   margin: 0 auto;
-  padding: 1rem;
+  padding: 0.5rem;
+}
+
+.button {
+  @include mdc-button-ink-color(white);
 }

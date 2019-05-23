@@ -3,11 +3,10 @@
   @import '@material/card/mdc-card';
 }
 @import '@material/card/mixins';
-
-$fill: #d8e6f0;
+@import '../styles/functions/color';
 
 .card {
-  @include mdc-card-fill-color($fill);
+  @include mdc-card-fill-color(color(card-background));
   max-width: 20rem;
   padding: 0.5rem;
   
@@ -17,7 +16,7 @@ $fill: #d8e6f0;
   
   &:hover {
     top: -2px;
-    box-shadow: 0 4px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 5px color(card-hover-box-shadow);
     cursor: pointer;
   }
 }

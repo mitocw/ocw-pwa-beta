@@ -16,6 +16,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@material/react-button": "^0.12.1",
     "@material/react-card": "^0.12.1",
     "gatsby": "^2.4.2",
     "gatsby-plugin-create-client-paths": "^2.0.5",
