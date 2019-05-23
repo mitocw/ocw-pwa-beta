@@ -17,7 +17,8 @@ Create a .contentful.json configuration file in the root directory of this githu
 ```JSON
 {
   "spaceId": "<Insert Space ID provided by Contentful>",
-  "accessToken": "<Insert Access Token provided by Contentful>"
+  "contentDeliveryAccessToken": "<Insert Content Delivey Token provided by Contentful>",
+  "contentPreviewAccessToken": "<Insert Content Preview Token provided by Contentful>"
 }
 ```
 ### Launch the project using Gatsby CLI
