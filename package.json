@@ -35,7 +35,9 @@
     "react-dom": "^16.8.6",
     "react-helmet": "^6.0.0-beta",
     "react-icons": "^3.7.0",
+    "react-text-truncate": "^0.14.1",
     "shortid": "^2.2.14",
+    "striptags": "^3.1.1",
     "stylelint-webpack-plugin": "^0.10.5",
     "typeface-roboto": "0.0.54"
   },

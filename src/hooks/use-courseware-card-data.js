@@ -7,8 +7,14 @@ const useCoursewareCardData = (coursewareUid) => {
         edges {
           node {
             id
-            trackingTitle
-            imageSrc
+            title,
+            fromSemester,
+            fromYear,
+            trackingTitle,
+            imageSrc,
+            description {
+              description
+            }
           }
         }
       }

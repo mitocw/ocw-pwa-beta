@@ -10,12 +10,12 @@
   justify-content: space-between;
   align-items: center; 
   background: color(header-background);
-  color: white;
+  color: color(header-foreground);
   font-weight: bold;
   margin: 0 auto;
   padding: 0.5rem;
 }
 
 .button {
-  @include mdc-button-ink-color(white);
+  @include mdc-button-ink-color(color(header-foreground));
 }

@@ -1,9 +1,19 @@
+@import '../styles/functions/color';
 @import '../styles/mixins/breakpoints';
 
+.coursewareNumber {
+  color: color(courseware-number);
+  font-weight: bold;
+  margin: 0 1rem 1rem;
+  padding: 1rem 0;
+  border-bottom: solid 2px color(collapsible-border);
+}
+
 .courseware-list {
-  margin: 0 auto;
   padding: 1rem;
   display: grid;
+  align-items: center;
+  justify-items: center;
   grid-template-rows: auto;
   grid-template-columns: 1fr;
   grid-gap: 1rem;
