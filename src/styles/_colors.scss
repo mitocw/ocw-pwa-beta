@@ -4,9 +4,13 @@
 // http://veli.ee/colorpedia/
 
 // Our current palette
-$silver-chalice: #a8a8a8;
-$botticelli: #d7e5ef;
+$white: #ffffff;
+$gallery: #eeeeee;
 $silver: #cccccc;
+$silver-chalice: #a8a8a8;
+$boulder: #757575;
+$emperor: #555555;
+$mine-shaft: #252525;
 $pampas: #f8f6f4;
 $shiraz: #b30838;
 $alto: #e0e0e0;
@@ -19,11 +23,13 @@ $deep-cerulean: #0a75aa;
 // Sass nested palette maps, use quotes otherwise messes up with CSS values
 $default-palette: (
   'header': (
-    'background':                   $shiraz
+    'background':                   $shiraz,
+    'foreground':                   $white
   ),
   'main': (
     'background':                   $alto
   ),
+  'courseware-number':             $emperor,
   'collapsible': (
     'border':                       $silver-chalice
   ),
@@ -31,8 +37,11 @@ $default-palette: (
     'background':                   $pampas
   ),
   'card': (
-    'background':                   $botticelli,
-    'hover-box-shadow':             $silver                
+    'background':                   $white,
+    'hover-box-shadow':             $silver,
+    'button-background':            $gallery,
+    'title-foreground':             $mine-shaft,
+    'subtitle-foreground':          $boulder          
   )
 );
 
