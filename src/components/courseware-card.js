@@ -32,30 +32,39 @@ const CoursewareCard = ({ coursewareUid }) => {
   );
   const {
     title,
-    fromSemester,
-    fromYear,
+    courseLevel,
+    department,
     trackingTitle,
     imageSrc,
     description,
+    masterCourseNumber,
+    departmentNumber,
   } = useCoursewareCardData(coursewareUid);
 
   return (
     <Card className={styles.card}>
       <TextTruncate
-        className={styles.title}
+        containerClassName={styles.title}
         line={1}
         element="span"
         truncateText="…"
         text={title}
       />
-      <span className={styles.subtitle}>{`${fromSemester} ${fromYear}`}</span>
+      <span className={styles.subtitle}>{`${departmentNumber}.${masterCourseNumber}, ${courseLevel} Level`}</span>
       <CardMedia
           title={trackingTitle}
           wide
           imageUrl={imageSrc}
       />
       <TextTruncate
-        className={styles.description}
+        containerClassName={styles.subsubtitle}
+        line={1}
+        element="span"
+        truncateText="…"
+        text={`Department: ${department[0].title}`}
+      />
+      <TextTruncate
+        containerClassName={styles.description}
         line={2}
         element="span"
         truncateText="…"
