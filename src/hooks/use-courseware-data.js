@@ -17,9 +17,6 @@ const useCoursewareData = (coursewareUid) => {
             description {
               description
             }
-            department {
-              depNo
-            }
             url
             shortUrl
             courseLevel
