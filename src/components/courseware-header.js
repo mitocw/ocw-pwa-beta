@@ -8,8 +8,8 @@ const CoursewareHeader = ({
   title,
 }) => (
   <div className={className}>
-    <CoursewareBreadcrumb url={url} />
     <h3 className={styles.title}>{title}</h3>
+    <CoursewareBreadcrumb url={url} />
   </div>
 );
 

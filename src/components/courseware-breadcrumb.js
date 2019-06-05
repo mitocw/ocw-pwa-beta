@@ -8,15 +8,28 @@ const CoursewareBreadcrumbs = ({ url }) => {
 
   const breadcrumbItems = paths.map((path, index) => {
     const arrows = index !== paths.length - 1 ? ' / ' : '';
-    return (
-      <li
-        className={styles.breadcrumbItem}
-        key={shortid()}
-      >
-        <a href="#">{path}</a>
-        {arrows}
-      </li>
-    );
+    if (path==="courses") {
+      return (
+        <li
+          className={styles.breadcrumbItem}
+          key={shortid()}
+        >
+          <a href="/">{path}</a>
+          {arrows}
+        </li>
+      );
+    }
+    else {
+      return (
+        <li
+            className={styles.breadcrumbItem}
+            key={shortid()}
+          >
+            <span>{path}</span>
+            {arrows}
+        </li>
+      );
+    }
   });
   return (
     <nav aria-label="breadcrumb">
