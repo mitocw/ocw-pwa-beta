@@ -17,6 +17,8 @@ const useCoursewareCardData = (coursewareUid) => {
             description {
               description
             }
+            departmentNumber
+            masterCourseNumber
           }
         }
       }
