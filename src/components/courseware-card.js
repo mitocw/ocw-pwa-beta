@@ -32,8 +32,8 @@ const CoursewareCard = ({ coursewareUid }) => {
   );
   const {
     title,
-    fromSemester,
-    fromYear,
+    courseLevel,
+    department,
     trackingTitle,
     imageSrc,
     description,
@@ -48,11 +48,18 @@ const CoursewareCard = ({ coursewareUid }) => {
         truncateText="…"
         text={title}
       />
-      <span className={styles.subtitle}>{`${fromSemester} ${fromYear}`}</span>
+      <span className={styles.subtitle}>{`${courseLevel} Level`}</span>
       <CardMedia
           title={trackingTitle}
           wide
           imageUrl={imageSrc}
+      />
+      <TextTruncate
+        className={styles.subsubtitle}
+        line={1}
+        element="span"
+        truncateText="…"
+        text={`Department: ${department[0].title}`}
       />
       <TextTruncate
         className={styles.description}
