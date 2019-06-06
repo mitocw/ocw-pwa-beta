@@ -46,6 +46,13 @@ const useCoursewareData = (coursewareUid) => {
                 text
               }
             }
+            course_file {
+              id
+              trackingTitle
+              title
+              fileType
+              fileLocation
+            }
           }
         }
       }

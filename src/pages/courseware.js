@@ -8,6 +8,7 @@ import CoursewareImage from '../components/courseware-image';
 import CoursewareMetadata from '../components/courseware-metadata';
 import CoursewareDescription from '../components/courseware-description';
 import CoursewarePages from '../components/courseware-pages';
+import CoursewareFiles from '../components/courseware-files';
 import validate from '../scripts/validate';
 import styles from './courseware.module.scss';
 
@@ -33,6 +34,7 @@ const CoursewarePage = ({ location }) => {
       description,
       url,
       coursePages,
+      course_file,
     } = courseware;
 
     result = (
@@ -69,6 +71,9 @@ const CoursewarePage = ({ location }) => {
           <CoursewarePages
             className={styles.pages}
             coursePages={coursePages}
+          />
+          <CoursewareFiles
+            courseFiles={course_file}
           />
         </div>
       </Layout>
