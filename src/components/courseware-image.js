@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './courseware-card.module.scss';
 
-const CoursewareMetadata = ({
+const CoursewareImage = ({
   className,
   imageSrc,
   imageDescription,
@@ -16,4 +16,4 @@ const CoursewareMetadata = ({
   </div>
 );
 
-export default CoursewareMetadata;
+export default CoursewareImage;
