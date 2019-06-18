@@ -7,8 +7,7 @@ import CoursewareList from '../components/courseware-list';
 
 const IndexPage = () => {
   const { siteMetadata } = useSiteMetadata();
-  // const coursewareUids = useIndexPageData();
-  const coursewareUids = useIndexPageData().slice(0, -1); // TODO: remove
+  const coursewareUids = useIndexPageData();
 
   return (
     <Layout>
