@@ -69,4 +69,4 @@ yarn-error.log
 .yarn-integrity
 
 # Contentful space id and access token
-.contentful.json
+.datocms.json

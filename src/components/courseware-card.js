@@ -12,10 +12,10 @@ import { MdFavorite, MdFavoriteBorder, MdShare } from 'react-icons/md';
 import TextTruncate from 'react-text-truncate';
 import { navigate } from 'gatsby';
 import striptags from 'striptags';
-import useCoursewareCardData from '../hooks/use-courseware-card-data';
 import styles from './courseware-card.module.scss';
 
-const CoursewareCard = ({ coursewareUid }) => {
+// TODO: Replace departmentNumber by department once this field is present in DatoCMS
+const CoursewareCard = ({ courseware }) => {
   const [favorite, setFavorite] = useState(0);
   const favoriteIcon = favorite ? (
     <MdFavorite />
@@ -24,7 +24,7 @@ const CoursewareCard = ({ coursewareUid }) => {
   );
   const buttonHandleClick = useCallback(
     () => {
-      navigate(`courseware/?courseware_uid=${coursewareUid}`);
+      navigate(`courseware/?courseware_uid=${courseware.id}`);
     },
   );
   const favoriteHandleClick = useCallback(
@@ -33,13 +33,12 @@ const CoursewareCard = ({ coursewareUid }) => {
   const {
     title,
     courseLevel,
-    department,
     trackingTitle,
     imageSrc,
     description,
     masterCourseNumber,
     departmentNumber,
-  } = useCoursewareCardData(coursewareUid);
+  } = courseware;
 
   return (
     <Card className={styles.card}>
@@ -61,14 +60,14 @@ const CoursewareCard = ({ coursewareUid }) => {
         line={1}
         element="span"
         truncateText="…"
-        text={`Department: ${department[0].title}`}
+        text={`Department: ${departmentNumber}`}
       />
       <TextTruncate
         containerClassName={styles.description}
         line={2}
         element="span"
         truncateText="…"
-        text={striptags(description.description)}
+        text={striptags(description)}
       />
       <CardActions className={styles.actions}>
         <CardActionButtons>

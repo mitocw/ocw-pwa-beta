@@ -1,7 +1,7 @@
 @import '../styles/functions/color';
 @import '../styles/mixins/breakpoints';
 
-.coursewareNumber {
+.courseware-number {
   color: color(courseware-number);
   font-weight: bold;
   margin: 0 1rem 1rem;
@@ -10,7 +10,7 @@
 }
 
 .courseware-list {
-  padding: 1rem;
+  padding: 0 1rem 1rem 1rem;
   display: grid;
   align-items: center;
   justify-items: center;
@@ -33,4 +33,39 @@
   @include media-breakpoint-up(xl) {
     grid-template-columns: repeat(5, 1fr);
   }
+}
+
+.courseware-list-loading {
+  padding: 0 1rem 1rem 1rem;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr;
+  grid-gap: 1rem;
+
+}
+
+.courseware-filter {
+  padding: 1rem;
+}
+
+@keyframes spin {
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(360deg);
+  }
+}
+
+.spinner {
+  color: color(courseware-number);
+  animation-name: spin;
+  animation-duration: 4000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  //vertical-align: middle;
+  width: 4em;
+  height: 4em;
 }
