@@ -110,5 +110,13 @@ module.exports = {
       resolve: 'gatsby-plugin-create-client-paths',
       options: { prefixes: ['/courseware/*'] },
     },
+    {
+      resolve: 'gatsby-source-graphql',
+      options: {
+        typeName: 'Blog',
+        fieldName: 'blog',
+        url: 'https://fakeql.com/graphql/28840c72a6be685665c9ca6be94786a4',
+      },
+    },
   ],
 };
