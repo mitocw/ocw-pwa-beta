@@ -111,11 +111,12 @@ module.exports = {
       options: { prefixes: ['/courseware/*'] },
     },
     {
-      resolve: 'gatsby-source-graphql',
+      resolve: 'gatsby-source-datocms',
       options: {
-        typeName: 'Blog',
-        fieldName: 'blog',
-        url: 'https://fakeql.com/graphql/28840c72a6be685665c9ca6be94786a4',
+        // If we use DatoCMS, put this into a .datocms.json file
+        apiToken: 'b761391a64b706a9fb2329b9f662cf',
+        previewMode: true,
+        disableLiveReload: false,
       },
     },
   ],

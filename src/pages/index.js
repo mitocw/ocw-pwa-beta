@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
 import { Query } from 'react-apollo';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import useSiteMetadata from '../hooks/use-site-metadata';
 import useIndexPageData from '../hooks/use-index-page-data';
-import useStaticBlogData from '../hooks/use-static-blog-data';
+import useDatoCMSData from '../hooks/use-dato-cms-data';
 import SEO from '../components/seo';
 import Layout from '../components/layout';
 import CoursewareList from '../components/courseware-list';
@@ -13,23 +13,45 @@ import shortid from '../scripts/shortid';
 const IndexPage = () => {
   const { siteMetadata } = useSiteMetadata();
   const coursewareUids = useIndexPageData();
-  // Static GraphQL Query
-  const { posts } = useStaticBlogData();
-  const postsEl = posts.map(post => (
+  // Static DatoCMS GraphQL Query
+  const staticCourseware = useDatoCMSData('DatoCmsCoursewareModel-1133388-en');
+  const staticCoursewaresEl = (
     <div key={shortid()}>
-      <p>{post.id}</p>
-      <p>{post.title}</p>
-      <p>{post.date}</p>
+      <p>{staticCourseware.id}</p>
+      <p>{staticCourseware.trackingTitleField}</p>
+      <p>{staticCourseware.titleField}</p>
     </div>
-  ));
-  // Dynamic GraphQL Query
-  const age = 34;
-  const GET_USER_BY_AGE = gql`
+  );
+  // Dynamic DatoCMS GraphQL Query
+  const courseLevel = 'Undergraduate';
+  const GET_COURSEWARE = gql`
   {
-    users (where: {age_gt: ${age}}) {
+    allCoursewareModels(
+      filter: {
+        courseLevelField: {eq: ${courseLevel}}
+      }
+    ) {
       id
-      firstname
-      age
+      trackingTitleField
+      titleField
+      masterCourseNumberField
+      imageSrcField
+      imageDescriptionField
+      descriptionField
+      urlField
+      shortUrlField
+      courseLevelField
+      departmentNumberField
+      toSemesterField
+      fromSemesterField
+      toYearField
+      fromYearField
+      sortAsField
+      languageField
+      instructorsField {
+        firstNameField
+        lastNameField
+      }
     }
   }
 `;
@@ -41,10 +63,10 @@ const IndexPage = () => {
         siteDescription={siteMetadata.description}
       />
       <CoursewareList coursewareUids={coursewareUids} />
-      <h3>Static GraphQL Query</h3>
-      {postsEl}
-      <h3>Dynamic GraphQL Query</h3>
-      <Query query={GET_USER_BY_AGE}>
+      <h3>Static DatoCMS GraphQL Query</h3>
+      { staticCoursewaresEl }
+      <h3>Dynamic DatoCMS GraphQL Query</h3>
+      <Query query={GET_COURSEWARE}>
         {({ data, loading, error }) => {
           if (loading) {
             return (<p>Loading...</p>);
@@ -56,15 +78,60 @@ const IndexPage = () => {
               </p>
             );
           }
-          const { users } = data;
-          const usersEl = users.map(user => (
-            <div key={shortid()}>
-              <p>{user.id}</p>
-              <p>{user.firstname}</p>
-              <p>{user.age}</p>
-            </div>
-          ));
-          return usersEl;
+          const { allCoursewareModels } = data;
+          const coursewaresEl = allCoursewareModels.map((courseware) => {
+            const {
+              id,
+              trackingTitleField,
+              titleField,
+              masterCourseNumberField,
+              imageSrcField,
+              imageDescriptionField,
+              descriptionField,
+              urlField,
+              shortUrlField,
+              courseLevelField,
+              departmentNumberField,
+              toSemesterField,
+              fromSemesterField,
+              toYearField,
+              fromYearField,
+              sortAsField,
+              languageField,
+              instructorsField,
+            } = courseware;
+            const instructorsEl = instructorsField.map(instructorField => (
+              <p key={shortid()}>
+                <span>Instructors: </span>
+                <span>{instructorField.lastNameField} </span>
+                <span>{instructorField.firstNameField}</span>
+              </p>
+            ));
+
+            return (
+              <div key={shortid()}>
+                <p>{id}</p>
+                <p>{trackingTitleField}</p>
+                <p>{titleField}</p>
+                <p>{masterCourseNumberField}</p>
+                <p>{imageSrcField}</p>
+                <p>{imageDescriptionField}</p>
+                <p>{descriptionField}</p>
+                <p>{urlField}</p>
+                <p>{shortUrlField}</p>
+                <p>{courseLevelField}</p>
+                <p>{departmentNumberField}</p>
+                <p>{toSemesterField}</p>
+                <p>{fromSemesterField}</p>
+                <p>{toYearField}</p>
+                <p>{fromYearField}</p>
+                <p>{sortAsField}</p>
+                <p>{languageField}</p>
+                {instructorsEl}
+              </div>
+            );
+          });
+          return coursewaresEl;
         }}
       </Query>
     </Layout>
