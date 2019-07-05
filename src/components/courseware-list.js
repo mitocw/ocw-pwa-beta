@@ -2,7 +2,9 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import IconButton from '@material/react-icon-button';
 import { FaCircleNotch } from 'react-icons/fa';
+import { MdCropPortrait, MdApps, MdDehaze } from 'react-icons/md';
 import CoursewareCard from './courseware-card';
 import shortid from '../scripts/shortid';
 import styles from './courseware-list.module.scss';
@@ -10,6 +12,8 @@ import styles from './courseware-list.module.scss';
 const CoursewareList = ({
   courseTopic,
   courseLevel,
+  cardType,
+  changeCardType,
 }) => {
   const GET_COURSEWARES = gql`
     query($courseLevelRegex: String!, $courseCollectionIds: [ItemId]) {
@@ -110,14 +114,38 @@ const CoursewareList = ({
               }
               const coursewareNumber = allCoursewares.length.toString();
               const coursewareCards = allCoursewares.map(courseware => (
-                <CoursewareCard courseware={courseware} key={shortid()} />
+                <CoursewareCard courseware={courseware} cardType={cardType} key={shortid()} />
               ));
+              const coursewareListClasses = cardType !== 'text'
+                ? styles.coursewareList
+                : `${styles.coursewareList} ${styles.coursewareListText}`;
+
               return (
                 <>
                   <div className={styles.coursewareNumber}>
                     <span>{`Courses (${coursewareNumber})`}</span>
+                    <div className={styles.cardTypes}>
+                      <IconButton
+                        data-card-type="regular"
+                        onClick={changeCardType}
+                      >
+                        <MdCropPortrait />
+                      </IconButton>
+                      <IconButton
+                        data-card-type="condensed"
+                        onClick={changeCardType}
+                      >
+                        <MdApps />
+                      </IconButton>
+                      <IconButton
+                        data-card-type="text"
+                        onClick={changeCardType}
+                      >
+                        <MdDehaze />
+                      </IconButton>
+                    </div>
                   </div>
-                  <div className={styles.coursewareList}>
+                  <div className={coursewareListClasses}>
                     {coursewareCards}
                   </div>
                 </>

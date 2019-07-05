@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import useSiteMetadata from '../hooks/use-site-metadata';
 import SEO from '../components/seo';
 import Layout from '../components/layout';
@@ -12,13 +12,17 @@ const IndexPage = () => {
   const { siteMetadata } = useSiteMetadata();
   const [courseTopic, setCourseTopic] = useState('Science');
   const [courseLevel, setCourseLevel] = useState('All');
+  const [cardType, setCardType] = useState('regular');
 
-  const changeCourseTopic = (index, item) => {
-    setCourseTopic(item.getAttribute('data-value'));
-  };
-  const changeCourseLevel = (index, item) => {
-    setCourseLevel(item.getAttribute('data-value'));
-  };
+  const changeCourseTopic = useCallback(
+    (index, item) => setCourseTopic(item.getAttribute('data-value')),
+  );
+  const changeCourseLevel = useCallback(
+    (index, item) => setCourseLevel(item.getAttribute('data-value')),
+  );
+  const changeCardType = useCallback(
+    event => setCardType(event.currentTarget.dataset.cardType),
+  );
   // End Remove
 
   return (
@@ -37,6 +41,8 @@ const IndexPage = () => {
       <CoursewareList
         courseTopic={courseTopic}
         courseLevel={courseLevel}
+        cardType={cardType}
+        changeCardType={changeCardType}
       />
     </Layout>
   );

@@ -1,11 +1,18 @@
+/* stylelint-disable selector-pseudo-class-no-unknown  */
+:global {
+  @import '@material/icon-button/mdc-icon-button';
+}
 @import '../styles/functions/color';
 @import '../styles/mixins/breakpoints';
 
 .courseware-number {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   color: color(courseware-number);
   font-weight: bold;
   margin: 0 1rem 1rem;
-  padding: 1rem 0;
+  padding: 1rem 0 0 0;
   border-bottom: solid 2px color(collapsible-border);
 }
 
@@ -32,6 +39,25 @@
 
   @include media-breakpoint-up(xl) {
     grid-template-columns: repeat(5, 1fr);
+  }
+}
+
+.courseware-list-text {
+  justify-items: left;
+  @include media-breakpoint-up(sm) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  @include media-breakpoint-up(md) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  @include media-breakpoint-up(lg) {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  @include media-breakpoint-up(xl) {
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 
@@ -65,7 +91,6 @@
   animation-duration: 4000ms;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-  //vertical-align: middle;
   width: 4em;
   height: 4em;
 }
