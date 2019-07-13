@@ -16,6 +16,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@apollo/react-hooks": "0.1.0-beta.10",
     "@material/react-button": "^0.12.1",
     "@material/react-card": "^0.12.1",
     "@material/react-icon-button": "^0.14.1",

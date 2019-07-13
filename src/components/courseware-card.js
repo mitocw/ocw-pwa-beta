@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useCallback } from 'react';
@@ -22,9 +23,9 @@ const CoursewareCard = ({ courseware, cardType }) => {
   ) : (
     <MdFavoriteBorder />
   );
-  const buttonHandleClick = useCallback(
+  const navigateToCourseware = useCallback(
     () => {
-      navigate(`courseware/?courseware_uid=${courseware.id}&card_type=${cardType}`);
+      navigate(`courseware/?courseware_uid=${courseware.id}`);
     },
   );
   const favoriteHandleClick = useCallback(
@@ -77,7 +78,7 @@ const CoursewareCard = ({ courseware, cardType }) => {
               <Button
                 className={styles.button}
                 dense
-                onClick={buttonHandleClick}
+                onClick={navigateToCourseware}
               >
                 Go to Course
               </Button>
@@ -118,7 +119,7 @@ const CoursewareCard = ({ courseware, cardType }) => {
               <Button
                 className={styles.button}
                 dense
-                onClick={buttonHandleClick}
+                onClick={navigateToCourseware}
               >
                 Go to Course
               </Button>
@@ -141,8 +142,9 @@ const CoursewareCard = ({ courseware, cardType }) => {
         <div className={styles.textCard}>
           <p>
             <a
-              href={`courseware/?courseware_uid=${courseware.id}`}
+              href="#"
               className={styles.title}
+              onClick={navigateToCourseware}
             >
               {title}
             </a>
@@ -153,7 +155,7 @@ const CoursewareCard = ({ courseware, cardType }) => {
           <TextTruncate
             containerClassName={styles.description}
             line={1}
-            element="p"
+            element="span"
             truncateText="…"
             text={striptags(description)}
           />
