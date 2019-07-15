@@ -2,6 +2,7 @@
 import React from 'react';
 import IconButton from '@material/react-icon-button';
 import { MdCropPortrait, MdApps, MdDehaze } from 'react-icons/md';
+import Store from '../store/store';
 import useCoursewareQuery from '../hooks/use-courseware-query';
 import useCourseCollectionQuery from '../hooks/use-course-collection-query';
 import CoursewareLoading from './courseware-loading';
@@ -9,12 +10,13 @@ import CoursewareCard from './courseware-card';
 import shortid from '../scripts/shortid';
 import styles from './courseware-list.module.scss';
 
-const CoursewareList = ({
-  courseTopic,
-  courseLevel,
-  cardType,
-  changeCardType,
-}) => {
+const CoursewareList = () => {
+  const {
+    courseTopic,
+    courseLevel,
+    cardType,
+    changeCardType,
+  } = Store.useContainer();
   const { data: { allCourseCollections }, loading: collectionLoading } = useCourseCollectionQuery(
     courseTopic,
   );

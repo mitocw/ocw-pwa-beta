@@ -20,7 +20,7 @@ const CoursewarePage = ({ location }) => {
   const coursewareUid = hasParams ? (new URL(location.href)).searchParams.get('courseware_uid') : null;
   let result;
   if (coursewareUid) {
-    const { data: { allCoursewares }, loading } = useIndividualCoursewareQuery();
+    const { data: { allCoursewares }, loading } = useIndividualCoursewareQuery(coursewareUid);
     if (loading) {
       return (
         <div className="spinner-container">

@@ -1,11 +1,16 @@
 import React from 'react';
 import Select, { Option } from '@material/react-select';
 import { FaCircleNotch } from 'react-icons/fa';
+import Store from '../store/store';
 import useTopicQuery from '../hooks/use-topic-query';
 import './courseware-filters.scss';
 import shortid from '../scripts/shortid';
 
-const CoursewareTopicFilter = ({ courseTopic, changeCourseTopic }) => {
+const CoursewareTopicFilter = () => {
+  const {
+    courseTopic,
+    changeCourseTopic,
+  } = Store.useContainer();
   const { data: { allCourseCollections }, loading } = useTopicQuery();
   if (loading) {
     return (

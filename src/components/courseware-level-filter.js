@@ -1,11 +1,16 @@
 import React from 'react';
 import Select, { Option } from '@material/react-select';
 import { FaCircleNotch } from 'react-icons/fa';
+import Store from '../store/store';
 import useLevelQuery from '../hooks/use-level-query';
 import './courseware-filters.scss';
 import shortid from '../scripts/shortid';
 
-const CoursewareLevelFilter = ({ courseLevel, changeCourseLevel }) => {
+const CoursewareLevelFilter = () => {
+  const {
+    courseLevel,
+    changeCourseLevel,
+  } = Store.useContainer();
   const { data: { allCoursewares }, loading } = useLevelQuery();
   if (loading) {
     return (
