@@ -10,11 +10,10 @@
   @include mdc-card-fill-color(color(card-background));
   max-width: 20rem;
   padding: 0.5rem;
-  
   position: relative;
   top: 0;
   transition: all .1s ease-in;
-  
+
   &:hover {
     top: -2px;
     box-shadow: 0 4px 5px color(card-hover-box-shadow);
@@ -56,5 +55,60 @@
     vertical-align: middle;
     width: 1.5em;
     height: 1.5em;
+  }
+}
+
+// Condensed card
+.card-condensed {
+  max-width: 30rem;
+}
+
+.actions-condensed {
+  margin-top: 0.5rem;
+}
+
+.header {
+  display: flex;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid lightgray;
+  
+  .text-container {
+    flex-grow: 2;
+    padding-right: 1rem;
+  }
+  
+  .thumbnail {
+    display: block;
+    width: 5rem;
+    height: 5rem;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+// Text card
+.text-card {
+  p {
+    margin: 0;
+    padding-bottom: 0.4rem;
+  }
+  .title {
+    color: color(card-title-foreground);
+    text-decoration: none;
+    font-weight:500;
+    &:active {
+      color:color(header-background);
+    }
+    &:hover {
+      color:color(header-background);
+      text-decoration: underline;
+    }
+  }
+  .subtitle {
+    color:color(card-subtitle-foreground);
+  }
+  .description {
+    color:color(card-subtitle-foreground);
+    font-style: oblique;
   }
 }

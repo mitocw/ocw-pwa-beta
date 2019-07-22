@@ -1,6 +1,7 @@
 import React from 'react';
+import { FaCircleNotch } from 'react-icons/fa';
 import useSiteMetadata from '../hooks/use-site-metadata';
-import useCoursewareData from '../hooks/use-courseware-data';
+import useIndividualCoursewareQuery from '../hooks/use-individual-courseware-query';
 import SEO from '../components/seo';
 import Layout from '../components/layout';
 import CoursewareHeader from '../components/courseware-header';
@@ -10,15 +11,26 @@ import CoursewareDescription from '../components/courseware-description';
 import CoursewarePages from '../components/courseware-pages';
 import validate from '../scripts/validate';
 import styles from './courseware.module.scss';
+import '../components/courseware-filters.scss';
 
 const CoursewarePage = ({ location }) => {
   const { siteMetadata } = useSiteMetadata();
   // During build, location.search is an empty string
   const hasParams = (location.search !== '');
   const coursewareUid = hasParams ? (new URL(location.href)).searchParams.get('courseware_uid') : null;
-  const courseware = coursewareUid ? useCoursewareData(coursewareUid) : null;
   let result;
-  if (courseware) {
+  if (coursewareUid) {
+    const { data: { allCoursewares }, loading } = useIndividualCoursewareQuery(coursewareUid);
+    if (loading) {
+      return (
+        <div className="spinner-container">
+          <FaCircleNotch className="spinner" />
+        </div>
+      );
+    }
+    if (allCoursewares.length === 0) {
+      return (<div className="spinner-container">Not a valid course identificator</div>);
+    }
     // Get the fields of interest from valid courseware
     const {
       title,
@@ -33,8 +45,7 @@ const CoursewarePage = ({ location }) => {
       description,
       url,
       coursePages,
-    } = courseware;
-
+    } = allCoursewares[0];
     result = (
       <Layout>
         <SEO
@@ -44,7 +55,7 @@ const CoursewarePage = ({ location }) => {
         <div className={styles.courseware}>
           <CoursewareHeader
             className={styles.header}
-            url={courseware.url}
+            url={url}
             title={title}
           />
           <CoursewareImage
@@ -74,7 +85,7 @@ const CoursewarePage = ({ location }) => {
       </Layout>
     );
   } else {
-    // Empty page for server rendered; error message for erroneous courseUid param
+    // Error message for erroneous courseUid param
     result = location.href ? (<p>Not a valid course identificator</p>) : null;
   }
 

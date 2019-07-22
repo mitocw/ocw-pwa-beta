@@ -14,6 +14,7 @@ $mine-shaft: #252525;
 $pampas: #f8f6f4;
 $shiraz: #b30838;
 $alto: #e0e0e0;
+$black: #000000;
 
 // For theme switcher demo only
 $cerulean: #0cb0d1;
@@ -29,9 +30,12 @@ $default-palette: (
   'main': (
     'background':                   $alto
   ),
-  'courseware-number':             $emperor,
+  'courseware-number':              $emperor,
   'collapsible': (
     'border':                       $silver-chalice
+  ),
+  'filters': (
+    'foreground':                   $emperor
   ),
   'footer': (
     'background':                   $pampas

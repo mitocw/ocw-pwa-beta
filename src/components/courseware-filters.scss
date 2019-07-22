@@ -1,0 +1,67 @@
+$mdc-theme-primary: black; // Sets the color of the select animated arrow
+@import '@material/react-list/index';
+@import '@material/react-menu-surface/index';
+@import '@material/react-menu/index';
+@import '@material/react-select/index';
+@import '@material/select/mixins';
+@import '../styles/functions/color';
+@import '../styles/mixins/breakpoints';
+
+.filters-container {
+  padding: 0 0 0 1rem;
+  @include media-breakpoint-up(sm) {
+    padding: 0 0 1rem 1rem;
+  }
+}
+
+.filters-title {
+  margin-top: 0;
+  padding-top: 1rem;
+  color: color(filters-foreground);
+}
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @include media-breakpoint-up(sm) {
+    flex-direction: row;
+    align-items: left;
+  }
+}
+
+.filter {
+  @include mdc-select-ink-color(color(filters-foreground));
+  margin: 0 0 1rem 0;
+  @include media-breakpoint-up(sm) {
+    margin: 0 1rem 0 0;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(360deg);
+  }
+}
+
+.spinner-container {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.spinner {
+  color: color(filters-foreground);
+  animation-name: spin;
+  animation-duration: 4000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  //vertical-align: middle;
+  width: 2rem;
+  height: 2rem;
+  margin: 1rem 5rem;
+}

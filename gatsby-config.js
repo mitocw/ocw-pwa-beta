@@ -1,52 +1,49 @@
 /* eslint-disable no-multi-spaces */
-let contentfulConfig;
-let contentfulOptions;
-const isContentDelivery = false;
-const contentDeliveryHost = 'cdn.contentful.com';
-const contentPreviewHost = 'preview.contentful.com';
+let datocmsConfig;
+let datocmsOptions;
+/*
+  If we can read/write or just read the following end points:
+  1. Content Delivery API -> GraphQL Endpoint: https://graphql.datocms.com
+  2. Content Delivery API with draft content -> GraphQL Endpoint: https://graphql.datocms.com/preview
+  3. Content Management API -> REST Endpoint: https://site-api.datocms.com/* (not used)
+*/
+const hasFullAccess = false;
+const isPreview = false;
+const hasLiveReload = false;
 
 try {
   /*
-    Load the Contentful config from ./.contentful.json
+    Load the DatoCMS config from ./.datocms.json
     It must have the following structure:
     {
-      "spaceId": space-id,
-      "contentDeliveryAccessToken": content-delivery-api-access-token,
-      "contentPreviewAccessToken": content-preview-api-access-token,
+      "fullAccessToken": full-access-token,
+      "readOnlyAccessToken": read-only-access-token,
     }
   */
   // eslint-disable-next-line global-require
-  contentfulConfig = require('./.contentful');
-  if (isContentDelivery) {
-    contentfulOptions = {
-      spaceId: contentfulConfig.spaceId,
-      accessToken: contentfulConfig.contentDeliveryAccessToken,
-      host: contentDeliveryHost,
-    };
-  } else {
-    contentfulOptions = {
-      spaceId: contentfulConfig.spaceId,
-      accessToken: contentfulConfig.contentPreviewAccessToken,
-      host: contentPreviewHost,
-    };
-  }
+  datocmsConfig = require('./.datocms');
+  datocmsOptions = {
+    apiToken: hasFullAccess ? datocmsConfig.fullAccessToken : datocmsConfig.readOnlyAccessToken,
+    previewMode: isPreview,
+    disableLiveReload: !hasLiveReload,
+  };
 } catch (_) {
   // eslint-disable-next-line no-console
-  console.log('Could not find contenful configuration file');
+  console.log('Could not find datocms configuration file');
 }
 
-// Overwrite the Contentful config with environment variables if they exist
-contentfulOptions = {
-  spaceId: process.env.CONTENTFUL_SPACE_ID || contentfulOptions.spaceId,
-  accessToken: process.env.CONTENTFUL_DELIVERY_TOKEN || contentfulOptions.accessToken,
-  host: process.env.CONTENTFUL_HOST || contentfulOptions.host,
+// Overwrite the DatoCMS config with environment variables if they exist
+datocmsOptions = {
+  apiToken: process.env.API_TOKEN || datocmsOptions.apiToken,
+  previewMode: process.env.PREVIEW_MODE || datocmsOptions.previewMode,
+  disableLiveReload: process.env.DISABLE_LIVE_RELOAD || datocmsOptions.disableLiveReload,
 };
 
-const { spaceId, accessToken, host } = contentfulOptions;
+const { apiToken } = datocmsOptions;
 
-if (!spaceId || !accessToken || !host) {
+if (!apiToken) {
   throw new Error(
-    'Contentful spaceId, delivery token, and host need to be provided.',
+    'DatoCms apiToken needs to be provided',
   );
 }
 
@@ -86,10 +83,14 @@ module.exports = {
       },
     },
     'gatsby-plugin-offline',
+    /*
+      Install gatsby-source-datocms and uncomment here to use DatoCMS with Gatsby.
+      We only use Apollo Client GraphQL queries for the time being.
     {
-      resolve: 'gatsby-source-contentful',
-      options: contentfulOptions,
+      resolve: 'gatsby-source-datocms',
+      options: datocmsOptions,
     },
+    */
     {
       resolve: 'gatsby-plugin-eslint',
       options: {
