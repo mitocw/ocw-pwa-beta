@@ -98,7 +98,7 @@ const CoursewareCard = ({ courseware, cardType }) => {
     // ##### Condensed Card #####
     case 'condensed':
       return (
-        <Card className={styles.card}>
+        <Card className={`${styles.card} ${styles.cardCondensed}`}>
           <div className={styles.header}>
             <div className={styles.textContainer}>
               <div>

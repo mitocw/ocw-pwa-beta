@@ -59,18 +59,21 @@
 }
 
 // Condensed card
+.card-condensed {
+  max-width: 30rem;
+}
+
 .actions-condensed {
   margin-top: 0.5rem;
 }
 
 .header {
   display: flex;
-  justify-content: space-between;
   padding-bottom: 0.25rem;
   border-bottom: 1px solid lightgray;
   
   .text-container {
-    max-width: 14rem;
+    flex-grow: 2;
     padding-right: 1rem;
   }
   

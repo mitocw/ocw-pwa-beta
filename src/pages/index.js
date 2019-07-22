@@ -3,6 +3,7 @@ import useSiteMetadata from '../hooks/use-site-metadata';
 import SEO from '../components/seo';
 import Layout from '../components/layout';
 import CoursewareTopicFilter from '../components/courseware-topic-filter';
+import CoursewareFeatureFilter from '../components/courseware-feature-filter';
 import CoursewareLevelFilter from '../components/courseware-level-filter';
 import CoursewareList from '../components/courseware-list';
 import '../components/courseware-filters.scss';
@@ -20,6 +21,7 @@ const IndexPage = () => {
         <h3 className="filters-title">Filter course by</h3>
         <div className="filters">
           <CoursewareTopicFilter />
+          <CoursewareFeatureFilter />
           <CoursewareLevelFilter />
         </div>
       </div>

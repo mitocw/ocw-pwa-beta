@@ -26,24 +26,34 @@
   grid-gap: 1rem;
   
   @include media-breakpoint-up(sm) {
+    justify-items: stretch;
     grid-template-columns: repeat(2, 1fr);
   }
 
   @include media-breakpoint-up(md) {
+    justify-items: stretch;
     grid-template-columns: repeat(3, 1fr);
   }
 
   @include media-breakpoint-up(lg) {
+    justify-items: stretch;
     grid-template-columns: repeat(4, 1fr);
   }
 
   @include media-breakpoint-up(xl) {
+    justify-items: stretch;
     grid-template-columns: repeat(5, 1fr);
   }
 }
 
+.courseware-list-condensed {
+  @include media-breakpoint-up(xl) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 .courseware-list-text {
-  justify-items: left;
+  justify-items: stretch;
   @include media-breakpoint-up(sm) {
     grid-template-columns: repeat(1, 1fr);
   }

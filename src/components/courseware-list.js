@@ -5,6 +5,7 @@ import { MdCropPortrait, MdApps, MdDehaze } from 'react-icons/md';
 import Store from '../store/store';
 import useCoursewareQuery from '../hooks/use-courseware-query';
 import useCourseCollectionQuery from '../hooks/use-course-collection-query';
+import useCourseFeatureQuery from '../hooks/use-course-feature-query';
 import CoursewareLoading from './courseware-loading';
 import CoursewareCard from './courseware-card';
 import shortid from '../scripts/shortid';
@@ -13,6 +14,7 @@ import styles from './courseware-list.module.scss';
 const CoursewareList = () => {
   const {
     courseTopic,
+    courseFeature,
     courseLevel,
     cardType,
     changeCardType,
@@ -23,10 +25,16 @@ const CoursewareList = () => {
   const courseCollectionIds = allCourseCollections
     ? allCourseCollections.map(courseCollection => courseCollection.id)
     : [];
-  const { data: { allCoursewares }, loading: coursewareLoading } = useCoursewareQuery(
-    courseTopic, courseLevel, courseCollectionIds,
+  const { data: { allCourseFeatures }, loading: featureLoading } = useCourseFeatureQuery(
+    courseFeature,
   );
-  if (collectionLoading || coursewareLoading) {
+  const courseFeatureIds = allCourseFeatures
+    ? allCourseFeatures.map(courseFeature => courseFeature.id)
+    : [];
+  const { data: { allCoursewares }, loading: coursewareLoading } = useCoursewareQuery(
+    courseTopic, courseFeature, courseLevel, courseCollectionIds, courseFeatureIds,
+  );
+  if (collectionLoading || featureLoading || coursewareLoading) {
     return <CoursewareLoading />;
   }
 
@@ -34,9 +42,18 @@ const CoursewareList = () => {
   const coursewareCards = allCoursewares.map(courseware => (
     <CoursewareCard courseware={courseware} cardType={cardType} key={shortid()} />
   ));
-  const coursewareListClasses = cardType !== 'text'
-    ? styles.coursewareList
-    : `${styles.coursewareList} ${styles.coursewareListText}`;
+  let coursewareListClasses;
+  switch (cardType) {
+    case 'condensed':
+      coursewareListClasses = `${styles.coursewareList} ${styles.coursewareListCondensed}`;
+      break;
+    case 'text':
+      coursewareListClasses = `${styles.coursewareList} ${styles.coursewareListText}`;
+      break;
+    // Regular cards
+    default:
+      coursewareListClasses = `${styles.coursewareList}`;
+  }
 
   return (
     <>
