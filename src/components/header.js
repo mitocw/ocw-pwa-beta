@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react';
+import { navigate } from 'gatsby';
 import Button from '@material/react-button';
 import styles from './header.module.scss';
 
 const Header = () => {
-  const buttonHandleClick = useCallback(
+  const changeTheme = useCallback(
     () => {
       // eslint-disable-next-line no-undef
       const root = document.documentElement;
@@ -14,11 +15,18 @@ const Header = () => {
       }
     },
   );
+  const navigateToIndex = useCallback(
+    () => navigate(''),
+  );
 
   return (
     <header className={styles.header}>
-      <span className={styles.title}>OCW Progressive Web Application</span>
-      <Button className={styles.button} onClick={buttonHandleClick}>Theme</Button>
+      <Button className={styles.button} onClick={navigateToIndex}>
+        OpenCourseWare
+        <br />
+        <small>Next Gen Platform Experiments</small>
+      </Button>
+      <Button className={styles.button} onClick={changeTheme}>Theme</Button>
     </header>
   );
 };
