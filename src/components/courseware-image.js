@@ -7,9 +7,7 @@ const CoursewareImage = ({
   imageDescription,
 }) => (
   <div className={className}>
-    <div className={styles.imageContainer}>
-      <img src={imageSrc} alt="TBD" title="TBD" />
-    </div>
+    <img src={imageSrc} className={styles.coursewareImage} alt="TBD" title="TBD" />
     <p>
       <small>{imageDescription}</small>
     </p>

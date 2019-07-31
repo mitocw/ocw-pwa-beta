@@ -24,7 +24,7 @@ const Header = () => {
       <Button className={styles.button} onClick={navigateToIndex}>
         OpenCourseWare
         <br />
-        <small>Next Gen Platform Experiments</small>
+        <small>Next Gen Experiments</small>
       </Button>
       <Button className={styles.button} onClick={changeTheme}>Theme</Button>
     </header>
