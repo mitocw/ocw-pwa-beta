@@ -59,7 +59,6 @@ const CoursewarePage = ({ location }) => {
             title={title}
           />
           <CoursewareImage
-            className={styles.image}
             imageSrc={imageSrc}
             imageDescription={validate('imageDescription', imageDescription)}
           />

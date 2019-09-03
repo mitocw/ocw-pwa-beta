@@ -23,10 +23,13 @@ const useStore = () => {
 
   return {
     courseTopic,
+    setCourseTopic,
     changeCourseTopic,
     courseFeature,
+    setCourseFeature,
     changeCourseFeature,
     courseLevel,
+    setCourseLevel,
     changeCourseLevel,
     cardType,
     changeCardType,
