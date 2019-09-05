@@ -134,7 +134,7 @@ const studentCourseIds = [
 
 const randomItem = arr => arr[Math.floor(Math.random() * arr.length)];
 
-const COURSEWARE_QUERY = gql`
+export const COURSEWARE_QUERY = gql`
   query($coursewareUid: ItemId) {
     allCoursewares(
       first: 100,
