@@ -10,6 +10,9 @@ module.exports = {
   },
   // Ignore the following directories
   testPathIgnorePatterns: ['node_modules', '.cache', 'public'],
+  // Jest comes with JSDOM@11 by default, use JSDOM@15 instead.
+  // It is needed for HTML Canvas support that is used in some of our imported node modules.
+  testEnvironment: 'jest-environment-jsdom-fifteen',
   // Gatsby includes un-transpiled ES6 code and Jest doesn't transpile code inside node_modules
   transformIgnorePatterns: ['node_modules/(?!(gatsby)/)'],
   // The following file gets run automatically before every test.
