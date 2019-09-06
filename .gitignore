@@ -70,3 +70,6 @@ yarn-error.log
 
 # Contentful space id and access token
 .datocms.json
+
+# Google Analytics tracking id
+.google-analytics.json
