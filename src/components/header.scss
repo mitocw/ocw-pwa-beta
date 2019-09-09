@@ -1,0 +1,25 @@
+@import '@material/button/mixins';
+@import '../styles/functions/color';
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  background: color(header-background);
+  color: color(header-foreground);
+  font-weight: bold;
+  margin: 0 auto;
+  padding: 0.5rem;
+}
+
+.header-button {
+  // Increase specificity weight with double selector by using Sass interpolation
+  // https://stackoverflow.com/questions/47781073/increase-specificity-weight-with-double-selector-via-sass
+  &#{&} {
+    @include mdc-button-ink-color(color(header-foreground));
+    //@include mdc-button-container-fill-color(color(header-background));
+    text-transform: none;
+    text-align: right;
+    font-size: 1rem;
+  }
+}

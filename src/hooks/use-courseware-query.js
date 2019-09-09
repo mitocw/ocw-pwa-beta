@@ -2,11 +2,12 @@ import gql from 'graphql-tag';
 import { useQuery } from '@apollo/react-hooks';
 
 const GET_COURSEWARES = gql`
-  query($courseLevelRegex: String!, $courseCollectionIds: [ItemId], $courseFeatureIds: [ItemId]) {
+  query($courseSearchRegex: String!, $courseLevelRegex: String!, $courseCollectionIds: [ItemId], $courseFeatureIds: [ItemId]) {
     allCoursewares(
       first: 100,
       orderBy: [title_ASC],
       filter: {
+        title: {matches: {pattern: $courseSearchRegex}},
         courseLevel: {matches: {pattern: $courseLevelRegex}},
         courseCollections: {anyIn: $courseCollectionIds},
         courseFeatures: {anyIn: $courseFeatureIds}
@@ -25,11 +26,12 @@ const GET_COURSEWARES = gql`
 `;
 
 const GET_COURSEWARES_ALL_TOPICS = gql`
-  query($courseLevelRegex: String!, $courseFeatureIds: [ItemId]) {
+  query($courseSearchRegex: String!, $courseLevelRegex: String!, $courseFeatureIds: [ItemId]) {
     allCoursewares(
       first: 100,
       orderBy: [title_ASC],
       filter: {
+        title: {matches: {pattern: $courseSearchRegex}},
         courseLevel: {matches: {pattern: $courseLevelRegex}},
         courseFeatures: {anyIn: $courseFeatureIds}
       }
@@ -47,11 +49,12 @@ const GET_COURSEWARES_ALL_TOPICS = gql`
 `;
 
 const GET_COURSEWARES_ANY_FEATURE = gql`
-  query($courseLevelRegex: String!, $courseCollectionIds: [ItemId]) {
+  query($courseSearchRegex: String!, $courseLevelRegex: String!, $courseCollectionIds: [ItemId]) {
     allCoursewares(
       first: 100,
       orderBy: [title_ASC],
       filter: {
+        title: {matches: {pattern: $courseSearchRegex}},
         courseLevel: {matches: {pattern: $courseLevelRegex}},
         courseCollections: {anyIn: $courseCollectionIds}
       }
@@ -69,11 +72,12 @@ const GET_COURSEWARES_ANY_FEATURE = gql`
 `;
 
 const GET_COURSEWARES_ALL_TOPICS_ANY_FEATURE = gql`
-  query($courseLevelRegex: String!) {
+  query($courseSearchRegex: String!, $courseLevelRegex: String!) {
     allCoursewares(
       first: 100,
       orderBy: [title_ASC],
       filter: {
+        title: {matches: {pattern: $courseSearchRegex}},
         courseLevel: {matches: {pattern: $courseLevelRegex}}
       }
     ) {
@@ -90,7 +94,7 @@ const GET_COURSEWARES_ALL_TOPICS_ANY_FEATURE = gql`
 `;
 
 const useCoursewareQuery = (
-  courseTopic, courseFeature, courseLevel, courseCollectionIds, courseFeatureIds,
+  courseSearch, courseTopic, courseFeature, courseLevel, courseCollectionIds, courseFeatureIds,
 ) => {
   // TODO: Simplify code by using regular expressions for course feature and course topic
   // once pagination is implemented. The max amount of records returned by DatoCMS is 100.
@@ -106,9 +110,11 @@ const useCoursewareQuery = (
     COURSEWARE_QUERY = GET_COURSEWARES;
   }
   // End TODO
+  const courseSearchRegex = `^.*${courseSearch}.*$`;
   const courseLevelRegex = courseLevel === 'All' ? '.*' : `^${courseLevel}$`;
   return useQuery(COURSEWARE_QUERY, {
     variables: {
+      courseSearchRegex,
       courseLevelRegex,
       courseCollectionIds,
       courseFeatureIds,

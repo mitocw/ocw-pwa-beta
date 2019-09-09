@@ -22,6 +22,7 @@
     "@material/react-card": "^0.12.1",
     "@material/react-icon-button": "^0.14.1",
     "@material/react-select": "^0.12.1",
+    "@material/react-text-field": "^0.15.0",
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",
     "apollo-link-context": "^1.0.18",
