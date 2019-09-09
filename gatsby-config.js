@@ -37,10 +37,15 @@ try {
 
 try {
   /*
-    Load the Google Analytics config from ./.google-analytics.json
+    Load the Google Analytics and Optimize config from ./.google-analytics.json
     It must have the following structure:
     {
+      // Google Analytics
       "trackingId": tracking-id
+      // Google Optimize
+      "optimizeId": optimize-id,
+      "experimentId": experiment-id,
+      "variationId": variation-id
     }
   */
   // eslint-disable-next-line global-require
@@ -58,7 +63,8 @@ try {
   console.log('Could not find ./.google-analytics.js configuration file');
 }
 
-// Overwrite the DatoCMS and Google Analytics config with environment variables if they exist
+// Overwrite the DatoCMS and Google Analytics and Optimize config with environment variables if
+// they exist
 datocmsOptions = {
   apiToken: process.env.API_TOKEN || datocmsOptions.apiToken,
   previewMode: process.env.PREVIEW_MODE || datocmsOptions.previewMode,
@@ -69,6 +75,9 @@ gaOptions = {
   head: process.env.HEAD || gaOptions.head,
   anonymize: process.env.ANONYMIZE || gaOptions.anonymize,
   respectDNT: process.env.RESPECT_DNT || gaOptions.respectDNT,
+  optimizeId: process.env.OPTIMIZE_ID || gaOptions.optimizeId,
+  experimentId: process.env.EXPERIMENT_ID || gaOptions.experimentId,
+  variationId: process.env.VARIATION_ID || gaOptions.variationId,
 };
 
 const { apiToken } = datocmsOptions;
