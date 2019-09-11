@@ -162,7 +162,7 @@ export const COURSEWARE_QUERY = gql`
   }
 `;
 
-const OcwUserCard = (user) => {
+const OcwUserCard = ({ user }) => {
   let id;
   switch (user) {
     case 'lifelong-learner':
@@ -177,7 +177,6 @@ const OcwUserCard = (user) => {
     // Used by tests
     default:
       id = '1204324';
-      break;
   }
 
   const { data: { allCoursewares }, loading: coursewareLoading } = useQuery(COURSEWARE_QUERY, {
