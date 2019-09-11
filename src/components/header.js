@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { navigate } from 'gatsby';
 import Button from '@material/react-button';
-import styles from './header.module.scss';
+import './header.scss';
 
 const Header = () => {
   const changeTheme = useCallback(
@@ -20,13 +20,13 @@ const Header = () => {
   );
 
   return (
-    <header className={styles.header}>
-      <Button className={styles.button} onClick={navigateToIndex}>
+    <header className="header-container">
+      <Button className="header-button" onClick={navigateToIndex}>
         OpenCourseWare
         <br />
         <small>Next Gen Experiments</small>
       </Button>
-      <Button className={styles.button} onClick={changeTheme}>Theme</Button>
+      <Button className="header-button" onClick={changeTheme}>Theme</Button>
     </header>
   );
 };

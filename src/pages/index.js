@@ -4,6 +4,7 @@ import SEO from '../components/seo';
 import Layout from '../components/layout';
 import OcwUsers from '../components/ocw-users';
 import OcwUserCard from '../components/ocw-user-card';
+import '../styles/global.scss';
 import styles from './index.module.scss';
 import userStyles from '../components/ocw-users.module.scss';
 

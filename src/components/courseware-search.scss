@@ -1,0 +1,44 @@
+@import '@material/button/mixins';
+@import '@material/textfield/mixins';
+@import '../styles/colors';
+@import '../styles/functions/color';
+@import '../styles/mixins/breakpoints';
+
+.search-container {
+  padding: 0 0 0 1rem;
+  @include media-breakpoint-up(md) {
+    padding: 0 0 1rem 1rem;
+  }
+}
+
+.search-title {
+  margin-top: 0;
+  padding-top: 1rem;
+  color: color(search-foreground);
+}
+
+.search-group {
+  display: flex;
+  align-items: center;
+  height: 3.5rem;
+}
+
+.search-textfield {
+  // Increase specificity weight with double selector by using Sass interpolation
+  // https://stackoverflow.com/questions/47781073/increase-specificity-weight-with-double-selector-via-sass
+  &#{&} {
+    @include mdc-text-field-ink-color(color(search-foreground));
+    @include mdc-text-field-label-color(rgba(0, 0, 0, 0.6));
+    @include mdc-text-field-focused-outline-color(rgba(0, 0, 0, 1));
+    @include mdc-text-field-caret-color(rgba(0, 0, 0, 1));
+    height: 100%;
+  }
+}
+
+.search-button {
+  &#{&} {
+    @include mdc-button-filled-accessible($alto); // Does not work with color(search-background)
+    @include mdc-button-ink-color(color(search-foreground));
+    height: 100%;
+  }
+}

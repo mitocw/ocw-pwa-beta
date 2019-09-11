@@ -13,6 +13,7 @@ import styles from './courseware-list.module.scss';
 
 const CoursewareList = () => {
   const {
+    courseSearch,
     courseTopic,
     courseFeature,
     courseLevel,
@@ -32,7 +33,7 @@ const CoursewareList = () => {
     ? allCourseFeatures.map(courseFeature => courseFeature.id)
     : [];
   const { data: { allCoursewares }, loading: coursewareLoading } = useCoursewareQuery(
-    courseTopic, courseFeature, courseLevel, courseCollectionIds, courseFeatureIds,
+    courseSearch, courseTopic, courseFeature, courseLevel, courseCollectionIds, courseFeatureIds,
   );
   if (collectionLoading || featureLoading || coursewareLoading) {
     return <CoursewareLoading />;

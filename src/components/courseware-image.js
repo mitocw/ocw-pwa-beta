@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './courseware-card.module.scss';
+import './courseware-card.scss';
 
 const CoursewareImage = ({
   className,
@@ -7,7 +7,7 @@ const CoursewareImage = ({
   imageDescription,
 }) => (
   <div className={className}>
-    <img src={imageSrc} className={styles.coursewareImage} alt="TBD" title="TBD" />
+    <img src={imageSrc} className="courseware-image" alt="TBD" title="TBD" />
     <p>
       <small>{imageDescription}</small>
     </p>

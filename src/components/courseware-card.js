@@ -13,7 +13,7 @@ import { MdFavorite, MdFavoriteBorder, MdShare } from 'react-icons/md';
 import TextTruncate from 'react-text-truncate';
 import { navigate } from 'gatsby';
 import striptags from 'striptags';
-import styles from './courseware-card.module.scss';
+import './courseware-card.scss';
 
 // TODO: Replace departmentNumber by department once this field is present in DatoCMS
 const CoursewareCard = ({ courseware, cardType }) => {
@@ -45,38 +45,38 @@ const CoursewareCard = ({ courseware, cardType }) => {
     // ##### Regular Card #####
     case 'regular':
       return (
-        <Card className={styles.card}>
+        <Card className="courseware-card">
           <TextTruncate
-            containerClassName={styles.title}
+            containerClassName="courseware-card-title"
             line={1}
             element="span"
             truncateText="…"
             text={title}
           />
-          <span className={styles.subtitle}>{`${departmentNumber}.${masterCourseNumber}, ${courseLevel} Level`}</span>
+          <span className="courseware-card-subtitle">{`${departmentNumber}.${masterCourseNumber}, ${courseLevel} Level`}</span>
           <CardMedia
               title={trackingTitle}
               wide
               imageUrl={imageSrc}
           />
           <TextTruncate
-            containerClassName={styles.subsubtitle}
+            containerClassName="courseware-card-subsubtitle"
             line={1}
             element="span"
             truncateText="…"
             text={`Department: ${departmentNumber}`}
           />
           <TextTruncate
-            containerClassName={styles.description}
+            containerClassName="courseware-card-description"
             line={2}
             element="span"
             truncateText="…"
             text={striptags(description)}
           />
-          <CardActions className={styles.actions}>
+          <CardActions className="courseware-card-actions">
             <CardActionButtons>
               <Button
-                className={styles.button}
+                className="courseware-card-button"
                 dense
                 onClick={navigateToCourseware}
               >
@@ -85,12 +85,12 @@ const CoursewareCard = ({ courseware, cardType }) => {
             </CardActionButtons>
             <CardActionIcons>
               <span
-                className={styles.icon}
+                className="courseware-card-icon"
                 onClick={favoriteHandleClick}
               >
                 {favoriteIcon}
               </span>
-              <span className={styles.icon}><MdShare /></span>
+              <span className="courseware-card-icon"><MdShare /></span>
             </CardActionIcons>
           </CardActions>
         </Card>
@@ -98,26 +98,26 @@ const CoursewareCard = ({ courseware, cardType }) => {
     // ##### Condensed Card #####
     case 'condensed':
       return (
-        <Card className={`${styles.card} ${styles.cardCondensed}`}>
-          <div className={styles.header}>
-            <div className={styles.textContainer}>
+        <Card className="courseware-card courseware-card-condensed">
+          <div className="courseware-card-header">
+            <div className="courseware-card-text-container">
               <div>
                 <TextTruncate
-                  containerClassName={styles.title}
+                  containerClassName="courseware-card-title"
                   line={1}
                   element="span"
                   truncateText="…"
                   text={title}
                 />
               </div>
-              <div className={styles.subtitle}>{`${courseLevel} Level`}</div>
+              <div className="courseware-card-subtitle">{`${courseLevel} Level`}</div>
             </div>
-            <img src={imageSrc} alt={trackingTitle} className={styles.thumbnail} />
+            <img src={imageSrc} alt={trackingTitle} className="courseware-card-thumbnail" />
           </div>
-          <CardActions className={`${styles.actions} ${styles.actionsCondensed}`}>
+          <CardActions className="courseware-card-actions courseware-card-actions-condensed">
             <CardActionButtons>
               <Button
-                className={styles.button}
+                className="courseware-card-button"
                 dense
                 onClick={navigateToCourseware}
               >
@@ -126,12 +126,12 @@ const CoursewareCard = ({ courseware, cardType }) => {
             </CardActionButtons>
             <CardActionIcons>
               <span
-                className={styles.icon}
+                className="courseware-card-icon"
                 onClick={favoriteHandleClick}
               >
                 {favoriteIcon}
               </span>
-              <span className={styles.icon}><MdShare /></span>
+              <span className="courseware-card-icon"><MdShare /></span>
             </CardActionIcons>
           </CardActions>
         </Card>
@@ -139,21 +139,21 @@ const CoursewareCard = ({ courseware, cardType }) => {
     // ##### Text Card #####
     case 'text':
       return (
-        <div className={styles.textCard}>
+        <div className="courseware-card-text-card">
           <p>
             <a
               href="#"
-              className={styles.title}
+              className="courseware-card-title"
               onClick={navigateToCourseware}
             >
               {title}
             </a>
           </p>
-          <p className={styles.subtitle}>
+          <p className="courseware-card-subtitle">
             {`${departmentNumber}.${masterCourseNumber}, ${courseLevel} Level`}
           </p>
           <TextTruncate
-            containerClassName={styles.description}
+            containerClassName="courseware-card-description"
             line={1}
             element="span"
             truncateText="…"

@@ -1,12 +1,8 @@
-/* stylelint-disable selector-pseudo-class-no-unknown  */
-:global {
-  @import '@material/card/mdc-card';
-}
 @import '@material/card/mixins';
 @import '@material/button/mixins';
 @import '../styles/functions/color';
 
-.card {
+.courseware-card {
   @include mdc-card-fill-color(color(card-background));
   max-width: 20rem;
   padding: 0.5rem;
@@ -20,17 +16,17 @@
   }
 }
 
-.title {
+.courseware-card-title {
   color: color(card-title-foreground);
 }
 
-.subtitle {
+.courseware-card-subtitle {
   margin-top: 0.25rem;
   margin-bottom: 1.5rem;
   color:color(card-subtitle-foreground);
 }
 
-.subsubtitle {
+.courseware-card-subsubtitle {
   margin-top: 0.5rem;
   margin-bottom: 0.25rem;
   color: color(card-subtitle-foreground);
@@ -41,20 +37,24 @@
   max-width:100%;
 }
 
-.description {
+.courseware-card-description {
   margin-top: 1rem;
 }
 
-.actions {
+.courseware-card-actions {
   margin-top: 1.5rem;
 }
 
-.button {
-  // Does not work with either $gallery or color(card-button-background)
-  @include mdc-button-filled-accessible(#eeeeee);
+.courseware-card-button {
+  // Increase specificity weight with double selector by using Sass interpolation
+  // https://stackoverflow.com/questions/47781073/increase-specificity-weight-with-double-selector-via-sass
+  &#{&} {
+    // Does not work with either $gallery or color(card-button-background)
+    @include mdc-button-filled-accessible(#eeeeee);
+  }
 }
 
-.icon {
+.courseware-card-icon {
   svg {
     vertical-align: middle;
     width: 1.5em;
@@ -63,25 +63,25 @@
 }
 
 // Condensed card
-.card-condensed {
+.courseware-card-condensed {
   max-width: 30rem;
 }
 
-.actions-condensed {
+.courseware-card-actions-condensed {
   margin-top: 0.5rem;
 }
 
-.header {
+.courseware-card-header {
   display: flex;
   padding-bottom: 0.25rem;
   border-bottom: 1px solid lightgray;
   
-  .text-container {
+  .courseware-card-text-container {
     flex-grow: 2;
     padding-right: 1rem;
   }
   
-  .thumbnail {
+  .courseware-card-thumbnail {
     display: block;
     width: 5rem;
     height: 5rem;
@@ -91,12 +91,12 @@
 }
 
 // Text card
-.text-card {
+.courseware-card-text-card {
   p {
     margin: 0;
     padding-bottom: 0.4rem;
   }
-  .title {
+  .courseware-card-title {
     color: color(card-title-foreground);
     text-decoration: none;
     font-weight:500;
@@ -108,10 +108,10 @@
       text-decoration: underline;
     }
   }
-  .subtitle {
+  .courseware-cardsubtitle {
     color:color(card-subtitle-foreground);
   }
-  .description {
+  .courseware-card-description {
     color:color(card-subtitle-foreground);
     font-style: oblique;
   }

@@ -3,11 +3,15 @@ import { useState, useCallback } from 'react';
 import { createContainer } from 'unstated-next';
 
 const useStore = () => {
+  const [courseSearch, setCourseSearch] = useState('');
   const [courseTopic, setCourseTopic] = useState('All');
   const [courseFeature, setCourseFeature] = useState('Any');
   const [courseLevel, setCourseLevel] = useState('All');
   const [cardType, setCardType] = useState('regular');
 
+  const changeCourseSearch = useCallback(
+    searchTerm => setCourseSearch(searchTerm),
+  );
   const changeCourseTopic = useCallback(
     (index, item) => setCourseTopic(item.getAttribute('data-value')),
   );
@@ -22,6 +26,9 @@ const useStore = () => {
   );
 
   return {
+    courseSearch,
+    setCourseSearch,
+    changeCourseSearch,
     courseTopic,
     setCourseTopic,
     changeCourseTopic,
