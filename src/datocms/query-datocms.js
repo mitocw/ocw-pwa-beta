@@ -1,16 +1,9 @@
 /* eslint-disable no-await-in-loop */
-import fetch from 'isomorphic-fetch';
-import { readOnlyAccessToken } from '../../.datocms';
+import gql from 'graphql-tag';
+import client from '../apollo/client';
 
 // DatoCMS can return a maximum of a 100 records
 const recordsPerQuery = 100;
-const uri = 'https://graphql.datocms.com/';
-const method = 'POST';
-const headers = {
-  'Content-Type': 'application/json',
-  Accept: 'application/json',
-  Authorization: `Bearer ${readOnlyAccessToken}`,
-};
 const logErrors = (errors) => {
   if (errors) {
     errors.map((error) => {
@@ -22,32 +15,27 @@ const logErrors = (errors) => {
   }
 };
 
-export const getCourseFeatureIds = async (ocwFeature) => {
+export const getCourseFeatureIds = async (courseFeatureRegex) => {
   let recordsToSkip = 0;
   let makeNewQuery = true;
   let result = [];
 
   while (makeNewQuery) {
     try {
-      const dato = await fetch(uri, {
-        method,
-        headers,
-        body: JSON.stringify({
-          query: `{
-            allCourseFeatures(
-              first: ${recordsPerQuery},
-              skip: ${recordsToSkip},
-              filter: {
-                ocwFeature: {matches: {pattern: "^${ocwFeature}$"}}
-              }
-            ) {
-              id
+      const { data: { allCourseFeatures }, errors } = await client.query({
+        query: gql`{
+          allCourseFeatures(
+            first: ${recordsPerQuery},
+            skip: ${recordsToSkip},
+            filter: {
+              ocwFeature: {matches: {pattern: "${courseFeatureRegex}"}}
             }
-          }`,
-        }),
+          ) {
+            id
+          }
+        }`,
       });
 
-      const { data: { allCourseFeatures }, errors } = await dato.json();
       logErrors(errors);
 
       result = result.concat(allCourseFeatures);
@@ -63,29 +51,27 @@ export const getCourseFeatureIds = async (ocwFeature) => {
   return result.map(item => item.id);
 };
 
-export const getCourseCollectionsIds = async () => {
+export const getCourseCollectionIds = async (courseCollectionRegex) => {
   let recordsToSkip = 0;
   let makeNewQuery = true;
   let result = [];
 
   while (makeNewQuery) {
     try {
-      const dato = await fetch(uri, {
-        method,
-        headers,
-        body: JSON.stringify({
-          query: `{
-            allCourseCollections(
-              first: ${recordsPerQuery},
-              skip: ${recordsToSkip},
-            ) {
-              id
+      const { data: { allCourseCollections }, errors } = await client.query({
+        query: gql`{
+          allCourseCollections(
+            first: ${recordsPerQuery},
+            skip: ${recordsToSkip},
+            filter: {
+              ocwFeature: {matches: {pattern: "${courseCollectionRegex}"}}
             }
-          }`,
-        }),
+          ) {
+            id
+          }
+        }`,
       });
 
-      const { data: { allCourseCollections }, errors } = await dato.json();
       logErrors(errors);
 
       result = result.concat(allCourseCollections);
@@ -101,6 +87,65 @@ export const getCourseCollectionsIds = async () => {
   return result.map(item => item.id);
 };
 
+export const getCoursewares = async (
+  courseSearch,
+  courseTopic,
+  courseFeature,
+  courseLevel,
+) => {
+  const courseSearchRegex = `^.*${courseSearch}.*$`;
+  // courseTopic is courseCollection in DatoCMS
+  const courseCollectionRegex = courseTopic === 'All' ? '^.*$' : `^${courseTopic}$`;
+  const courseCollectionIds = await getCourseCollectionIds(courseCollectionRegex);
+  const courseFeatureRegex = courseFeature === 'Any' ? '^.*$' : `^${courseFeature}$`;
+  const courseFeatureIds = await getCourseFeatureIds(courseFeatureRegex);
+  const courseLevelRegex = courseLevel === 'All' ? '^.*$' : `^${courseLevel}$`;
+  let recordsToSkip = 0;
+  let makeNewQuery = true;
+  let result = [];
+
+  while (makeNewQuery) {
+    try {
+      const { data: { allCoursewares }, errors } = await client.query({
+        query: gql`{
+          allCoursewares(
+            first: ${recordsPerQuery},
+            skip: ${recordsToSkip},
+            filter: {
+              title: {matches: {pattern: "${courseSearchRegex}"}},
+              courseCollections: {anyIn: [${courseCollectionIds}]},
+              courseFeatures: {anyIn: [${courseFeatureIds}]},
+              courseLevel: {matches: {pattern: "${courseLevelRegex}"}},
+              
+            }
+          ) {
+            id
+            title
+            courseLevel
+            trackingTitle
+            imageSrc
+            description
+            departmentNumber
+            masterCourseNumber
+          }
+        }`,
+      });
+
+      logErrors(errors);
+
+      result = result.concat(allCoursewares);
+      recordsToSkip += recordsPerQuery;
+      if (allCoursewares.length < recordsPerQuery) {
+        makeNewQuery = false;
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  return result;
+};
+
 export const getLifelongLearnerCourseIds = async () => {
   let recordsToSkip = 0;
   let makeNewQuery = true;
@@ -108,25 +153,20 @@ export const getLifelongLearnerCourseIds = async () => {
 
   while (makeNewQuery) {
     try {
-      const dato = await fetch(uri, {
-        method,
-        headers,
-        body: JSON.stringify({
-          query: `{
-            allCoursewares(
-              first: ${recordsPerQuery},
-              skip: ${recordsToSkip},
-              filter: {
-                courseLevel: {matches: {pattern: "^Graduate$"}}
-              }
-            ) {
-              id
+      const { data: { allCoursewares }, errors } = await client.query({
+        query: gql`{
+          allCoursewares(
+            first: ${recordsPerQuery},
+            skip: ${recordsToSkip},
+            filter: {
+              courseLevel: {matches: {pattern: "^Graduate$"}}
             }
-          }`,
-        }),
+          ) {
+            id
+          }
+        }`,
       });
 
-      const { data: { allCoursewares }, errors } = await dato.json();
       logErrors(errors);
 
       result = result.concat(allCoursewares);
@@ -146,29 +186,24 @@ export const getEducatorCourseIds = async () => {
   let recordsToSkip = 0;
   let makeNewQuery = true;
   let result = [];
-  const courseFeatureIds = await getCourseFeatureIds('Instructor Insights');
+  const courseFeatureIds = await getCourseFeatureIds('^Instructor Insights$');
 
   while (makeNewQuery) {
     try {
-      const dato = await fetch(uri, {
-        method,
-        headers,
-        body: JSON.stringify({
-          query: `{
-            allCoursewares(
-              first: ${recordsPerQuery},
-              skip: ${recordsToSkip},
-              filter: {
-                courseFeatures: {anyIn: [${courseFeatureIds}]}
-              }
-            ) {
-              id
+      const { data: { allCoursewares }, errors } = await client.query({
+        query: gql`{
+          allCoursewares(
+            first: ${recordsPerQuery},
+            skip: ${recordsToSkip},
+            filter: {
+              courseFeatures: {anyIn: [${courseFeatureIds}]}
             }
-          }`,
-        }),
+          ) {
+            id
+          }
+        }`,
       });
 
-      const { data: { allCoursewares }, errors } = await dato.json();
       logErrors(errors);
 
       result = result.concat(allCoursewares);
@@ -191,25 +226,20 @@ export const getStudentCourseIds = async () => {
 
   while (makeNewQuery) {
     try {
-      const dato = await fetch(uri, {
-        method,
-        headers,
-        body: JSON.stringify({
-          query: `{
-            allCoursewares(
-              first: ${recordsPerQuery},
-              skip: ${recordsToSkip},
-              filter: {
-                courseLevel: {matches: {pattern: "^Undergraduate$"}}
-              }
-            ) {
-              id
+      const { data: { allCoursewares }, errors } = await client.query({
+        query: gql`{
+          allCoursewares(
+            first: ${recordsPerQuery},
+            skip: ${recordsToSkip},
+            filter: {
+              courseLevel: {matches: {pattern: "^Undergraduate$"}}
             }
-          }`,
-        }),
+          ) {
+            id
+          }
+        }`,
       });
 
-      const { data: { allCoursewares }, errors } = await dato.json();
       logErrors(errors);
 
       result = result.concat(allCoursewares);
