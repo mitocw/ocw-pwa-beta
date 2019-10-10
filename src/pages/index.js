@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import useSiteMetadata from '../hooks/use-site-metadata';
 import SEO from '../components/seo';
 import Layout from '../components/layout';
+import {
+  getLifelongLearnerCourseIds,
+  getEducatorCourseIds,
+  getStudentCourseIds,
+} from '../datocms/query-datocms';
 import OcwUsers from '../components/ocw-users';
 import OcwUserCard from '../components/ocw-user-card';
 import '../styles/global.scss';
@@ -9,7 +14,25 @@ import styles from './index.module.scss';
 import userStyles from '../components/ocw-users.module.scss';
 
 const IndexPage = () => {
+  const [lifelongLearnerCourseId, setlifelongLearnerCourseId] = useState('');
+  const [studentCourseId, setStudentCourseId] = useState('');
+  const [educatorCourseId, setEducatorCourseId] = useState('');
+
+  const randomItem = arr => arr[Math.floor(Math.random() * arr.length)];
+
   const { siteMetadata } = useSiteMetadata();
+  useEffect(() => {
+    const getData = async () => {
+      let result;
+      result = await getLifelongLearnerCourseIds();
+      setlifelongLearnerCourseId(randomItem(result));
+      result = await getStudentCourseIds();
+      setStudentCourseId(randomItem(result));
+      result = await getEducatorCourseIds();
+      setEducatorCourseId(randomItem(result));
+    };
+    getData();
+  }, []);
 
   return (
     <Layout>
@@ -28,15 +51,15 @@ const IndexPage = () => {
         <div className={`${userStyles.cardList} ${userStyles.cardListBottom}`}>
           <div>
             <p className={userStyles.cardDescription}>Lifelong learners view...</p>
-            <OcwUserCard user="lifelong-learner" />
+            <OcwUserCard id={lifelongLearnerCourseId} />
           </div>
           <div>
             <p className={userStyles.cardDescription}>Educators view...</p>
-            <OcwUserCard user="educator" />
+            <OcwUserCard id={educatorCourseId} />
           </div>
           <div>
             <p className={userStyles.cardDescription}>Students view...</p>
-            <OcwUserCard user="student" />
+            <OcwUserCard id={studentCourseId} />
           </div>
         </div>
       </div>

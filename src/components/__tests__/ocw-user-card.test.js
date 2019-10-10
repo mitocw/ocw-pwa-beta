@@ -5,7 +5,7 @@ import { MockedProvider } from '@apollo/react-testing';
 import OcwUserCard, { COURSEWARE_QUERY } from '../ocw-user-card';
 
 const props = {
-  user: '',
+  id: '1204324',
 };
 
 const MOCKS = [

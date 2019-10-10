@@ -1,11 +1,9 @@
 /* eslint-disable no-shadow */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import IconButton from '@material/react-icon-button';
 import { MdCropPortrait, MdApps, MdDehaze } from 'react-icons/md';
 import Store from '../store/store';
-import useCoursewareQuery from '../hooks/use-courseware-query';
-import useCourseCollectionQuery from '../hooks/use-course-collection-query';
-import useCourseFeatureQuery from '../hooks/use-course-feature-query';
+import { getCoursewares } from '../datocms/query-datocms';
 import CoursewareLoading from './courseware-loading';
 import CoursewareCard from './courseware-card';
 import shortid from '../scripts/shortid';
@@ -20,27 +18,31 @@ const CoursewareList = () => {
     cardType,
     changeCardType,
   } = Store.useContainer();
-  const { data: { allCourseCollections }, loading: collectionLoading } = useCourseCollectionQuery(
-    courseTopic,
-  );
-  const courseCollectionIds = allCourseCollections
-    ? allCourseCollections.map(courseCollection => courseCollection.id)
-    : [];
-  const { data: { allCourseFeatures }, loading: featureLoading } = useCourseFeatureQuery(
-    courseFeature,
-  );
-  const courseFeatureIds = allCourseFeatures
-    ? allCourseFeatures.map(courseFeature => courseFeature.id)
-    : [];
-  const { data: { allCoursewares }, loading: coursewareLoading } = useCoursewareQuery(
-    courseSearch, courseTopic, courseFeature, courseLevel, courseCollectionIds, courseFeatureIds,
-  );
-  if (collectionLoading || featureLoading || coursewareLoading) {
+
+  const [coursewares, setCoursewares] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const getData = async () => {
+      setLoading(true);
+      setCoursewares([]);
+      // Remove non-alphanumeric chars
+      const alphanumericCourseSearch = courseSearch.replace(/[^0-9a-z]/gi, '');
+      const result = await getCoursewares(
+        alphanumericCourseSearch, courseTopic, courseFeature, courseLevel,
+      );
+      setCoursewares(result);
+      setLoading(false);
+    };
+    getData();
+  }, [courseSearch, courseTopic, courseFeature, courseLevel]);
+
+  if (loading) {
     return <CoursewareLoading />;
   }
 
-  const coursewareNumber = allCoursewares.length.toString();
-  const coursewareCards = allCoursewares.map(courseware => (
+  const coursewareNumber = coursewares.length.toString();
+  const coursewareCards = coursewares.map(courseware => (
     <CoursewareCard courseware={courseware} cardType={cardType} key={shortid()} />
   ));
   let coursewareListClasses;
