@@ -93,7 +93,7 @@ export const getCoursewares = async (
   courseFeature,
   courseLevel,
 ) => {
-  const courseSearchRegex = `^.*${courseSearch}.*$`;
+  const courseSearchRegex = courseSearch === '' ? '^.*$' : `^.*${courseSearch}.*$`;
   // courseTopic is courseCollection in DatoCMS
   const courseCollectionRegex = courseTopic === 'All' ? '^.*$' : `^${courseTopic}$`;
   const courseCollectionIds = await getCourseCollectionIds(courseCollectionRegex);

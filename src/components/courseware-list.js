@@ -26,8 +26,10 @@ const CoursewareList = () => {
     const getData = async () => {
       setLoading(true);
       setCoursewares([]);
+      // Remove non-alphanumeric chars
+      const alphanumericCourseSearch = courseSearch.replace(/[^0-9a-z]/gi, '');
       const result = await getCoursewares(
-        courseSearch, courseTopic, courseFeature, courseLevel,
+        alphanumericCourseSearch, courseTopic, courseFeature, courseLevel,
       );
       setCoursewares(result);
       setLoading(false);
