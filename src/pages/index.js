@@ -30,8 +30,6 @@ const IndexPage = () => {
       setStudentCourseId(randomItem(result));
       result = await getEducatorCourseIds();
       setEducatorCourseId(randomItem(result));
-      // Used by tests
-      // id = '1204324';
     };
     getData();
   }, []);
