@@ -1,92 +1,53 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-multi-spaces */
-let datocmsConfig;
-let datocmsOptions;
 /*
-  If we can read/write or just read the following end points:
+  dotenv package is included by Gatsby
+  2 files need to be present in the project's root directory,
+  .env.development and .env.production and they must contain the following:
+
+  # DatoCMS
+  GATSBY_DATOCMS_FULL_ACCESS_TOKEN=yourFullAccessToken
+  GATSBY_DATOCMS_READ_ONLY_ACCESS_TOKEN=yourReadOnlyAccessToken
+
+  # Google Analytics
+  GATSBY_GA_TRACKING_ID=yourGaTrackingId
+  GATSBY_GA_OPTIMIZE_ID=yourGaOptimizeId
+  GATSBY_GA_EXPERIMENT_ID=yourGaExperimentId
+  GATSBY_GA_VARIATION_ID=yourGaVariationId
+*/
+require('dotenv').config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
+
+/*
+  DatoCMS
+  We can read/write or just read the following end points:
   1. Content Delivery API -> GraphQL Endpoint: https://graphql.datocms.com
   2. Content Delivery API with draft content -> GraphQL Endpoint: https://graphql.datocms.com/preview
   3. Content Management API -> REST Endpoint: https://site-api.datocms.com/* (not used)
 */
 const hasFullAccess = false;
-const isPreview = false;
-const hasLiveReload = false;
-
-let gaConfig;
-let gaOptions;
-
-try {
-  /*
-    Load the DatoCMS config from ./.datocms.json
-    It must have the following structure:
-    {
-      "fullAccessToken": full-access-token,
-      "readOnlyAccessToken": read-only-access-token
-    }
-  */
-  // eslint-disable-next-line global-require
-  datocmsConfig = require('./.datocms');
-  datocmsOptions = {
-    apiToken: hasFullAccess ? datocmsConfig.fullAccessToken : datocmsConfig.readOnlyAccessToken,
-    previewMode: isPreview,
-    disableLiveReload: !hasLiveReload,
-  };
-} catch (_) {
-  // eslint-disable-next-line no-console
-  console.log('Could not find ./.datocms.js configuration file');
-}
-
-try {
-  /*
-    Load the Google Analytics and Optimize config from ./.google-analytics.json
-    It must have the following structure:
-    {
-      // Google Analytics
-      "trackingId": tracking-id
-      // Google Optimize
-      "optimizeId": optimize-id,
-      "experimentId": experiment-id,
-      "variationId": variation-id
-    }
-  */
-  // eslint-disable-next-line global-require
-  gaConfig = require('./.google-analytics');
-  gaOptions = {
-    trackingId: gaConfig.trackingId,
-    // Defines where to place the tracking script - 'true' in the head and 'false' in the body
-    head: false,
-    anonymize: true,
-    // Respect “Do Not Track”
-    respectDNT: true,
-  };
-} catch (_) {
-  // eslint-disable-next-line no-console
-  console.log('Could not find ./.google-analytics.js configuration file');
-}
-
-// Overwrite the DatoCMS and Google Analytics and Optimize config with environment variables if
-// they exist
-datocmsOptions = {
-  apiToken: process.env.API_TOKEN || datocmsOptions.apiToken,
-  previewMode: process.env.PREVIEW_MODE || datocmsOptions.previewMode,
-  disableLiveReload: process.env.DISABLE_LIVE_RELOAD || datocmsOptions.disableLiveReload,
-};
-gaOptions = {
-  trackingId: process.env.TRACKING_ID || gaOptions.trackingId,
-  head: process.env.HEAD || gaOptions.head,
-  anonymize: process.env.ANONYMIZE || gaOptions.anonymize,
-  respectDNT: process.env.RESPECT_DNT || gaOptions.respectDNT,
-  optimizeId: process.env.OPTIMIZE_ID || gaOptions.optimizeId,
-  experimentId: process.env.EXPERIMENT_ID || gaOptions.experimentId,
-  variationId: process.env.VARIATION_ID || gaOptions.variationId,
+// eslint-disable-next-line no-unused-vars
+const datocmsOptions = {
+  apiToken: hasFullAccess
+    ? process.env.GATSBY_DATOCMS_FULL_ACCESS_TOKEN
+    : process.env.GATSBY_DATOCMS_READ_ONLY_ACCESS_TOKEN,
+  previewMode: false,
+  disableLiveReload: true,
 };
 
-const { apiToken } = datocmsOptions;
-
-if (!apiToken) {
-  throw new Error(
-    'DatoCms apiToken needs to be provided',
-  );
-}
+// Google Analytics
+const gaOptions = {
+  trackingId: process.env.GATSBY_GA_TRACKING_ID,
+  // Defines where to place the tracking script - 'true' in the head and 'false' in the body
+  head: false,
+  anonymize: true,
+  // Respect “Do Not Track”
+  respectDNT: true,
+  optimizeId: process.env.GATSBY_GA_OPTIMIZE_ID,
+  experimentId: process.env.GATSBY_GA_EXPERIMENT_ID,
+  variationId: process.env.GATSBY_GA_VARIATION_ID,
+};
 
 module.exports = {
   siteMetadata: {

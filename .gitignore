@@ -73,3 +73,7 @@ yarn-error.log
 
 # Google Analytics tracking id
 .google-analytics.json
+
+# Development and production environment variables stored in 
+# .env.development and .env.production
+.env.*
