@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { navigate } from 'gatsby';
 import Button from '@material/react-button';
+import { isAuthenticated, logout } from '../scripts/auth';
 import './header.scss';
 
 const Header = () => {
@@ -18,15 +19,34 @@ const Header = () => {
   const navigateToIndex = useCallback(
     () => navigate(''),
   );
+  const navigateToAccount = useCallback(
+    () => {
+      if (isAuthenticated()) {
+        logout();
+      } else {
+        navigate('account');
+      }
+    },
+  );
+  const logButtonText = isAuthenticated() ? 'Log out' : 'Log in';
 
   return (
     <header className="header-container">
-      <Button className="header-button" onClick={navigateToIndex}>
-        OpenCourseWare
-        <br />
-        <small>Next Gen Experiments</small>
-      </Button>
-      <Button className="header-button" onClick={changeTheme}>Theme</Button>
+      <div className="header-left-items">
+        <Button className="header-button header-button-left" onClick={navigateToIndex}>
+          OpenCourseWare
+          <br />
+          <small>Next Gen Experiments</small>
+        </Button>
+      </div>
+      <div className="header-right-items">
+        <Button className="header-button header-button-right" onClick={navigateToAccount}>
+          {logButtonText}
+        </Button>
+        <Button className="header-button header-button-right" onClick={changeTheme}>
+          Theme
+        </Button>
+      </div>
     </header>
   );
 };

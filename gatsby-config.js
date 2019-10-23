@@ -111,7 +111,7 @@ module.exports = {
     },
     {
       resolve: 'gatsby-plugin-create-client-paths',
-      options: { prefixes: ['/courseware/*'] },
+      options: { prefixes: ['/courseware/*', '/account/*'] },
     },
     {
       resolve: 'gatsby-plugin-google-analytics',

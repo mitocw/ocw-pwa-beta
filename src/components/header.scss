@@ -12,6 +12,16 @@
   padding: 0.5rem;
 }
 
+.header-left-items {
+  display: flex;
+  align-items: flex-start;
+}
+
+.header-right-items {
+  display: flex;
+  align-items: flex-end;
+}
+
 .header-button {
   // Increase specificity weight with double selector by using Sass interpolation
   // https://stackoverflow.com/questions/47781073/increase-specificity-weight-with-double-selector-via-sass
