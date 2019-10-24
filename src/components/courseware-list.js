@@ -1,4 +1,5 @@
 /* eslint-disable no-shadow */
+/* eslint-disable no-undef */
 import React, { useState, useEffect } from 'react';
 import IconButton from '@material/react-icon-button';
 import { MdCropPortrait, MdApps, MdDehaze } from 'react-icons/md';
@@ -6,6 +7,7 @@ import Store from '../store/store';
 import { getCoursewares } from '../datocms/query-datocms';
 import CoursewareLoading from './courseware-loading';
 import CoursewareCard from './courseware-card';
+import { isAuthenticated } from '../scripts/auth';
 import shortid from '../scripts/shortid';
 import styles from './courseware-list.module.scss';
 
@@ -21,6 +23,9 @@ const CoursewareList = () => {
 
   const [coursewares, setCoursewares] = useState([]);
   const [loading, setLoading] = useState(true);
+  const favoriteCourses = isAuthenticated()
+    ? JSON.parse(window.localStorage.getItem('favoriteCourses') || '[]')
+    : [];
 
   useEffect(() => {
     const getData = async () => {
@@ -43,7 +48,12 @@ const CoursewareList = () => {
 
   const coursewareNumber = coursewares.length.toString();
   const coursewareCards = coursewares.map(courseware => (
-    <CoursewareCard courseware={courseware} cardType={cardType} key={shortid()} />
+    <CoursewareCard
+      courseware={courseware}
+      cardType={cardType}
+      favoriteCourses={favoriteCourses}
+      key={shortid()}
+    />
   ));
   let coursewareListClasses;
   switch (cardType) {

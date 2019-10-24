@@ -19,6 +19,9 @@ const Header = () => {
   const navigateToIndex = useCallback(
     () => navigate(''),
   );
+  const navigateToFavoriteCourses = useCallback(
+    () => navigate('account'),
+  );
   const navigateToAccount = useCallback(
     () => {
       if (isAuthenticated()) {
@@ -29,6 +32,13 @@ const Header = () => {
     },
   );
   const logButtonText = isAuthenticated() ? 'Log out' : 'Log in';
+  const favoriteCoursesButton = isAuthenticated()
+    ? (
+      <Button className="header-button header-button-right" onClick={navigateToFavoriteCourses}>
+        Favorite courses
+      </Button>
+    )
+    : null;
 
   return (
     <header className="header-container">
@@ -40,6 +50,7 @@ const Header = () => {
         </Button>
       </div>
       <div className="header-right-items">
+        {favoriteCoursesButton}
         <Button className="header-button header-button-right" onClick={navigateToAccount}>
           {logButtonText}
         </Button>

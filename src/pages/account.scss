@@ -1,0 +1,27 @@
+@import '@material/tab/mixins';
+@import '../styles/functions/color';
+@import '../styles/colors';
+
+.account-tab {
+  // Increase specificity weight with double selector by using Sass interpolation
+  // https://stackoverflow.com/questions/47781073/increase-specificity-weight-with-double-selector-via-sass
+  &#{&} {
+    color: color(tab-foreground);
+    font-weight: bold;
+    @include mdc-tab-states-color($emperor);
+    .mdc-tab-indicator > .mdc-tab-indicator__content--underline {
+      background-color: color(tab-foreground);
+    }
+  }
+}
+
+.account-tab-content {
+  padding-top: 1rem;
+}
+
+.account-user {
+  padding: 0 1rem 1rem 1rem;
+  color: color(card-title-foreground);
+  font-weight: 500;
+}
+

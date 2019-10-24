@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable no-undef */
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
+import { isAuthenticated } from '../scripts/auth';
 import CoursewareCard from './courseware-card';
 import OcwUserCardLoading from './ocw-user-card-loading';
 
@@ -31,6 +33,9 @@ export const COURSEWARE_QUERY = gql`
 `;
 
 const OcwUserCard = ({ id }) => {
+  const favoriteCourses = isAuthenticated()
+    ? JSON.parse(window.localStorage.getItem('favoriteCourses') || '[]')
+    : [];
   const result = useQuery(COURSEWARE_QUERY, {
     variables: {
       coursewareUid: id,
@@ -39,7 +44,13 @@ const OcwUserCard = ({ id }) => {
   });
 
   if (result.data && !result.loading) {
-    return <CoursewareCard courseware={result.data.allCoursewares[0]} cardType="condensed" />;
+    return (
+      <CoursewareCard
+        courseware={result.data.allCoursewares[0]}
+        cardType="condensed"
+        favoriteCourses={favoriteCourses}
+      />
+    );
   }
 
   return <OcwUserCardLoading />;

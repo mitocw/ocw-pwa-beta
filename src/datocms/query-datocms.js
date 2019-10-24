@@ -146,6 +146,49 @@ export const getCoursewares = async (
   return result;
 };
 
+export const getCoursewaresByIds = async (courseIds) => {
+  let recordsToSkip = 0;
+  let makeNewQuery = true;
+  let result = [];
+
+  while (makeNewQuery) {
+    try {
+      const { data: { allCoursewares }, errors } = await client.query({
+        query: gql`{
+          allCoursewares(
+            first: ${recordsPerQuery},
+            skip: ${recordsToSkip},
+            filter: {
+              id: {in: [${courseIds}]},
+            }
+          ) {
+            id
+            title
+            courseLevel
+            trackingTitle
+            imageSrc
+            description
+            departmentNumber
+            masterCourseNumber
+          }
+        }`,
+      });
+
+      logErrors(errors);
+
+      result = result.concat(allCoursewares);
+      recordsToSkip += recordsPerQuery;
+      if (allCoursewares.length < recordsPerQuery) {
+        makeNewQuery = false;
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  return result;
+};
+
 export const getLifelongLearnerCourseIds = async () => {
   let recordsToSkip = 0;
   let makeNewQuery = true;

@@ -36,8 +36,6 @@ export const logout = () => {
   tokens.accessToken = false;
   tokens.idToken = false;
   user = {};
-  // eslint-disable-next-line no-undef
-  window.localStorage.setItem('isLoggedIn', false);
 
   auth.logout({
     returnTo: window.location.origin,
@@ -58,7 +56,6 @@ const setSession = (cb = () => {}) => (err, authResult) => {
 
     auth.client.userInfo(tokens.accessToken, (_err, userProfile) => {
       user = userProfile;
-      window.localStorage.setItem('isLoggedIn', true);
       navigate('/account');
       cb();
     });
@@ -66,10 +63,6 @@ const setSession = (cb = () => {}) => (err, authResult) => {
 };
 
 export const checkSession = (callback) => {
-  const isLoggedIn = window.localStorage.getItem('isLoggedIn');
-  if (isLoggedIn === 'false' || isLoggedIn === null) {
-    callback();
-  }
   const protectedRoutes = ['/account', '/callback'];
   const isProtectedRoute = protectedRoutes
     .map(route => window.location.pathname.includes(route))

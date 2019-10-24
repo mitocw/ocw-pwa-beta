@@ -22,6 +22,8 @@
     "@material/react-card": "^0.12.1",
     "@material/react-icon-button": "^0.14.1",
     "@material/react-select": "^0.12.1",
+    "@material/react-tab": "^0.15.0",
+    "@material/react-tab-bar": "^0.15.0",
     "@material/react-text-field": "^0.15.0",
     "apollo-cache-inmemory": "^1.6.2",
     "apollo-client": "^2.6.3",

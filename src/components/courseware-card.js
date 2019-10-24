@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable no-undef */
 import React, { useState, useCallback } from 'react';
 import Card, {
   CardMedia,
@@ -13,11 +14,13 @@ import { MdFavorite, MdFavoriteBorder, MdShare } from 'react-icons/md';
 import TextTruncate from 'react-text-truncate';
 import { navigate } from 'gatsby';
 import striptags from 'striptags';
+import { isAuthenticated } from '../scripts/auth';
 import './courseware-card.scss';
 
 // TODO: Replace departmentNumber by department once this field is present in DatoCMS
-const CoursewareCard = ({ courseware, cardType }) => {
-  const [favorite, setFavorite] = useState(0);
+const CoursewareCard = ({ courseware, cardType, favoriteCourses }) => {
+  const [favorite, setFavorite] = useState(favoriteCourses.includes(courseware.id));
+
   const favoriteIcon = favorite ? (
     <MdFavorite />
   ) : (
@@ -29,7 +32,19 @@ const CoursewareCard = ({ courseware, cardType }) => {
     },
   );
   const favoriteHandleClick = useCallback(
-    () => setFavorite(!favorite),
+    () => {
+      if (isAuthenticated()) {
+        let newFavoriteCourses = JSON.parse(window.localStorage.getItem('favoriteCourses') || '[]');
+        if (favorite) {
+          const index = newFavoriteCourses.indexOf(courseware.id);
+          newFavoriteCourses.splice(index, 1);
+        } else {
+          newFavoriteCourses = [...newFavoriteCourses, courseware.id];
+        }
+        setFavorite(!favorite);
+        window.localStorage.setItem('favoriteCourses', JSON.stringify(newFavoriteCourses));
+      }
+    },
   );
   const {
     title,
