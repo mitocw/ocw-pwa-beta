@@ -51,10 +51,10 @@ const AccountPage = () => {
         handleActiveIndexUpdate={handleActiveIndexUpdate}
       >
         <Tab className="account-tab">
-          User
+          {user.name}
         </Tab>
         <Tab className="account-tab">
-          Favorite courses
+          My courses
         </Tab>
       </TabBar>
       <div className="account-tab-content">

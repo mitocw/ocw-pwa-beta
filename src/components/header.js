@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import { navigate } from 'gatsby';
 import Button from '@material/react-button';
+import { IconContext } from 'react-icons';
+import { MdPermIdentity } from 'react-icons/md';
 import { isAuthenticated, logout } from '../scripts/auth';
 import './header.scss';
 
@@ -34,16 +36,19 @@ const Header = () => {
   const logButtonText = isAuthenticated() ? 'Log out' : 'Log in';
   const favoriteCoursesButton = isAuthenticated()
     ? (
-      <Button className="header-button header-button-right" onClick={navigateToFavoriteCourses}>
-        Favorite courses
-      </Button>
+      <IconContext.Provider value={{ size: '1.5rem' }}>
+        <Button className="header-button header-favorite-button" onClick={navigateToFavoriteCourses}>
+          <MdPermIdentity />
+          <span>My courses</span>
+        </Button>
+      </IconContext.Provider>
     )
     : null;
 
   return (
     <header className="header-container">
       <div className="header-left-items">
-        <Button className="header-button header-button-left" onClick={navigateToIndex}>
+        <Button className="header-button" onClick={navigateToIndex}>
           OpenCourseWare
           <br />
           <small>Next Gen Experiments</small>
@@ -51,10 +56,10 @@ const Header = () => {
       </div>
       <div className="header-right-items">
         {favoriteCoursesButton}
-        <Button className="header-button header-button-right" onClick={navigateToAccount}>
+        <Button className="header-button" onClick={navigateToAccount}>
           {logButtonText}
         </Button>
-        <Button className="header-button header-button-right" onClick={changeTheme}>
+        <Button className="header-button" onClick={changeTheme}>
           Theme
         </Button>
       </div>

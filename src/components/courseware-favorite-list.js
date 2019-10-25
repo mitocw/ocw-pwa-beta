@@ -27,9 +27,9 @@ const CoursewareFavoriteList = () => {
   }
 
   const coursewareCards = coursewares.map(courseware => (
-    <CoursewareCard courseware={courseware} cardType="text" favoriteCourses={favoriteCourses} key={shortid()} />
+    <CoursewareCard courseware={courseware} cardType="condensed" favoriteCourses={favoriteCourses} key={shortid()} />
   ));
-  const coursewareListClasses = `${styles.coursewareList} ${styles.coursewareListText}`;
+  const coursewareListClasses = `${styles.coursewareList} ${styles.coursewareListCondensed}`;
 
   return (
     <div className={coursewareListClasses}>
