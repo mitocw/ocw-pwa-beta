@@ -15,7 +15,7 @@ const User = ({ user }) => (
 );
 
 const AccountPage = () => {
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0);
   const { siteMetadata } = useSiteMetadata();
   const handleActiveIndexUpdate = useCallback(
     index => setActiveIndex(index),
@@ -28,15 +28,15 @@ const AccountPage = () => {
 
   const user = getProfile();
 
-  const userContent = activeIndex === 0
+  const favoriteCoursesContent = activeIndex === 0
     ? (
-      <User user={user} />
+      <CoursewareFavoriteList />
     )
     : null;
 
-  const favoriteCoursesContent = activeIndex === 1
+  const userContent = activeIndex === 1
     ? (
-      <CoursewareFavoriteList />
+      <User user={user} />
     )
     : null;
 
@@ -51,15 +51,15 @@ const AccountPage = () => {
         handleActiveIndexUpdate={handleActiveIndexUpdate}
       >
         <Tab className="account-tab">
-          {user.name}
+          My courses
         </Tab>
         <Tab className="account-tab">
-          My courses
+          {user.name}
         </Tab>
       </TabBar>
       <div className="account-tab-content">
-        {userContent}
         {favoriteCoursesContent}
+        {userContent}
       </div>
     </Layout>
   );
