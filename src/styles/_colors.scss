@@ -56,6 +56,11 @@ $default-palette: (
   ),
   'tab': (
     'foreground':                   $emperor
+  ),
+  'tooltip': (
+    'background': $emperor,
+    'foreground': $white,
+    'arrow-border': $emperor
   )
 );
 
