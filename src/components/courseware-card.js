@@ -1,7 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable no-undef */
 import React, { useState, useCallback } from 'react';
 import Card, {
   CardMedia,
@@ -70,9 +69,9 @@ const CoursewareCard = ({ courseware, cardType, favoriteCourses }) => {
           />
           <span className="courseware-card-subtitle">{`${departmentNumber}.${masterCourseNumber}, ${courseLevel} Level`}</span>
           <CardMedia
-              title={trackingTitle}
-              wide
-              imageUrl={imageSrc}
+            title={trackingTitle}
+            wide
+            imageUrl={imageSrc}
           />
           <TextTruncate
             containerClassName="courseware-card-subsubtitle"

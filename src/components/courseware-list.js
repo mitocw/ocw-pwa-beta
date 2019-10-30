@@ -1,5 +1,3 @@
-/* eslint-disable no-shadow */
-/* eslint-disable no-undef */
 import React, { useState, useEffect } from 'react';
 import IconButton from '@material/react-icon-button';
 import { MdCropPortrait, MdApps, MdDehaze } from 'react-icons/md';

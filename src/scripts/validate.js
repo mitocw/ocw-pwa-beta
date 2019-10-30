@@ -1,4 +1,3 @@
-/* eslint-disable no-unneeded-ternary */
 /*
   TODO: we may want to use something more elaborate to check the results of our GraphQL queries
   entirely. Something like the Joi validator, which is a large library that adds to our bundle size:

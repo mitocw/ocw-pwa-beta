@@ -2,9 +2,13 @@
   "parser": "babel-eslint",
   "extends": ["airbnb", "plugin:jest/recommended"],
   "rules": {
+    "arrow-parens": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-    "react/jsx-indent-props": ["enabled", 2],
+    "react/jsx-indent-props": ["error", 2],
     "react/prop-types": 0
+  },
+  "globals": {
+    "window": "readonly"
   },
   "plugins": ["jest"]
 }

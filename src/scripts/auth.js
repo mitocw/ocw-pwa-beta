@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import { navigate } from 'gatsby';
 import auth0 from 'auth0-js';
 

@@ -1,5 +1,4 @@
 /* eslint-disable import/no-extraneous-dependencies */
-/* eslint-disable no-multi-spaces */
 /*
   dotenv package is included by Gatsby
   2 files need to be present in the project's root directory,

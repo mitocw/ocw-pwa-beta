@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import React, { useState, useEffect } from 'react';
 import { getCoursewaresByIds } from '../datocms/query-datocms';
 import CoursewareLoading from './courseware-loading';
