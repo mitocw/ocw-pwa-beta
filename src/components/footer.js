@@ -50,7 +50,7 @@ const Footer = () => (
       License and other
       {' '}
       <a href="https://ocw.mit.edu/terms/">terms of use</a>
-      {'.'}
+      .
     </p>
   </footer>
 );

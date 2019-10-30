@@ -11,7 +11,7 @@ const CoursewareTopicFilter = () => {
     courseTopic,
     changeCourseTopic,
   } = Store.useContainer();
-  const { data: { allCourseCollections }, loading } = useTopicQuery();
+  const { data, loading } = useTopicQuery();
   if (loading) {
     return (
       <div className="filter">
@@ -19,6 +19,7 @@ const CoursewareTopicFilter = () => {
       </div>
     );
   }
+  const { allCourseCollections } = data;
   let topics = allCourseCollections.map(item => item.ocwFeature);
   topics = topics.filter((item, index) => topics.indexOf(item) === index);
   const topicOptions = topics.map(topic => (

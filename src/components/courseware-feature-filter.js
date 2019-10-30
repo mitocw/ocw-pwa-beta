@@ -11,7 +11,7 @@ const CoursewareFeatureFilter = () => {
     courseFeature,
     changeCourseFeature,
   } = Store.useContainer();
-  const { data: { allCourseFeatures }, loading } = useFeatureQuery();
+  const { data, loading } = useFeatureQuery();
   if (loading) {
     return (
       <div className="filter">
@@ -19,6 +19,7 @@ const CoursewareFeatureFilter = () => {
       </div>
     );
   }
+  const { allCourseFeatures } = data;
   const allFeatures = allCourseFeatures.map(item => item.ocwFeature);
   const features = allFeatures.filter((item, index) => allFeatures.indexOf(item) === index);
   const featureOptions = features.map(feature => (

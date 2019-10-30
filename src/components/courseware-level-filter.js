@@ -11,7 +11,7 @@ const CoursewareLevelFilter = () => {
     courseLevel,
     changeCourseLevel,
   } = Store.useContainer();
-  const { data: { allCoursewares }, loading } = useLevelQuery();
+  const { data, loading } = useLevelQuery();
   if (loading) {
     return (
       <div className="filter">
@@ -19,6 +19,7 @@ const CoursewareLevelFilter = () => {
       </div>
     );
   }
+  const { allCoursewares } = data;
   let levels = allCoursewares.map(item => item.courseLevel);
   levels = levels.filter((item, index) => levels.indexOf(item) === index);
   const levelOptions = levels.map(level => (

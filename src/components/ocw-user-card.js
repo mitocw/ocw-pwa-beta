@@ -36,17 +36,17 @@ const OcwUserCard = ({ id }) => {
   const favoriteCourses = isAuthenticated()
     ? JSON.parse(window.localStorage.getItem('favoriteCourses') || '[]')
     : [];
-  const result = useQuery(COURSEWARE_QUERY, {
+  const { data, loading } = useQuery(COURSEWARE_QUERY, {
     variables: {
       coursewareUid: id,
     },
     skip: id === '',
   });
 
-  if (result.data && !result.loading) {
+  if (data && !loading) {
     return (
       <CoursewareCard
-        courseware={result.data.allCoursewares[0]}
+        courseware={data.allCoursewares[0]}
         cardType="condensed"
         favoriteCourses={favoriteCourses}
       />
