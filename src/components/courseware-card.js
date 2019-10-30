@@ -11,6 +11,7 @@ import Card, {
 import Button from '@material/react-button';
 import { MdFavorite, MdFavoriteBorder, MdShare } from 'react-icons/md';
 import TextTruncate from 'react-text-truncate';
+import Tooltip from 'react-tooltip-lite';
 import { navigate } from 'gatsby';
 import striptags from 'striptags';
 import { isAuthenticated } from '../scripts/auth';
@@ -20,11 +21,25 @@ import './courseware-card.scss';
 const CoursewareCard = ({ courseware, cardType, favoriteCourses }) => {
   const [favorite, setFavorite] = useState(favoriteCourses.includes(courseware.id));
 
-  const favoriteIcon = favorite ? (
-    <MdFavorite />
-  ) : (
-    <MdFavoriteBorder />
-  );
+  const filledFavoriteIcon = isAuthenticated()
+    ? (
+      <MdFavorite />
+    )
+    : (
+      <Tooltip content="Please log in to save course">
+        <MdFavorite />
+      </Tooltip>
+    );
+  const hollowFavoriteIcon = isAuthenticated()
+    ? (
+      <MdFavoriteBorder />
+    )
+    : (
+      <Tooltip content="Please log in to save course">
+        <MdFavoriteBorder />
+      </Tooltip>
+    );
+  const favoriteIcon = favorite ? filledFavoriteIcon : hollowFavoriteIcon;
   const navigateToCourseware = useCallback(
     () => {
       navigate(`courseware/?courseware_uid=${courseware.id}`);

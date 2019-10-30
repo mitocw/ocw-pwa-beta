@@ -3,7 +3,6 @@ import { navigate } from 'gatsby';
 import Button from '@material/react-button';
 import { IconContext } from 'react-icons';
 import { MdPermIdentity } from 'react-icons/md';
-import Tooltip from 'react-tooltip-lite';
 import { isAuthenticated, logout } from '../scripts/auth';
 import './header.scss';
 
@@ -34,19 +33,11 @@ const Header = () => {
       }
     },
   );
-  const logButton = isAuthenticated()
-    ? (
-      <Button className="header-button" onClick={navigateToAccount}>
-        Log out
-      </Button>
-    )
-    : (
-      <Tooltip content="Please log in to saved courses">
-        <Button className="header-button" onClick={navigateToAccount}>
-          Log in
-        </Button>
-      </Tooltip>
-    );
+  const logButton = (
+    <Button className="header-button" onClick={navigateToAccount}>
+      { isAuthenticated() ? 'Log out' : 'Log in' }
+    </Button>
+  );
   const favoriteCoursesButton = isAuthenticated()
     ? (
       <IconContext.Provider value={{ size: '1.5rem' }}>
