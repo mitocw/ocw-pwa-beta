@@ -1,7 +1,6 @@
 import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
-import { isAuthenticated } from '../scripts/auth';
 import CoursewareCard from './courseware-card';
 import OcwUserCardLoading from './ocw-user-card-loading';
 
@@ -29,10 +28,7 @@ export const COURSEWARE_QUERY = gql`
   }
 `;
 
-const OcwUserCard = ({ id }) => {
-  const favoriteCourses = isAuthenticated()
-    ? JSON.parse(window.localStorage.getItem('favoriteCourses') || '[]')
-    : [];
+const OcwUserCard = ({ id, favoriteCoursewares }) => {
   const { data, loading } = useQuery(COURSEWARE_QUERY, {
     variables: {
       coursewareUid: id,
@@ -45,7 +41,7 @@ const OcwUserCard = ({ id }) => {
       <CoursewareCard
         courseware={data.allCoursewares[0]}
         cardType="condensed"
-        favoriteCourses={favoriteCourses}
+        favoriteCoursewares={favoriteCoursewares}
       />
     );
   }

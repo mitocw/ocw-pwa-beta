@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import Card, {
   CardMedia,
   CardActions,
@@ -13,13 +13,16 @@ import { MdFavorite, MdFavoriteBorder, MdShare } from 'react-icons/md';
 import TextTruncate from 'react-text-truncate';
 import Tooltip from 'react-tooltip-lite';
 import { navigate } from 'gatsby';
+import { query as q } from 'faunadb';
 import striptags from 'striptags';
+import { FaunaContext } from '../faunadb/client';
 import { isAuthenticated } from '../scripts/auth';
 import './courseware-card.scss';
 
 // TODO: Replace departmentNumber by department once this field is present in DatoCMS
-const CoursewareCard = ({ courseware, cardType, favoriteCourses }) => {
-  const [favorite, setFavorite] = useState(favoriteCourses.includes(courseware.id));
+const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
+  const [favorite, setFavorite] = useState(favoriteCoursewares.includes(courseware.id));
+  const client = useContext(FaunaContext);
 
   const filledFavoriteIcon = isAuthenticated()
     ? (
@@ -47,17 +50,35 @@ const CoursewareCard = ({ courseware, cardType, favoriteCourses }) => {
   );
   const favoriteHandleClick = useCallback(
     () => {
-      if (isAuthenticated()) {
-        let newFavoriteCourses = JSON.parse(window.localStorage.getItem('favoriteCourses') || '[]');
-        if (favorite) {
-          const index = newFavoriteCourses.indexOf(courseware.id);
-          newFavoriteCourses.splice(index, 1);
-        } else {
-          newFavoriteCourses = [...newFavoriteCourses, courseware.id];
+      const updateFaunaDB = async () => {
+        if (isAuthenticated()) {
+          // Get user name from local storage
+          const user = window.localStorage.getItem('userName') || '';
+          // Get favorite courses from FaunaDB
+          const readResult = await client.query(
+            q.Get(
+              q.Match(q.Index('users_by_name'), user),
+            ),
+          );
+          let newFavoriteCoursewares = [...readResult.data.favoriteCoursewares];
+          if (favorite) {
+            const index = newFavoriteCoursewares.indexOf(courseware.id);
+            newFavoriteCoursewares.splice(index, 1);
+          } else {
+            newFavoriteCoursewares = [...newFavoriteCoursewares, courseware.id];
+          }
+          setFavorite(!favorite);
+          // Update favorite courses on FaunaDB
+          await client.query(
+            q.Update(readResult.ref, {
+              data: {
+                favoriteCoursewares: newFavoriteCoursewares,
+              },
+            }),
+          );
         }
-        setFavorite(!favorite);
-        window.localStorage.setItem('favoriteCourses', JSON.stringify(newFavoriteCourses));
-      }
+      };
+      updateFaunaDB();
     },
   );
   const {

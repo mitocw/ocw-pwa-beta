@@ -21,7 +21,7 @@ const Header = () => {
   const navigateToIndex = useCallback(
     () => navigate(''),
   );
-  const navigateToFavoriteCourses = useCallback(
+  const navigateToFavoriteCoursewares = useCallback(
     () => navigate('account'),
   );
   const navigateToAccount = useCallback(
@@ -38,10 +38,10 @@ const Header = () => {
       { isAuthenticated() ? 'Log out' : 'Log in' }
     </Button>
   );
-  const favoriteCoursesButton = isAuthenticated()
+  const favoriteCoursewaresButton = isAuthenticated()
     ? (
       <IconContext.Provider value={{ size: '1.5rem' }}>
-        <Button className="header-button header-favorite-button" onClick={navigateToFavoriteCourses}>
+        <Button className="header-button header-favorite-button" onClick={navigateToFavoriteCoursewares}>
           <MdPermIdentity />
           <span>My courses</span>
         </Button>
@@ -59,7 +59,7 @@ const Header = () => {
         </Button>
       </div>
       <div className="header-right-items">
-        {favoriteCoursesButton}
+        {favoriteCoursewaresButton}
         {logButton}
         <Button className="header-button" onClick={changeTheme}>
           Theme

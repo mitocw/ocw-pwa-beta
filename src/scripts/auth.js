@@ -36,6 +36,7 @@ export const logout = () => {
   tokens.accessToken = false;
   tokens.idToken = false;
   user = {};
+  window.localStorage.removeItem('userName');
 
   auth.logout({
     returnTo: window.location.origin,
@@ -56,6 +57,7 @@ const setSession = (cb = () => {}) => (err, authResult) => {
 
     auth.client.userInfo(tokens.accessToken, (_err, userProfile) => {
       user = userProfile;
+      window.localStorage.setItem('userName', user.name);
       navigate('/account');
       cb();
     });

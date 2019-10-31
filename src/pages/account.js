@@ -28,7 +28,7 @@ const AccountPage = () => {
 
   const user = getProfile();
 
-  const favoriteCoursesContent = activeIndex === 0
+  const favoriteCoursewaresContent = activeIndex === 0
     ? (
       <CoursewareFavoriteList />
     )
@@ -58,7 +58,7 @@ const AccountPage = () => {
         </Tab>
       </TabBar>
       <div className="account-tab-content">
-        {favoriteCoursesContent}
+        {favoriteCoursewaresContent}
         {userContent}
       </div>
     </Layout>

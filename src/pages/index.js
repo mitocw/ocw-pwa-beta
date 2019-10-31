@@ -11,6 +11,7 @@ import {
 } from '../datocms/query-datocms';
 import OcwUsers from '../components/ocw-users';
 import OcwUserCard from '../components/ocw-user-card';
+import { isAuthenticated } from '../scripts/auth';
 import '../styles/global.scss';
 import styles from './index.module.scss';
 import userStyles from '../components/ocw-users.module.scss';
@@ -19,11 +20,12 @@ const IndexPage = () => {
   const [lifelongLearnerCourseId, setlifelongLearnerCourseId] = useState('');
   const [studentCourseId, setStudentCourseId] = useState('');
   const [educatorCourseId, setEducatorCourseId] = useState('');
+  const [favoriteCoursewares, setFavoriteCoursewares] = useState([]);
+  const client = useContext(FaunaContext);
 
   const randomItem = arr => arr[Math.floor(Math.random() * arr.length)];
 
   const { siteMetadata } = useSiteMetadata();
-  const client = useContext(FaunaContext);
 
   useEffect(() => {
     const getData = async () => {
@@ -34,58 +36,46 @@ const IndexPage = () => {
       setStudentCourseId(randomItem(result));
       result = await getEducatorCourseIds();
       setEducatorCourseId(randomItem(result));
-    };
-    const getFaunaData = async (user) => {
-      // Check if user already exists in FaunaDb
-      const result0 = await client.query(
-        q.Map(
-          q.Paginate(
-            q.Match(q.Index('all_users')),
+      setFavoriteCoursewares([]);
+      if (isAuthenticated()) {
+        // Get user name from local storage
+        const user = window.localStorage.getItem('userName') || '';
+        // Check if user already exists in FaunaDb
+        const initResult = await client.query(
+          q.Map(
+            q.Paginate(
+              q.Match(q.Index('all_users')),
+            ),
+            q.Lambda('X', q.Get(q.Var('X'))),
           ),
-          q.Lambda('X', q.Get(q.Var('X'))),
-        ),
-      );
-      const users = result0.data;
-      // User does not exist in FaunaDB, create it
-      if (users && !users.find(el => el.data.name === user)) {
-        // Create
-        const result1 = await client.query(
-          q.Create(
-            q.Collection('users'), {
-              data: {
-                name: 'John',
-                preferredCourses: ['1', '2', '3'],
+        );
+        const users = initResult.data;
+        // User does not exist in FaunaDB, create one
+        // and populate favoriteCoursewares with empty array
+        if (users && !users.find(el => el.data.name === user)) {
+          // Create
+          await client.query(
+            q.Create(
+              q.Collection('users'), {
+                data: {
+                  name: user,
+                  favoriteCoursewares: [],
+                },
               },
-            },
-          ),
-        );
-        console.log('Create', result1.ref, result1.data);
-        // Read
-        const result2 = await client.query(
-          q.Get(
-            q.Match(q.Index('users_by_name'), 'John'),
-          ),
-        );
-        console.log('Read', result2.ref, result2.data);
-        // Update
-        const result3 = await client.query(
-          q.Update(result2.ref, {
-            data: {
-              preferredCourses: ['1', '2', '3', '4'],
-            },
-          }),
-        );
-        console.log('Update', result3.ref, result3.data);
-        // Delete
-        const result4 = await client.query(
-          q.Delete(result2.ref),
-        );
-        console.log('Delete', result4.ref, result4.data);
+            ),
+          );
+        // User exists, fetch favoriteCoursewares
+        } else {
+          const readResult = await client.query(
+            q.Get(
+              q.Match(q.Index('users_by_name'), user),
+            ),
+          );
+          setFavoriteCoursewares(readResult.data.favoriteCoursewares);
+        }
       }
-      return null;
     };
     getData();
-    getFaunaData('Some name');
   }, []);
 
   return (
@@ -105,15 +95,24 @@ const IndexPage = () => {
         <div className={`${userStyles.cardList} ${userStyles.cardListBottom}`}>
           <div>
             <p className={userStyles.cardDescription}>Lifelong learners view...</p>
-            <OcwUserCard id={lifelongLearnerCourseId} />
+            <OcwUserCard
+              id={lifelongLearnerCourseId}
+              favoriteCoursewares={favoriteCoursewares}
+            />
           </div>
           <div>
             <p className={userStyles.cardDescription}>Educators view...</p>
-            <OcwUserCard id={educatorCourseId} />
+            <OcwUserCard
+              id={educatorCourseId}
+              favoriteCoursewares={favoriteCoursewares}
+            />
           </div>
           <div>
             <p className={userStyles.cardDescription}>Students view...</p>
-            <OcwUserCard id={studentCourseId} />
+            <OcwUserCard
+              id={studentCourseId}
+              favoriteCoursewares={favoriteCoursewares}
+            />
           </div>
         </div>
       </div>
