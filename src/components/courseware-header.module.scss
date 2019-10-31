@@ -1,3 +1,17 @@
-.title {
+@import '../styles/colors';
+
+.subheader {
+  display: flex;
+  justify-content: space-between;
   margin-top: 1rem;
+}
+
+.title {
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+.visits {
+  display: inline-block;
+  color: $emperor;
 }

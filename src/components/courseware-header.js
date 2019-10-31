@@ -6,9 +6,16 @@ const CoursewareHeader = ({
   className,
   url,
   title,
+  visits,
 }) => (
   <div className={className}>
-    <h3 className={styles.title}>{title}</h3>
+    <div className={styles.subheader}>
+      <h3 className={styles.title}>{title}</h3>
+      <h5 className={styles.visits}>
+        Visits:&nbsp;
+        {visits}
+      </h5>
+    </div>
     <CoursewareBreadcrumb url={url} />
   </div>
 );
