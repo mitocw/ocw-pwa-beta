@@ -15,6 +15,7 @@ import Tooltip from 'react-tooltip-lite';
 import { navigate } from 'gatsby';
 import { query as q } from 'faunadb';
 import striptags from 'striptags';
+import copy from 'copy-to-clipboard';
 import { FaunaContext } from '../faunadb/client';
 import { isAuthenticated } from '../scripts/auth';
 import './courseware-card.scss';
@@ -43,6 +44,11 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
       </Tooltip>
     );
   const favoriteIcon = favorite ? filledFavoriteIcon : hollowFavoriteIcon;
+  const shareIcon = (
+    <Tooltip content="Copy url to clipboard">
+      <MdShare />
+    </Tooltip>
+  );
   const navigateToCourseware = useCallback(
     () => {
       navigate(`courseware/?courseware_uid=${courseware.id}`);
@@ -79,6 +85,12 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
         }
       };
       updateFaunaDB();
+    },
+  );
+  const shareHandleClick = useCallback(
+    () => {
+      // Copy courseware url to clipboard
+      copy(`${window.location.host}/courseware/?courseware_uid=${courseware.id}`);
     },
   );
   const {
@@ -140,7 +152,12 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
               >
                 {favoriteIcon}
               </span>
-              <span className="courseware-card-icon"><MdShare /></span>
+              <span
+                className="courseware-card-icon"
+                onClick={shareHandleClick}
+              >
+                {shareIcon}
+              </span>
             </CardActionIcons>
           </CardActions>
         </Card>
@@ -181,7 +198,12 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
               >
                 {favoriteIcon}
               </span>
-              <span className="courseware-card-icon"><MdShare /></span>
+              <span
+                className="courseware-card-icon"
+                onClick={shareHandleClick}
+              >
+                {shareIcon}
+              </span>
             </CardActionIcons>
           </CardActions>
         </Card>
