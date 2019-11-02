@@ -29,7 +29,7 @@ const Header = () => {
       if (isAuthenticated()) {
         logout();
       } else {
-        navigate('account');
+        navigate('redirect');
       }
     },
   );

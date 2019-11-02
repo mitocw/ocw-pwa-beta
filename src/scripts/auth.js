@@ -58,7 +58,7 @@ const setSession = (cb = () => {}) => (err, authResult) => {
     auth.client.userInfo(tokens.accessToken, (_err, userProfile) => {
       user = userProfile;
       window.localStorage.setItem('userName', user.name);
-      navigate('/account');
+      navigate('');
       cb();
     });
   }
