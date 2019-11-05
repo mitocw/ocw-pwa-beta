@@ -1,5 +1,12 @@
-import React, { useState, useEffect, useContext } from 'react';
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  useCallback,
+} from 'react';
 import { query as q } from 'faunadb';
+import { navigate } from 'gatsby';
 import { FaunaContext } from '../faunadb/client';
 import useSiteMetadata from '../hooks/use-site-metadata';
 import SEO from '../components/seo';
@@ -12,16 +19,20 @@ import {
 import OcwUsers from '../components/ocw-users';
 import OcwUserCard from '../components/ocw-user-card';
 import { isAuthenticated } from '../scripts/auth';
+import shortid from '../scripts/shortid';
 import '../styles/global.scss';
 import styles from './index.module.scss';
 import userStyles from '../components/ocw-users.module.scss';
+import '../components/courseware-card.scss';
 
 const IndexPage = () => {
   const [lifelongLearnerCourseId, setlifelongLearnerCourseId] = useState('');
   const [studentCourseId, setStudentCourseId] = useState('');
   const [educatorCourseId, setEducatorCourseId] = useState('');
+  const [syncedCoursewares, setSyncedCoursewares] = useState([]);
   const [favoriteCoursewares, setFavoriteCoursewares] = useState([]);
   const client = useContext(FaunaContext);
+  const online = window.navigator.onLine;
 
   const randomItem = arr => arr[Math.floor(Math.random() * arr.length)];
 
@@ -75,21 +86,35 @@ const IndexPage = () => {
         }
       }
     };
-    getData();
+    if (online) {
+      getData();
+    } else {
+      const newSyncedCoursewares = [];
+      const keys = Object.keys(window.localStorage);
+      keys.forEach(key => {
+        const value = JSON.parse(window.localStorage.getItem(key));
+        newSyncedCoursewares.push({
+          uid: key,
+          data: value,
+        });
+      });
+      setSyncedCoursewares(newSyncedCoursewares);
+    }
   }, []);
 
-  return (
-    <Layout>
-      <SEO
-        siteTitle={siteMetadata.title}
-        siteDescription={siteMetadata.description}
-      />
-      <div className={styles.index}>
-        <h3>About OCW</h3>
-        <p className={userStyles.ocwDescription}>
-          Thousands of people utilize OCW to support their lifelong learning, career advancement,
-          and instruction.
-        </p>
+  const navigateToCourseware = useCallback(
+    (event) => {
+      const uid = event.currentTarget.getAttribute('data-courseware-uid');
+      navigate(`courseware/?courseware_uid=${uid}`);
+      event.preventDefault();
+    },
+  );
+
+  let content;
+
+  if (online) {
+    content = (
+      <>
         <h3>What type of OCW user are you?</h3>
         <OcwUsers />
         <div className={`${userStyles.cardList} ${userStyles.cardListBottom}`}>
@@ -115,6 +140,51 @@ const IndexPage = () => {
             />
           </div>
         </div>
+      </>
+    );
+  } else {
+    const syncedCoursewaresEl = syncedCoursewares.map(syncedCourseware => {
+      const coursewareUid = syncedCourseware.uid;
+      const coursewareContent = syncedCourseware.data.allCoursewares[0];
+      return (
+        <div key={shortid()}>
+          <p>
+            <a
+              href="#"
+              data-courseware-uid={coursewareUid}
+              className="courseware-card-title"
+              onClick={navigateToCourseware}
+            >
+              {coursewareContent.title}
+            </a>
+          </p>
+          <p className="courseware-card-subtitle">
+            {`${coursewareContent.departmentNumber}.${coursewareContent.masterCourseNumber}, ${coursewareContent.courseLevel} Level`}
+          </p>
+        </div>
+      );
+    });
+    content = (
+      <>
+        <h3>Synchronized coursewares</h3>
+        {syncedCoursewaresEl}
+      </>
+    );
+  }
+
+  return (
+    <Layout>
+      <SEO
+        siteTitle={siteMetadata.title}
+        siteDescription={siteMetadata.description}
+      />
+      <div className={styles.index}>
+        <h3>About OCW</h3>
+        <p className={userStyles.ocwDescription}>
+          Thousands of people utilize OCW to support their lifelong learning, career advancement,
+          and instruction.
+        </p>
+        {content}
       </div>
     </Layout>
   );

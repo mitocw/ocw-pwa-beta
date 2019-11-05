@@ -1,7 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState, useCallback, useContext } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useContext,
+  useEffect,
+} from 'react';
 import Card, {
   CardMedia,
   CardActions,
@@ -9,7 +14,9 @@ import Card, {
   CardActionIcons,
 } from '@material/react-card';
 import Button from '@material/react-button';
-import { MdFavorite, MdFavoriteBorder, MdShare } from 'react-icons/md';
+import {
+  MdFavorite, MdFavoriteBorder, MdCloudDownload, MdCloudDone, MdShare,
+} from 'react-icons/md';
 import TextTruncate from 'react-text-truncate';
 import Tooltip from 'react-tooltip-lite';
 import { navigate } from 'gatsby';
@@ -18,12 +25,27 @@ import striptags from 'striptags';
 import copy from 'copy-to-clipboard';
 import { FaunaContext } from '../faunadb/client';
 import { isAuthenticated } from '../scripts/auth';
+import useIndividualCoursewareQuery from '../hooks/use-individual-courseware-query';
 import './courseware-card.scss';
 
 // TODO: Replace departmentNumber by department once this field is present in DatoCMS
 const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
   const [favorite, setFavorite] = useState(favoriteCoursewares.includes(courseware.id));
+  const [synced, setSynced] = useState(false);
+  const [syncing, setSyncing] = useState(false);
   const client = useContext(FaunaContext);
+
+  const syncingUid = syncing ? courseware.id : null;
+  const { data, loading } = useIndividualCoursewareQuery(syncingUid);
+  if (syncing && !loading) {
+    if (synced) {
+      window.localStorage.removeItem(courseware.id);
+    } else {
+      window.localStorage.setItem(courseware.id, JSON.stringify(data));
+    }
+    setSyncing(false);
+    setSynced(!synced);
+  }
 
   const filledFavoriteIcon = isAuthenticated()
     ? (
@@ -44,11 +66,27 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
       </Tooltip>
     );
   const favoriteIcon = favorite ? filledFavoriteIcon : hollowFavoriteIcon;
+  const syncIcon = !synced
+    ? (
+      <Tooltip content="Sync for offline reading">
+        <MdCloudDownload />
+      </Tooltip>
+    )
+    : (
+      <Tooltip content="Unsync and remove local storage">
+        <MdCloudDone />
+      </Tooltip>
+    );
   const shareIcon = (
     <Tooltip content="Copy url to clipboard">
       <MdShare />
     </Tooltip>
   );
+
+  useEffect(() => {
+    setSynced(window.localStorage.getItem(courseware.id) !== null);
+  }, []);
+
   const navigateToCourseware = useCallback(
     () => {
       navigate(`courseware/?courseware_uid=${courseware.id}`);
@@ -87,12 +125,18 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
       updateFaunaDB();
     },
   );
+  const syncHandleClick = useCallback(
+    () => {
+      setSyncing(true);
+    },
+  );
   const shareHandleClick = useCallback(
     () => {
       // Copy courseware url to clipboard
       copy(`${window.location.host}/courseware/?courseware_uid=${courseware.id}`);
     },
   );
+
   const {
     title,
     courseLevel,
@@ -151,6 +195,12 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
                 onClick={favoriteHandleClick}
               >
                 {favoriteIcon}
+              </span>
+              <span
+                className="courseware-card-icon"
+                onClick={syncHandleClick}
+              >
+                {syncIcon}
               </span>
               <span
                 className="courseware-card-icon"

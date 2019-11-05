@@ -33,11 +33,14 @@ const Header = () => {
       }
     },
   );
-  const logButton = (
-    <Button className="header-button" onClick={navigateToAccount}>
-      { isAuthenticated() ? 'Log out' : 'Log in' }
-    </Button>
-  );
+  const online = window.navigator.onLine;
+  const logButton = online
+    ? (
+      <Button className="header-button" onClick={navigateToAccount}>
+        { isAuthenticated() ? 'Log out' : 'Log in' }
+      </Button>
+    )
+    : null;
   const favoriteCoursewaresButton = isAuthenticated()
     ? (
       <IconContext.Provider value={{ size: '1.5rem' }}>

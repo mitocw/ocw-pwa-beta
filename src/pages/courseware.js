@@ -20,6 +20,7 @@ const CoursewarePage = ({ location }) => {
   const { siteMetadata } = useSiteMetadata();
   const [visits, setVisits] = useState(0);
   const [visitsLoading, setVisitsLoading] = useState(true);
+  const online = window.navigator.onLine;
   // During build, location.search is an empty string
   const hasParams = (location.search !== '');
   const coursewareUid = hasParams ? (new URL(location.href)).searchParams.get('courseware_uid') : null;
@@ -75,17 +76,35 @@ const CoursewarePage = ({ location }) => {
       }
       setVisitsLoading(false);
     };
-    getData();
+    if (online) {
+      getData();
+    }
   }, [location]);
 
   if (coursewareUid) {
-    const { data, loading } = useIndividualCoursewareQuery(coursewareUid);
-    if (loading || visitsLoading) {
-      return (
-        <div className="spinner-container">
-          <FaCircleNotch className="spinner" />
-        </div>
-      );
+    let coursewareResult;
+    let data;
+    if (online) {
+      coursewareResult = useIndividualCoursewareQuery(coursewareUid);
+      if (coursewareResult.loading || visitsLoading) {
+        return (
+          <div className="spinner-container">
+            <FaCircleNotch className="spinner" />
+          </div>
+        );
+      }
+      data = coursewareResult.data;
+    } else {
+      coursewareResult = window.localStorage.getItem(coursewareUid);
+      if (coursewareResult) {
+        data = JSON.parse(coursewareResult);
+      } else {
+        return (
+          <p>
+            This course has not been synced
+          </p>
+        );
+      }
     }
     const { allCoursewares } = data;
     if (allCoursewares.length === 0) {
