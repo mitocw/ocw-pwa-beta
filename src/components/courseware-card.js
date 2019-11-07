@@ -23,6 +23,12 @@ import { navigate } from 'gatsby';
 import { query as q } from 'faunadb';
 import striptags from 'striptags';
 import copy from 'copy-to-clipboard';
+import {
+  Store,
+  get,
+  set,
+  del,
+} from 'idb-keyval';
 import { FaunaContext } from '../faunadb/client';
 import { isAuthenticated } from '../scripts/auth';
 import useIndividualCoursewareQuery from '../hooks/use-individual-courseware-query';
@@ -34,18 +40,32 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
   const [synced, setSynced] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const client = useContext(FaunaContext);
-
+  const coursewareStore = new Store('ocw-store', 'courseware');
   const syncingUid = syncing ? courseware.id : null;
   const { data, loading } = useIndividualCoursewareQuery(syncingUid);
-  if (syncing && !loading) {
-    if (synced) {
-      window.localStorage.removeItem(courseware.id);
-    } else {
-      window.localStorage.setItem(courseware.id, JSON.stringify(data));
+
+  useEffect(() => {
+    const hasSyncedCourseware = async () => {
+      const result = await get(courseware.id, coursewareStore);
+      setSynced(typeof result !== 'undefined');
+    };
+    hasSyncedCourseware();
+  }, []);
+
+  useEffect(() => {
+    const syncCourseware = async () => {
+      if (synced) {
+        await del(courseware.id, coursewareStore);
+      } else {
+        await set(courseware.id, JSON.stringify(data), coursewareStore);
+      }
+      setSyncing(false);
+      setSynced(!synced);
+    };
+    if (syncing && !loading) {
+      syncCourseware();
     }
-    setSyncing(false);
-    setSynced(!synced);
-  }
+  }, [syncing, loading]);
 
   const filledFavoriteIcon = isAuthenticated()
     ? (
@@ -82,10 +102,6 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
       <MdShare />
     </Tooltip>
   );
-
-  useEffect(() => {
-    setSynced(window.localStorage.getItem(courseware.id) !== null);
-  }, []);
 
   const navigateToCourseware = useCallback(
     () => {

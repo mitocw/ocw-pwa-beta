@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import { query as q } from 'faunadb';
 import { navigate } from 'gatsby';
+import { Store, get, keys } from 'idb-keyval';
 import { FaunaContext } from '../faunadb/client';
 import useSiteMetadata from '../hooks/use-site-metadata';
 import SEO from '../components/seo';
@@ -32,11 +33,32 @@ const IndexPage = () => {
   const [syncedCoursewares, setSyncedCoursewares] = useState([]);
   const [favoriteCoursewares, setFavoriteCoursewares] = useState([]);
   const client = useContext(FaunaContext);
+  const coursewareStore = new Store('ocw-store', 'courseware');
   const online = window.navigator.onLine;
 
   const randomItem = arr => arr[Math.floor(Math.random() * arr.length)];
 
   const { siteMetadata } = useSiteMetadata();
+
+  useEffect(() => {
+    const getSyncedData = async () => {
+      const indices = await keys(coursewareStore);
+      const newSyncedCoursewares = [];
+      // eslint-disable-next-line no-restricted-syntax
+      for (const index of indices) {
+        // eslint-disable-next-line no-await-in-loop
+        const value = await get(index, coursewareStore);
+        newSyncedCoursewares.push({
+          uid: index,
+          data: JSON.parse(value),
+        });
+      }
+      setSyncedCoursewares(newSyncedCoursewares);
+    };
+    if (!online) {
+      getSyncedData();
+    }
+  }, []);
 
   useEffect(() => {
     const getData = async () => {
@@ -88,17 +110,6 @@ const IndexPage = () => {
     };
     if (online) {
       getData();
-    } else {
-      const newSyncedCoursewares = [];
-      const keys = Object.keys(window.localStorage);
-      keys.forEach(key => {
-        const value = JSON.parse(window.localStorage.getItem(key));
-        newSyncedCoursewares.push({
-          uid: key,
-          data: value,
-        });
-      });
-      setSyncedCoursewares(newSyncedCoursewares);
     }
   }, []);
 

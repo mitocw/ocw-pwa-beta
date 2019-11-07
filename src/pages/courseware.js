@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { FaCircleNotch } from 'react-icons/fa';
 import { query as q } from 'faunadb';
+import { Store, get } from 'idb-keyval';
 import { FaunaContext } from '../faunadb/client';
 import useSiteMetadata from '../hooks/use-site-metadata';
 import useIndividualCoursewareQuery from '../hooks/use-individual-courseware-query';
@@ -20,6 +21,9 @@ const CoursewarePage = ({ location }) => {
   const { siteMetadata } = useSiteMetadata();
   const [visits, setVisits] = useState(0);
   const [visitsLoading, setVisitsLoading] = useState(true);
+  const [syncedLoading, setSyncedLoading] = useState(true);
+  const [syncedCourseware, setSyncedCourseware] = useState(null);
+  const coursewareStore = new Store('ocw-store', 'courseware');
   const online = window.navigator.onLine;
   // During build, location.search is an empty string
   const hasParams = (location.search !== '');
@@ -81,6 +85,15 @@ const CoursewarePage = ({ location }) => {
     }
   }, [location]);
 
+  useEffect(() => {
+    const getSyncedData = async () => {
+      const data = await get(coursewareUid, coursewareStore);
+      setSyncedCourseware(data);
+      setSyncedLoading(false);
+    };
+    getSyncedData();
+  }, []);
+
   if (coursewareUid) {
     let coursewareResult;
     let data;
@@ -94,10 +107,9 @@ const CoursewarePage = ({ location }) => {
         );
       }
       data = coursewareResult.data;
-    } else {
-      coursewareResult = window.localStorage.getItem(coursewareUid);
-      if (coursewareResult) {
-        data = JSON.parse(coursewareResult);
+    } else if (!syncedLoading) {
+      if (syncedCourseware) {
+        data = JSON.parse(syncedCourseware);
       } else {
         return (
           <p>
@@ -105,6 +117,12 @@ const CoursewarePage = ({ location }) => {
           </p>
         );
       }
+    } else {
+      return (
+        <div className="spinner-container">
+          <FaCircleNotch className="spinner" />
+        </div>
+      );
     }
     const { allCoursewares } = data;
     if (allCoursewares.length === 0) {
