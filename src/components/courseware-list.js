@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import IconButton from '@material/react-icon-button';
 import { MdCropPortrait, MdApps, MdDehaze } from 'react-icons/md';
+import { query as q } from 'faunadb';
+import { FaunaContext } from '../faunadb/client';
 import Store from '../store/store';
 import { getCoursewares } from '../datocms/query-datocms';
 import CoursewareLoading from './courseware-loading';
@@ -20,27 +22,64 @@ const CoursewareList = () => {
   } = Store.useContainer();
 
   const [coursewares, setCoursewares] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const favoriteCourses = isAuthenticated()
-    ? JSON.parse(window.localStorage.getItem('favoriteCourses') || '[]')
-    : [];
+  const [favoriteCoursewares, setFavoriteCoursewares] = useState([]);
+  const [dataLoading, setDataLoading] = useState(true);
+  const client = useContext(FaunaContext);
 
   useEffect(() => {
     const getData = async () => {
-      setLoading(true);
+      setDataLoading(true);
       setCoursewares([]);
+      setFavoriteCoursewares([]);
       // Remove non-alphanumeric chars
       const alphanumericCourseSearch = courseSearch.replace(/[^0-9a-z]/gi, '');
       const result = await getCoursewares(
         alphanumericCourseSearch, courseTopic, courseFeature, courseLevel,
       );
       setCoursewares(result);
-      setLoading(false);
+      if (isAuthenticated()) {
+        // Get user name from local storage
+        const user = window.localStorage.getItem('userName') || '';
+        // Check if user already exists in FaunaDb
+        const initResult = await client.query(
+          q.Map(
+            q.Paginate(
+              q.Match(q.Index('all_users')),
+            ),
+            q.Lambda('X', q.Get(q.Var('X'))),
+          ),
+        );
+        const users = initResult.data;
+        // User does not exist in FaunaDB, create one
+        // and populate favoriteCoursewares with empty array
+        if (users && !users.find(el => el.data.name === user)) {
+          // Create
+          await client.query(
+            q.Create(
+              q.Collection('users'), {
+                data: {
+                  name: user,
+                  favoriteCoursewares: [],
+                },
+              },
+            ),
+          );
+        // User exists, fetch favoriteCoursewares
+        } else {
+          const readResult = await client.query(
+            q.Get(
+              q.Match(q.Index('users_by_name'), user),
+            ),
+          );
+          setFavoriteCoursewares(readResult.data.favoriteCoursewares);
+        }
+      }
+      setDataLoading(false);
     };
     getData();
   }, [courseSearch, courseTopic, courseFeature, courseLevel]);
 
-  if (loading) {
+  if (dataLoading) {
     return <CoursewareLoading />;
   }
 
@@ -49,7 +88,7 @@ const CoursewareList = () => {
     <CoursewareCard
       courseware={courseware}
       cardType={cardType}
-      favoriteCourses={favoriteCourses}
+      favoriteCoursewares={favoriteCoursewares}
       key={shortid()}
     />
   ));

@@ -1,7 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useState, useCallback } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useContext,
+  useEffect,
+} from 'react';
 import Card, {
   CardMedia,
   CardActions,
@@ -9,17 +14,58 @@ import Card, {
   CardActionIcons,
 } from '@material/react-card';
 import Button from '@material/react-button';
-import { MdFavorite, MdFavoriteBorder, MdShare } from 'react-icons/md';
+import {
+  MdFavorite, MdFavoriteBorder, MdCloudDownload, MdCloudDone, MdShare,
+} from 'react-icons/md';
 import TextTruncate from 'react-text-truncate';
 import Tooltip from 'react-tooltip-lite';
 import { navigate } from 'gatsby';
+import { query as q } from 'faunadb';
 import striptags from 'striptags';
+import copy from 'copy-to-clipboard';
+import {
+  Store,
+  get,
+  set,
+  del,
+} from 'idb-keyval';
+import { FaunaContext } from '../faunadb/client';
 import { isAuthenticated } from '../scripts/auth';
+import useIndividualCoursewareQuery from '../hooks/use-individual-courseware-query';
 import './courseware-card.scss';
 
 // TODO: Replace departmentNumber by department once this field is present in DatoCMS
-const CoursewareCard = ({ courseware, cardType, favoriteCourses }) => {
-  const [favorite, setFavorite] = useState(favoriteCourses.includes(courseware.id));
+const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
+  const [favorite, setFavorite] = useState(favoriteCoursewares.includes(courseware.id));
+  const [synced, setSynced] = useState(false);
+  const [syncing, setSyncing] = useState(false);
+  const client = useContext(FaunaContext);
+  const coursewareStore = new Store('ocw-store', 'courseware');
+  const syncingUid = syncing ? courseware.id : null;
+  const { data, loading } = useIndividualCoursewareQuery(syncingUid);
+
+  useEffect(() => {
+    const hasSyncedCourseware = async () => {
+      const result = await get(courseware.id, coursewareStore);
+      setSynced(typeof result !== 'undefined');
+    };
+    hasSyncedCourseware();
+  }, []);
+
+  useEffect(() => {
+    const syncCourseware = async () => {
+      if (synced) {
+        await del(courseware.id, coursewareStore);
+      } else {
+        await set(courseware.id, JSON.stringify(data), coursewareStore);
+      }
+      setSyncing(false);
+      setSynced(!synced);
+    };
+    if (syncing && !loading) {
+      syncCourseware();
+    }
+  }, [syncing, loading]);
 
   const filledFavoriteIcon = isAuthenticated()
     ? (
@@ -40,6 +86,23 @@ const CoursewareCard = ({ courseware, cardType, favoriteCourses }) => {
       </Tooltip>
     );
   const favoriteIcon = favorite ? filledFavoriteIcon : hollowFavoriteIcon;
+  const syncIcon = !synced
+    ? (
+      <Tooltip content="Sync for offline use">
+        <MdCloudDownload />
+      </Tooltip>
+    )
+    : (
+      <Tooltip content="Unsync from local storage">
+        <MdCloudDone />
+      </Tooltip>
+    );
+  const shareIcon = (
+    <Tooltip content="Copy url to clipboard">
+      <MdShare />
+    </Tooltip>
+  );
+
   const navigateToCourseware = useCallback(
     () => {
       navigate(`courseware/?courseware_uid=${courseware.id}`);
@@ -47,19 +110,49 @@ const CoursewareCard = ({ courseware, cardType, favoriteCourses }) => {
   );
   const favoriteHandleClick = useCallback(
     () => {
-      if (isAuthenticated()) {
-        let newFavoriteCourses = JSON.parse(window.localStorage.getItem('favoriteCourses') || '[]');
-        if (favorite) {
-          const index = newFavoriteCourses.indexOf(courseware.id);
-          newFavoriteCourses.splice(index, 1);
-        } else {
-          newFavoriteCourses = [...newFavoriteCourses, courseware.id];
+      const updateFaunaDB = async () => {
+        if (isAuthenticated()) {
+          // Get user name from local storage
+          const user = window.localStorage.getItem('userName') || '';
+          // Get favorite courses from FaunaDB
+          const readResult = await client.query(
+            q.Get(
+              q.Match(q.Index('users_by_name'), user),
+            ),
+          );
+          let newFavoriteCoursewares = [...readResult.data.favoriteCoursewares];
+          if (favorite) {
+            const index = newFavoriteCoursewares.indexOf(courseware.id);
+            newFavoriteCoursewares.splice(index, 1);
+          } else {
+            newFavoriteCoursewares = [...newFavoriteCoursewares, courseware.id];
+          }
+          setFavorite(!favorite);
+          // Update favorite courses on FaunaDB
+          await client.query(
+            q.Update(readResult.ref, {
+              data: {
+                favoriteCoursewares: newFavoriteCoursewares,
+              },
+            }),
+          );
         }
-        setFavorite(!favorite);
-        window.localStorage.setItem('favoriteCourses', JSON.stringify(newFavoriteCourses));
-      }
+      };
+      updateFaunaDB();
     },
   );
+  const syncHandleClick = useCallback(
+    () => {
+      setSyncing(true);
+    },
+  );
+  const shareHandleClick = useCallback(
+    () => {
+      // Copy courseware url to clipboard
+      copy(`${window.location.host}/courseware/?courseware_uid=${courseware.id}`);
+    },
+  );
+
   const {
     title,
     courseLevel,
@@ -119,7 +212,18 @@ const CoursewareCard = ({ courseware, cardType, favoriteCourses }) => {
               >
                 {favoriteIcon}
               </span>
-              <span className="courseware-card-icon"><MdShare /></span>
+              <span
+                className="courseware-card-icon"
+                onClick={syncHandleClick}
+              >
+                {syncIcon}
+              </span>
+              <span
+                className="courseware-card-icon"
+                onClick={shareHandleClick}
+              >
+                {shareIcon}
+              </span>
             </CardActionIcons>
           </CardActions>
         </Card>
@@ -160,7 +264,12 @@ const CoursewareCard = ({ courseware, cardType, favoriteCourses }) => {
               >
                 {favoriteIcon}
               </span>
-              <span className="courseware-card-icon"><MdShare /></span>
+              <span
+                className="courseware-card-icon"
+                onClick={shareHandleClick}
+              >
+                {shareIcon}
+              </span>
             </CardActionIcons>
           </CardActions>
         </Card>

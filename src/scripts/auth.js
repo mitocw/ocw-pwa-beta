@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { navigate } from 'gatsby';
 import auth0 from 'auth0-js';
 
@@ -35,6 +36,7 @@ export const logout = () => {
   tokens.accessToken = false;
   tokens.idToken = false;
   user = {};
+  window.localStorage.removeItem('userName');
 
   auth.logout({
     returnTo: window.location.origin,
@@ -55,7 +57,8 @@ const setSession = (cb = () => {}) => (err, authResult) => {
 
     auth.client.userInfo(tokens.accessToken, (_err, userProfile) => {
       user = userProfile;
-      navigate('/account');
+      window.localStorage.setItem('userName', user.name);
+      navigate('');
       cb();
     });
   }
@@ -78,3 +81,11 @@ export const handleAuthentication = () => {
 };
 
 export const getProfile = () => user;
+
+export const SessionCheck = ({ children }) => {
+  const [loading, setLoading] = useState(true);
+  useEffect(
+    () => checkSession(() => setLoading(false)),
+  );
+  return loading === false && <>{children}</>;
+};

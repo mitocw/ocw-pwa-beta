@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import Tab from '@material/react-tab';
 import TabBar from '@material/react-tab-bar';
 import useSiteMetadata from '../hooks/use-site-metadata';
-import { login, isAuthenticated, getProfile } from '../scripts/auth';
+import { getProfile } from '../scripts/auth';
 import SEO from '../components/seo';
 import Layout from '../components/layout';
 import CoursewareFavoriteList from '../components/courseware-favorite-list';
@@ -21,14 +21,9 @@ const AccountPage = () => {
     index => setActiveIndex(index),
   );
 
-  if (!isAuthenticated()) {
-    login();
-    return <p>Redirecting to login...</p>;
-  }
-
   const user = getProfile();
 
-  const favoriteCoursesContent = activeIndex === 0
+  const favoriteCoursewaresContent = activeIndex === 0
     ? (
       <CoursewareFavoriteList />
     )
@@ -58,7 +53,7 @@ const AccountPage = () => {
         </Tab>
       </TabBar>
       <div className="account-tab-content">
-        {favoriteCoursesContent}
+        {favoriteCoursewaresContent}
         {userContent}
       </div>
     </Layout>
