@@ -88,12 +88,12 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
   const favoriteIcon = favorite ? filledFavoriteIcon : hollowFavoriteIcon;
   const syncIcon = !synced
     ? (
-      <Tooltip content="Sync for offline reading">
+      <Tooltip content="Sync for offline use">
         <MdCloudDownload />
       </Tooltip>
     )
     : (
-      <Tooltip content="Unsync and remove local storage">
+      <Tooltip content="Unsync from local storage">
         <MdCloudDone />
       </Tooltip>
     );
