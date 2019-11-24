@@ -8,6 +8,7 @@ h4 {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
 }
 
 .icon {
@@ -19,7 +20,6 @@ h4 {
 }
 
 .collapsible {
-  cursor: pointer;
   border: solid 1px color(collapsible-border);
   border-radius: 5px;
   padding: 0.5rem;

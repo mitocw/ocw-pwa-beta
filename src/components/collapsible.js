@@ -22,8 +22,8 @@ const Collapsible = ({ className, title, children }) => {
   );
 
   return (
-    <div className={classes} onClick={titleHandleClick}>
-      <div className={styles.title}>
+    <div className={classes}>
+      <div className={styles.title} onClick={titleHandleClick}>
         <h4>{title}</h4>
         <span className={styles.icon}>{icon}</span>
       </div>
