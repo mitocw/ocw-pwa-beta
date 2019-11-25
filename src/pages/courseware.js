@@ -142,6 +142,7 @@ const CoursewarePage = ({ location }) => {
       description,
       url,
       coursePages,
+      courseVideos,
     } = allCoursewares[0];
     result = (
       <Layout>
@@ -177,6 +178,7 @@ const CoursewarePage = ({ location }) => {
           <CoursewarePages
             className={styles.pages}
             coursePages={coursePages}
+            courseVideos={courseVideos}
           />
         </div>
       </Layout>

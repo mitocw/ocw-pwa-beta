@@ -39,6 +39,15 @@ const GET_COURSEWARE = gql`
         shortUrl
         pageType
         text
+        videos
+      }
+      courseVideos {
+        uid
+        title
+        youtubeStream
+        youtubeJpeg
+        itunesMp4
+        internetArchiveMp4
       }
     }
   }
