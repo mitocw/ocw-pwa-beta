@@ -6,6 +6,9 @@ import styles from './courseware-pages.module.scss';
 
 const CoursewarePages = ({ className, coursePages, courseVideos }) => {
   const coursePagesEl = coursePages.map(coursePage => {
+    if (coursePage.pageType === 'CourseHomeSection') {
+      return null;
+    }
     if (!coursePage.videos) {
       return (
         <Collapsible className={styles.coursePage} title={coursePage.title} key={shortid()}>
