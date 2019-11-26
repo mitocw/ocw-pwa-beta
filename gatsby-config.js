@@ -83,7 +83,12 @@ module.exports = {
         icon: 'src/images/MIT-logo.svg',    // MIT logos: http://web.mit.edu/graphicidentity/download-logos.html
       },
     },
-    'gatsby-plugin-offline',
+    {
+      resolve: 'gatsby-plugin-offline',
+      options: {
+        precachePages: ['/courseware/'],
+      },
+    },
     /*
       Install gatsby-source-datocms and uncomment here to use DatoCMS with Gatsby.
       We only use Apollo Client GraphQL queries for the time being.
