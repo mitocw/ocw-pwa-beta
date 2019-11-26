@@ -6,9 +6,27 @@
   margin-top: 1rem;
 }
 
+.title-container {
+  display: inline-block;
+  margin-right: 1rem;
+}
+
 .title {
   display: inline-block;
   margin-right: 1rem;
+}
+
+.icon {
+  display: inline-block;
+  color: $emperor;
+  &:hover {
+    cursor: pointer;
+  }
+  svg {
+    vertical-align: bottom;
+    width: 1.5em;
+    height: 1.5em;
+  }
 }
 
 .visits {

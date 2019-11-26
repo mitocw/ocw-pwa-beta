@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { FaCircleNotch } from 'react-icons/fa';
 import { query as q } from 'faunadb';
-import { Store, get } from 'idb-keyval';
+import {
+  Store,
+  get,
+  set,
+  del,
+} from 'idb-keyval';
 import { FaunaContext } from '../faunadb/client';
 import useSiteMetadata from '../hooks/use-site-metadata';
 import useIndividualCoursewareQuery from '../hooks/use-individual-courseware-query';
@@ -88,7 +93,7 @@ const CoursewarePage = ({ location }) => {
   useEffect(() => {
     const getSyncedData = async () => {
       const data = await get(coursewareUid, coursewareStore);
-      setSyncedCourseware(data);
+      setSyncedCourseware(data || null);
       setSyncedLoading(false);
     };
     getSyncedData();
@@ -128,6 +133,16 @@ const CoursewarePage = ({ location }) => {
     if (allCoursewares.length === 0) {
       return (<div className="spinner-container">Not a valid course identificator</div>);
     }
+    const syncCourseware = async (sync) => {
+      if (sync) {
+        const dataStr = JSON.stringify(data);
+        await set(coursewareUid, dataStr, coursewareStore);
+        setSyncedCourseware(dataStr);
+      } else {
+        await del(coursewareUid, coursewareStore);
+        setSyncedCourseware(null);
+      }
+    };
     // Get the fields of interest from valid courseware
     const {
       title,
@@ -156,6 +171,8 @@ const CoursewarePage = ({ location }) => {
             url={url}
             title={title}
             visits={visits}
+            synced={syncedCourseware !== null}
+            syncCourseware={syncCourseware}
           />
           <CoursewareImage
             imageSrc={imageSrc}
