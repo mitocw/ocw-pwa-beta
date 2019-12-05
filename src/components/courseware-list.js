@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import IconButton from '@material/react-icon-button';
+import { IconButton } from '@rmwc/icon-button';
 import { MdCropPortrait, MdApps, MdDehaze } from 'react-icons/md';
 import { query as q } from 'faunadb';
 import { FaunaContext } from '../faunadb/client';

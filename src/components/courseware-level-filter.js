@@ -1,5 +1,5 @@
 import React from 'react';
-import Select, { Option } from '@material/react-select';
+import { Select } from '@rmwc/select';
 import { FaCircleNotch } from 'react-icons/fa';
 import Store from '../store/store';
 import useLevelQuery from '../hooks/use-level-query';
@@ -23,7 +23,7 @@ const CoursewareLevelFilter = () => {
   let levels = allCoursewares.map(item => item.courseLevel);
   levels = levels.filter((item, index) => levels.indexOf(item) === index);
   const levelOptions = levels.map(level => (
-    <Option value={level} key={shortid()}>{level}</Option>
+    <option value={level} key={shortid()}>{level}</option>
   ));
   return (
     <div className="filter">
@@ -35,7 +35,7 @@ const CoursewareLevelFilter = () => {
         onEnhancedChange={changeCourseLevel}
         className="filter"
       >
-        <Option value="All" key={shortid()}>All</Option>
+        <option value="All" key={shortid()}>All</option>
         {levelOptions}
       </Select>
     </div>

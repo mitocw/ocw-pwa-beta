@@ -1,5 +1,5 @@
 import React from 'react';
-import Select, { Option } from '@material/react-select';
+import { Select } from '@rmwc/select';
 import { FaCircleNotch } from 'react-icons/fa';
 import Store from '../store/store';
 import useFeatureQuery from '../hooks/use-feature-query';
@@ -23,7 +23,7 @@ const CoursewareFeatureFilter = () => {
   const allFeatures = allCourseFeatures.map(item => item.ocwFeature);
   const features = allFeatures.filter((item, index) => allFeatures.indexOf(item) === index);
   const featureOptions = features.map(feature => (
-    <Option value={feature} key={shortid()}>{feature}</Option>
+    <option value={feature} key={shortid()}>{feature}</option>
   ));
   return (
     <div className="filter">
@@ -35,7 +35,7 @@ const CoursewareFeatureFilter = () => {
         onEnhancedChange={changeCourseFeature}
         className="filter"
       >
-        <Option value="Any" key={shortid()}>Any</Option>
+        <option value="Any" key={shortid()}>Any</option>
         {featureOptions}
       </Select>
     </div>

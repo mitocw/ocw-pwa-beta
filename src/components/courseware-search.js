@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
-import Button from '@material/react-button';
-import TextField, { Input } from '@material/react-text-field';
+import { Button } from '@rmwc/button';
+import { TextField } from '@rmwc/textfield';
 import { IconContext } from 'react-icons';
 import { MdSearch } from 'react-icons/md';
 import Store from '../store/store';
@@ -38,13 +38,10 @@ const CoursewareSearch = () => {
         className="search-textfield"
         label="Title contains"
         outlined
-      >
-        <Input
-          value={search}
-          onChange={handleInputChange}
-          onKeyUp={handleInputKeyUp}
-        />
-      </TextField>
+        value={search}
+        onChange={handleInputChange}
+        onKeyUp={handleInputKeyUp}
+      />
       <Button
         className="search-button"
         icon={searchIcon}

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { navigate } from 'gatsby';
-import Button from '@material/react-button';
+import { Button } from '@rmwc/button';
 import { IconContext } from 'react-icons';
 import { MdPermIdentity } from 'react-icons/md';
 import { isAuthenticated, logout } from '../scripts/auth';

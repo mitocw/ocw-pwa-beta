@@ -7,13 +7,14 @@ import React, {
   useContext,
   useEffect,
 } from 'react';
-import Card, {
+import {
+  Card,
   CardMedia,
   CardActions,
   CardActionButtons,
   CardActionIcons,
-} from '@material/react-card';
-import Button from '@material/react-button';
+} from '@rmwc/card';
+import { Button } from '@rmwc/button';
 import {
   MdFavorite, MdFavoriteBorder, MdCloudDownload, MdCloudDone, MdShare,
 } from 'react-icons/md';

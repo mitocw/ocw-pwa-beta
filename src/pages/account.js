@@ -1,6 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import Tab from '@material/react-tab';
-import TabBar from '@material/react-tab-bar';
+import { Tab, TabBar } from '@rmwc/tabs';
 import useSiteMetadata from '../hooks/use-site-metadata';
 import { getProfile } from '../scripts/auth';
 import SEO from '../components/seo';

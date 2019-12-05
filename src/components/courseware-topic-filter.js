@@ -1,5 +1,5 @@
 import React from 'react';
-import Select, { Option } from '@material/react-select';
+import { Select } from '@rmwc/select';
 import { FaCircleNotch } from 'react-icons/fa';
 import Store from '../store/store';
 import useTopicQuery from '../hooks/use-topic-query';
@@ -23,7 +23,7 @@ const CoursewareTopicFilter = () => {
   let topics = allCourseCollections.map(item => item.ocwFeature);
   topics = topics.filter((item, index) => topics.indexOf(item) === index);
   const topicOptions = topics.map(topic => (
-    <Option value={topic} key={shortid()}>{topic}</Option>
+    <option value={topic} key={shortid()}>{topic}</option>
   ));
   return (
     <div className="filter">
@@ -35,7 +35,7 @@ const CoursewareTopicFilter = () => {
         onEnhancedChange={changeCourseTopic}
         className="filter"
       >
-        <Option value="All" key={shortid()}>All</Option>
+        <option value="All" key={shortid()}>All</option>
         {topicOptions}
       </Select>
     </div>
