@@ -4,7 +4,6 @@ import { FaCircleNotch } from 'react-icons/fa';
 import Store from '../store/store';
 import useLevelQuery from '../hooks/use-level-query';
 import './courseware-filters.scss';
-import shortid from '../scripts/shortid';
 
 const CoursewareLevelFilter = () => {
   const {
@@ -22,9 +21,11 @@ const CoursewareLevelFilter = () => {
   const { allCoursewares } = data;
   let levels = allCoursewares.map(item => item.courseLevel);
   levels = levels.filter((item, index) => levels.indexOf(item) === index);
-  const levelOptions = levels.map(level => (
-    <option value={level} key={shortid()}>{level}</option>
-  ));
+  const levelOptions = [
+    { label: 'All', value: 'All' },
+    ...levels.map(level => ({ label: level, value: level })),
+  ];
+
   return (
     <div className="filter">
       <Select
@@ -34,10 +35,8 @@ const CoursewareLevelFilter = () => {
         value={courseLevel}
         onEnhancedChange={changeCourseLevel}
         className="filter"
-      >
-        <option value="All" key={shortid()}>All</option>
-        {levelOptions}
-      </Select>
+        options={levelOptions}
+      />
     </div>
   );
 };

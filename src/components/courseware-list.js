@@ -113,21 +113,18 @@ const CoursewareList = () => {
           <IconButton
             data-card-type="regular"
             onClick={changeCardType}
-          >
-            <MdCropPortrait />
-          </IconButton>
+            icon={<MdCropPortrait />}
+          />
           <IconButton
             data-card-type="condensed"
             onClick={changeCardType}
-          >
-            <MdApps />
-          </IconButton>
+            icon={<MdApps />}
+          />
           <IconButton
             data-card-type="text"
             onClick={changeCardType}
-          >
-            <MdDehaze />
-          </IconButton>
+            icon={<MdDehaze />}
+          />
         </div>
       </div>
       <div className={coursewareListClasses}>

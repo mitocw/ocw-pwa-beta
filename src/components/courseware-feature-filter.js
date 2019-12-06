@@ -4,7 +4,6 @@ import { FaCircleNotch } from 'react-icons/fa';
 import Store from '../store/store';
 import useFeatureQuery from '../hooks/use-feature-query';
 import './courseware-filters.scss';
-import shortid from '../scripts/shortid';
 
 const CoursewareFeatureFilter = () => {
   const {
@@ -22,9 +21,11 @@ const CoursewareFeatureFilter = () => {
   const { allCourseFeatures } = data;
   const allFeatures = allCourseFeatures.map(item => item.ocwFeature);
   const features = allFeatures.filter((item, index) => allFeatures.indexOf(item) === index);
-  const featureOptions = features.map(feature => (
-    <option value={feature} key={shortid()}>{feature}</option>
-  ));
+  const featureOptions = [
+    { label: 'Any', value: 'Any' },
+    ...features.map(feature => ({ label: feature, value: feature })),
+  ];
+
   return (
     <div className="filter">
       <Select
@@ -34,10 +35,8 @@ const CoursewareFeatureFilter = () => {
         value={courseFeature}
         onEnhancedChange={changeCourseFeature}
         className="filter"
-      >
-        <option value="Any" key={shortid()}>Any</option>
-        {featureOptions}
-      </Select>
+        options={featureOptions}
+      />
     </div>
   );
 };

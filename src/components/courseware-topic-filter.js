@@ -4,7 +4,6 @@ import { FaCircleNotch } from 'react-icons/fa';
 import Store from '../store/store';
 import useTopicQuery from '../hooks/use-topic-query';
 import './courseware-filters.scss';
-import shortid from '../scripts/shortid';
 
 const CoursewareTopicFilter = () => {
   const {
@@ -22,9 +21,11 @@ const CoursewareTopicFilter = () => {
   const { allCourseCollections } = data;
   let topics = allCourseCollections.map(item => item.ocwFeature);
   topics = topics.filter((item, index) => topics.indexOf(item) === index);
-  const topicOptions = topics.map(topic => (
-    <option value={topic} key={shortid()}>{topic}</option>
-  ));
+  const topicOptions = [
+    { label: 'All', value: 'All' },
+    ...topics.map(topic => ({ label: topic, value: topic })),
+  ];
+
   return (
     <div className="filter">
       <Select
@@ -34,10 +35,8 @@ const CoursewareTopicFilter = () => {
         value={courseTopic}
         onEnhancedChange={changeCourseTopic}
         className="filter"
-      >
-        <option value="All" key={shortid()}>All</option>
-        {topicOptions}
-      </Select>
+        options={topicOptions}
+      />
     </div>
   );
 };

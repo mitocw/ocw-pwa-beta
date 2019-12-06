@@ -13,6 +13,7 @@ import {
   CardActions,
   CardActionButtons,
   CardActionIcons,
+  CardActionIcon,
 } from '@rmwc/card';
 import { Button } from '@rmwc/button';
 import {
@@ -179,8 +180,10 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
           <span className="courseware-card-subtitle">{`${departmentNumber}.${masterCourseNumber}, ${courseLevel} Level`}</span>
           <CardMedia
             title={trackingTitle}
-            wide
-            imageUrl={imageSrc}
+            sixteenByNine
+            style={{
+              backgroundImage: `url(${imageSrc})`,
+            }}
           />
           <TextTruncate
             containerClassName="courseware-card-subsubtitle"
@@ -207,24 +210,18 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
               </Button>
             </CardActionButtons>
             <CardActionIcons>
-              <span
-                className="courseware-card-icon"
+              <CardActionIcon
+                icon={favoriteIcon}
                 onClick={favoriteHandleClick}
-              >
-                {favoriteIcon}
-              </span>
-              <span
-                className="courseware-card-icon"
+              />
+              <CardActionIcon
+                icon={syncIcon}
                 onClick={syncHandleClick}
-              >
-                {syncIcon}
-              </span>
-              <span
-                className="courseware-card-icon"
+              />
+              <CardActionIcon
+                icon={shareIcon}
                 onClick={shareHandleClick}
-              >
-                {shareIcon}
-              </span>
+              />
             </CardActionIcons>
           </CardActions>
         </Card>
@@ -259,18 +256,14 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
               </Button>
             </CardActionButtons>
             <CardActionIcons>
-              <span
-                className="courseware-card-icon"
+              <CardActionIcon
+                icon={favoriteIcon}
                 onClick={favoriteHandleClick}
-              >
-                {favoriteIcon}
-              </span>
-              <span
-                className="courseware-card-icon"
+              />
+              <CardActionIcon
+                icon={shareIcon}
                 onClick={shareHandleClick}
-              >
-                {shareIcon}
-              </span>
+              />
             </CardActionIcons>
           </CardActions>
         </Card>
