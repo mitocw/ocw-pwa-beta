@@ -1,8 +1,8 @@
 $mdc-theme-primary: black; // Sets the color of the select animated arrow
-@import '@material/react-list/index';
-@import '@material/react-menu-surface/index';
-@import '@material/react-menu/index';
-@import '@material/react-select/index';
+@import '@material/list/mdc-list';
+@import '@material/menu/mdc-menu';
+@import '@material/menu-surface/mdc-menu-surface';
+@import '@material/select/mdc-select';
 @import '@material/select/mixins';
 @import '../styles/functions/color';
 @import '../styles/mixins/breakpoints';
