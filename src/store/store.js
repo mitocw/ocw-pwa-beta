@@ -7,6 +7,7 @@ const useStore = () => {
   const [courseFeature, setCourseFeature] = useState('Any');
   const [courseLevel, setCourseLevel] = useState('All');
   const [cardType, setCardType] = useState('regular');
+  const [favoriteCardType, setFavoriteCardType] = useState('condensed');
 
   const changeCourseSearch = useCallback(
     searchTerm => setCourseSearch(searchTerm),
@@ -22,6 +23,9 @@ const useStore = () => {
   );
   const changeCardType = useCallback(
     event => setCardType(event.currentTarget.dataset.cardType),
+  );
+  const changeFavoriteCardType = useCallback(
+    event => setFavoriteCardType(event.currentTarget.dataset.cardType),
   );
 
   return {
@@ -39,6 +43,8 @@ const useStore = () => {
     changeCourseLevel,
     cardType,
     changeCardType,
+    favoriteCardType,
+    changeFavoriteCardType,
   };
 };
 
