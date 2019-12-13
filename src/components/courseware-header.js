@@ -1,7 +1,12 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useCallback } from 'react';
-import { MdCloudDownload, MdCloudDone } from 'react-icons/md';
+import {
+  MdFavorite,
+  MdFavoriteBorder,
+  MdCloudDownload,
+  MdCloudDone,
+} from 'react-icons/md';
 import Tooltip from 'react-tooltip-lite';
 import CoursewareBreadcrumb from './courseware-breadcrumb';
 import styles from './courseware-header.module.scss';
@@ -11,14 +16,41 @@ const CoursewareHeader = ({
   url,
   title,
   visits,
+  isAuthenticated,
+  favorite,
+  changeFavorite,
   synced,
   syncCourseware,
 }) => {
+  const favoriteHandleClick = useCallback(
+    () => {
+      changeFavorite(!favorite);
+    },
+  );
   const syncHandleClick = useCallback(
     () => {
       syncCourseware(!synced);
     },
   );
+  const filledFavoriteIcon = isAuthenticated()
+    ? (
+      <MdFavorite />
+    )
+    : (
+      <Tooltip content="Please log in to save course">
+        <MdFavorite />
+      </Tooltip>
+    );
+  const hollowFavoriteIcon = isAuthenticated()
+    ? (
+      <MdFavoriteBorder />
+    )
+    : (
+      <Tooltip content="Please log in to save course">
+        <MdFavoriteBorder />
+      </Tooltip>
+    );
+  const favoriteIcon = favorite ? filledFavoriteIcon : hollowFavoriteIcon;
   const syncIcon = !synced
     ? (
       <Tooltip content="Sync for offline use">
@@ -35,6 +67,12 @@ const CoursewareHeader = ({
       <div className={styles.subheader}>
         <div className={styles.titleContainer}>
           <h3 className={styles.title}>{title}</h3>
+          <span
+            className={styles.icon}
+            onClick={favoriteHandleClick}
+          >
+            {favoriteIcon}
+          </span>
           <span
             className={styles.icon}
             onClick={syncHandleClick}

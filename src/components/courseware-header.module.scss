@@ -18,12 +18,13 @@
 
 .icon {
   display: inline-block;
+  margin-right: 1rem;
   color: $emperor;
   &:hover {
     cursor: pointer;
   }
   svg {
-    vertical-align: bottom;
+    vertical-align: middle;
     width: 1.5em;
     height: 1.5em;
   }
