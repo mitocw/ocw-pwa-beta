@@ -41,6 +41,7 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
   const [favorite, setFavorite] = useState(favoriteCoursewares.includes(courseware.id));
   const [synced, setSynced] = useState(false);
   const [syncing, setSyncing] = useState(false);
+  const [urlShared, setUrlShared] = useState(false);
   const client = useContext(FaunaContext);
   const coursewareStore = new Store('ocw-store', 'courseware');
   const syncingUid = syncing ? courseware.id : null;
@@ -99,11 +100,17 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
         <MdCloudDone />
       </Tooltip>
     );
-  const shareIcon = (
-    <Tooltip content="Copy url to clipboard">
-      <MdShare />
-    </Tooltip>
-  );
+  const shareIcon = !urlShared
+    ? (
+      <Tooltip content="Copy url to clipboard">
+        <MdShare />
+      </Tooltip>
+    )
+    : (
+      <Tooltip content="Copied to clipboard">
+        <MdShare />
+      </Tooltip>
+    );
 
   const navigateToCourseware = useCallback(
     () => {
@@ -152,6 +159,16 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
     () => {
       // Copy courseware url to clipboard
       copy(`${window.location.host}/courseware/?courseware_uid=${courseware.id}`);
+    },
+  );
+  const shareHandleFocus = useCallback(
+    () => {
+      setUrlShared(true);
+    },
+  );
+  const shareHandleBlur = useCallback(
+    () => {
+      setUrlShared(false);
     },
   );
 
@@ -221,6 +238,8 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
               <CardActionIcon
                 icon={shareIcon}
                 onClick={shareHandleClick}
+                onFocus={shareHandleFocus}
+                onBlur={shareHandleBlur}
               />
             </CardActionIcons>
           </CardActions>
