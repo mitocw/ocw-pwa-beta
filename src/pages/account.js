@@ -14,21 +14,21 @@ const User = ({ user }) => (
 );
 
 const AccountPage = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeTabIndex, setActiveTabIndex] = useState(0);
   const { siteMetadata } = useSiteMetadata();
-  const handleActiveIndexUpdate = useCallback(
-    index => setActiveIndex(index),
+  const onActivate = useCallback(
+    event => setActiveTabIndex(event.detail.index),
   );
 
   const user = getProfile();
 
-  const favoriteCoursewaresContent = activeIndex === 0
+  const favoriteCoursewaresContent = activeTabIndex === 0
     ? (
       <CoursewareFavoriteList />
     )
     : null;
 
-  const userContent = activeIndex === 1
+  const userContent = activeTabIndex === 1
     ? (
       <User user={user} />
     )
@@ -41,8 +41,8 @@ const AccountPage = () => {
         siteDescription={siteMetadata.description}
       />
       <TabBar
-        activeIndex={activeIndex}
-        handleActiveIndexUpdate={handleActiveIndexUpdate}
+        activeTabIndex={activeTabIndex}
+        onActivate={onActivate}
       >
         <Tab className="account-tab">
           My courses
