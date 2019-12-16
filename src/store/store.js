@@ -13,13 +13,13 @@ const useStore = () => {
     searchTerm => setCourseSearch(searchTerm),
   );
   const changeCourseTopic = useCallback(
-    (index, item) => setCourseTopic(item.getAttribute('data-value')),
+    event => setCourseTopic(event.detail.value),
   );
   const changeCourseFeature = useCallback(
-    (index, item) => setCourseFeature(item.getAttribute('data-value')),
+    event => setCourseFeature(event.detail.value),
   );
   const changeCourseLevel = useCallback(
-    (index, item) => setCourseLevel(item.getAttribute('data-value')),
+    event => setCourseLevel(event.detail.value),
   );
   const changeCardType = useCallback(
     event => setCardType(event.currentTarget.dataset.cardType),

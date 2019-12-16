@@ -33,7 +33,7 @@ const CoursewareLevelFilter = () => {
         outlined
         label="Level"
         value={courseLevel}
-        onEnhancedChange={changeCourseLevel}
+        onChange={changeCourseLevel}
         className="filter"
         options={levelOptions}
       />
