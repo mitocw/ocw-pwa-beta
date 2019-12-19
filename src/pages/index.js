@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, {
   useState,
@@ -7,7 +9,13 @@ import React, {
 } from 'react';
 import { query as q } from 'faunadb';
 import { navigate } from 'gatsby';
-import { Store, get, keys } from 'idb-keyval';
+import {
+  Store,
+  get,
+  del,
+  keys,
+} from 'idb-keyval';
+import { MdClose } from 'react-icons/md';
 import { FaunaContext } from '../faunadb/client';
 import useSiteMetadata from '../hooks/use-site-metadata';
 import SEO from '../components/seo';
@@ -40,21 +48,22 @@ const IndexPage = () => {
 
   const { siteMetadata } = useSiteMetadata();
 
+  const getSyncedData = async () => {
+    const indices = await keys(coursewareStore);
+    const newSyncedCoursewares = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const index of indices) {
+      // eslint-disable-next-line no-await-in-loop
+      const value = await get(index, coursewareStore);
+      newSyncedCoursewares.push({
+        uid: index,
+        data: JSON.parse(value),
+      });
+    }
+    setSyncedCoursewares(newSyncedCoursewares);
+  };
+
   useEffect(() => {
-    const getSyncedData = async () => {
-      const indices = await keys(coursewareStore);
-      const newSyncedCoursewares = [];
-      // eslint-disable-next-line no-restricted-syntax
-      for (const index of indices) {
-        // eslint-disable-next-line no-await-in-loop
-        const value = await get(index, coursewareStore);
-        newSyncedCoursewares.push({
-          uid: index,
-          data: JSON.parse(value),
-        });
-      }
-      setSyncedCoursewares(newSyncedCoursewares);
-    };
     if (!online) {
       getSyncedData();
     }
@@ -121,6 +130,14 @@ const IndexPage = () => {
     },
   );
 
+  const closeHandleClick = useCallback(
+    (event) => {
+      const uid = event.currentTarget.getAttribute('data-courseware-uid');
+      del(uid, coursewareStore);
+      getSyncedData();
+    },
+  );
+
   let content;
 
   if (online) {
@@ -168,6 +185,13 @@ const IndexPage = () => {
             >
               {coursewareContent.title}
             </a>
+            <span
+              data-courseware-uid={coursewareUid}
+              className={styles.icon}
+              onClick={closeHandleClick}
+            >
+              <MdClose />
+            </span>
           </p>
           <p className="courseware-card-subtitle">
             {`${coursewareContent.departmentNumber}.${coursewareContent.masterCourseNumber}, ${coursewareContent.courseLevel} Level`}
