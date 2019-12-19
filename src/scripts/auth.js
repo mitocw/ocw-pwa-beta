@@ -71,6 +71,21 @@ export const checkSession = (callback) => {
     .some(route => route);
   if (isProtectedRoute) {
     auth.checkSession({}, setSession(callback));
+  } else if (window.navigator.onLine) {
+    auth.checkSession({}, (err, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        const expiresAt = authResult.expiresIn * 1000 + new Date().getTime();
+        tokens.idToken = authResult.idToken;
+        tokens.accessToken = authResult.accessToken;
+        tokens.expiresAt = expiresAt;
+
+        auth.client.userInfo(tokens.accessToken, (_err, userProfile) => {
+          user = userProfile;
+          window.localStorage.setItem('userName', user.name);
+        });
+      }
+      callback();
+    });
   } else {
     callback();
   }
