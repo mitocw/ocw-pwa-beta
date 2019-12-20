@@ -294,7 +294,7 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
           <p>
             <a
               href="#"
-              className="courseware-card-title"
+              className="courseware-card-link"
               onClick={navigateToCourseware}
             >
               {title}
