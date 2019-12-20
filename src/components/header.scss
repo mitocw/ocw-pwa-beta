@@ -1,4 +1,5 @@
 @import '@material/button/mixins';
+@import '@material/switch/mixins';
 @import '../styles/functions/color';
 
 .header-container {
@@ -14,12 +15,12 @@
 
 .header-left-items {
   display: flex;
-  align-items: flex-start;
+  justify-content: start;
 }
 
 .header-right-items {
   display: flex;
-  align-items: flex-end;
+  justify-content: end;
 }
 
 .header-button {
@@ -30,6 +31,16 @@
     //@include mdc-button-container-fill-color(color(header-background));
     text-transform: none;
     text-align: right;
+    font-size: 1rem;
+  }
+}
+
+.header-switch {
+  &#{&} {
+    --mdc-theme-secondary: #c7c7c7; // Doesn't work with Sass variables nor switch mixins
+    margin: 0 0.5rem 0 1rem;
+    color: color(header-foreground);
+    font-weight: bold;
     font-size: 1rem;
   }
 }

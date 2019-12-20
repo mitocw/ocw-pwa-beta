@@ -1,14 +1,17 @@
-import React, { useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { navigate } from 'gatsby';
 import { Button } from '@rmwc/button';
+import { Switch } from '@rmwc/switch';
 import { IconContext } from 'react-icons';
 import { MdPermIdentity } from 'react-icons/md';
 import { isAuthenticated, logout } from '../scripts/auth';
 import './header.scss';
 
 const Header = () => {
+  const [themeOn, setThemeOn] = useState(false);
   const changeTheme = useCallback(
-    () => {
+    (event) => {
+      setThemeOn(event.currentTarget.checked);
       // eslint-disable-next-line no-undef
       const root = document.documentElement;
       if (root.hasAttribute('theme')) {
@@ -51,6 +54,17 @@ const Header = () => {
       </IconContext.Provider>
     )
     : null;
+  const onAccountPage = window.location.pathname === '/account';
+  const themeSwitch = onAccountPage
+    ? (
+      <Switch
+        className="header-switch"
+        checked={themeOn}
+        onChange={changeTheme}
+        label="Theme"
+      />
+    )
+    : null;
 
   return (
     <header className="header-container">
@@ -64,9 +78,7 @@ const Header = () => {
       <div className="header-right-items">
         {favoriteCoursewaresButton}
         {logButton}
-        <Button className="header-button" onClick={changeTheme}>
-          Theme
-        </Button>
+        {themeSwitch}
       </div>
     </header>
   );

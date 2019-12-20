@@ -22,6 +22,7 @@
     "@rmwc/card": "^5.7.2",
     "@rmwc/icon-button": "^5.7.2",
     "@rmwc/select": "^5.7.2",
+    "@rmwc/switch": "^5.7.2",
     "@rmwc/tabs": "^5.7.2",
     "@rmwc/textfield": "^5.7.2",
     "apollo-cache-inmemory": "^1.6.5",
