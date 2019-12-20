@@ -17,7 +17,7 @@ import {
 } from '@rmwc/card';
 import { Button } from '@rmwc/button';
 import {
-  MdFavorite, MdFavoriteBorder, MdCloudDownload, MdCloudDone, MdShare,
+  MdBookmark, MdBookmarkBorder, MdCloudDownload, MdCloudDone, MdShare,
 } from 'react-icons/md';
 import TextTruncate from 'react-text-truncate';
 import Tooltip from 'react-tooltip-lite';
@@ -72,20 +72,20 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
 
   const filledFavoriteIcon = isAuthenticated()
     ? (
-      <MdFavorite />
+      <MdBookmark />
     )
     : (
-      <Tooltip content="Please log in to save course">
-        <MdFavorite />
+      <Tooltip content="Please log in to bookmark course">
+        <MdBookmark />
       </Tooltip>
     );
   const hollowFavoriteIcon = isAuthenticated()
     ? (
-      <MdFavoriteBorder />
+      <MdBookmarkBorder />
     )
     : (
-      <Tooltip content="Please log in to save course">
-        <MdFavoriteBorder />
+      <Tooltip content="Please log in to bookmark course">
+        <MdBookmarkBorder />
       </Tooltip>
     );
   const favoriteIcon = favorite ? filledFavoriteIcon : hollowFavoriteIcon;

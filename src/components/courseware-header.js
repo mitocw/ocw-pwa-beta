@@ -2,8 +2,8 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useCallback } from 'react';
 import {
-  MdFavorite,
-  MdFavoriteBorder,
+  MdBookmark,
+  MdBookmarkBorder,
   MdCloudDownload,
   MdCloudDone,
 } from 'react-icons/md';
@@ -34,20 +34,20 @@ const CoursewareHeader = ({
   );
   const filledFavoriteIcon = isAuthenticated()
     ? (
-      <MdFavorite />
+      <MdBookmark />
     )
     : (
-      <Tooltip content="Please log in to save course">
-        <MdFavorite />
+      <Tooltip content="Please log in to bookmark course">
+        <MdBookmark />
       </Tooltip>
     );
   const hollowFavoriteIcon = isAuthenticated()
     ? (
-      <MdFavoriteBorder />
+      <MdBookmarkBorder />
     )
     : (
-      <Tooltip content="Please log in to save course">
-        <MdFavoriteBorder />
+      <Tooltip content="Please log in to bookmark course">
+        <MdBookmarkBorder />
       </Tooltip>
     );
   const favoriteIcon = favorite ? filledFavoriteIcon : hollowFavoriteIcon;
