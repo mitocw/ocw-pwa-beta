@@ -1,3 +1,4 @@
+/* eslint-disable no-multi-spaces */
 /* eslint-disable import/no-extraneous-dependencies */
 /*
   dotenv package is included by Gatsby
@@ -13,6 +14,9 @@
   GATSBY_GA_OPTIMIZE_ID=yourGaOptimizeId
   GATSBY_GA_EXPERIMENT_ID=yourGaExperimentId
   GATSBY_GA_VARIATION_ID=yourGaVariationId
+
+  # Heap Analytics
+  GATSBY_HA_APP_ID=yourHaAppId
 */
 require('dotenv').config({
   path: `.env.${process.env.NODE_ENV}`,
@@ -46,6 +50,12 @@ const gaOptions = {
   optimizeId: process.env.GATSBY_GA_OPTIMIZE_ID,
   experimentId: process.env.GATSBY_GA_EXPERIMENT_ID,
   variationId: process.env.GATSBY_GA_VARIATION_ID,
+};
+
+// Heap Analytics
+const haOptions = {
+  appId: process.env.GATSBY_HA_APP_ID,
+  enableOnDevMode: false,
 };
 
 module.exports = {
@@ -120,6 +130,10 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-google-analytics',
       options: gaOptions,
+    },
+    {
+      resolve: 'gatsby-plugin-heap',
+      options: haOptions,
     },
   ],
 };
