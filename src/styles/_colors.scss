@@ -66,19 +66,9 @@ $default-palette: (
 
 $a11y-palette: (
   'header': (
-    'background':                   $blue-chill
+    'background':                   darken($shiraz, 10%)
   ),
   'main': (
-    'background':                   $cerulean
-  ),
-  'collapsible': (
-    'border':                       darken($cerulean, 20%)
-  ),
-  'footer': (
-    'background':                   lighten($blue-chill, 10%)
-  ),
-  'card': (
-    'background':                   $deep-cerulean,
-    'hover-box-shadow':             darken($deep-cerulean, 10%)                
+    'background':                   darken($alto, 10%)
   )
 );

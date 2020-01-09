@@ -16,6 +16,16 @@
   border-bottom: solid 2px color(collapsible-border);
 }
 
+.courseware-favorite {
+  display: flex;
+  flex-flow: row-reverse;
+  color: color(courseware-number);
+  font-weight: bold;
+  margin: 0 1rem 1rem;
+  padding: 1rem 0 0 0;
+  border-bottom: solid 2px color(collapsible-border);
+}
+
 .courseware-list {
   padding: 0 1rem 1rem 1rem;
   display: grid;

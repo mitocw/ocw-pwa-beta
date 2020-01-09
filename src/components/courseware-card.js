@@ -17,7 +17,7 @@ import {
 } from '@rmwc/card';
 import { Button } from '@rmwc/button';
 import {
-  MdFavorite, MdFavoriteBorder, MdCloudDownload, MdCloudDone, MdShare,
+  MdBookmark, MdBookmarkBorder, MdCloudDownload, MdCloudDone, MdShare,
 } from 'react-icons/md';
 import TextTruncate from 'react-text-truncate';
 import Tooltip from 'react-tooltip-lite';
@@ -41,6 +41,7 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
   const [favorite, setFavorite] = useState(favoriteCoursewares.includes(courseware.id));
   const [synced, setSynced] = useState(false);
   const [syncing, setSyncing] = useState(false);
+  const [urlShared, setUrlShared] = useState(false);
   const client = useContext(FaunaContext);
   const coursewareStore = new Store('ocw-store', 'courseware');
   const syncingUid = syncing ? courseware.id : null;
@@ -71,20 +72,20 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
 
   const filledFavoriteIcon = isAuthenticated()
     ? (
-      <MdFavorite />
+      <MdBookmark />
     )
     : (
-      <Tooltip content="Please log in to save course">
-        <MdFavorite />
+      <Tooltip content="Please log in to bookmark course">
+        <MdBookmark />
       </Tooltip>
     );
   const hollowFavoriteIcon = isAuthenticated()
     ? (
-      <MdFavoriteBorder />
+      <MdBookmarkBorder />
     )
     : (
-      <Tooltip content="Please log in to save course">
-        <MdFavoriteBorder />
+      <Tooltip content="Please log in to bookmark course">
+        <MdBookmarkBorder />
       </Tooltip>
     );
   const favoriteIcon = favorite ? filledFavoriteIcon : hollowFavoriteIcon;
@@ -99,11 +100,17 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
         <MdCloudDone />
       </Tooltip>
     );
-  const shareIcon = (
-    <Tooltip content="Copy url to clipboard">
-      <MdShare />
-    </Tooltip>
-  );
+  const shareIcon = !urlShared
+    ? (
+      <Tooltip content="Copy url to clipboard">
+        <MdShare />
+      </Tooltip>
+    )
+    : (
+      <Tooltip content="Copied to clipboard">
+        <MdShare />
+      </Tooltip>
+    );
 
   const navigateToCourseware = useCallback(
     () => {
@@ -152,6 +159,16 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
     () => {
       // Copy courseware url to clipboard
       copy(`${window.location.host}/courseware/?courseware_uid=${courseware.id}`);
+    },
+  );
+  const shareHandleFocus = useCallback(
+    () => {
+      setUrlShared(true);
+    },
+  );
+  const shareHandleBlur = useCallback(
+    () => {
+      setUrlShared(false);
     },
   );
 
@@ -221,6 +238,8 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
               <CardActionIcon
                 icon={shareIcon}
                 onClick={shareHandleClick}
+                onFocus={shareHandleFocus}
+                onBlur={shareHandleBlur}
               />
             </CardActionIcons>
           </CardActions>
@@ -275,7 +294,7 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
           <p>
             <a
               href="#"
-              className="courseware-card-title"
+              className="courseware-card-link"
               onClick={navigateToCourseware}
             >
               {title}

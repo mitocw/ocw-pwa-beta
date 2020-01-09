@@ -1,4 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  useContext,
+} from 'react';
 import { FaCircleNotch } from 'react-icons/fa';
 import { query as q } from 'faunadb';
 import {
@@ -8,6 +13,7 @@ import {
   del,
 } from 'idb-keyval';
 import { FaunaContext } from '../faunadb/client';
+import { isAuthenticated } from '../scripts/auth';
 import useSiteMetadata from '../hooks/use-site-metadata';
 import useIndividualCoursewareQuery from '../hooks/use-individual-courseware-query';
 import SEO from '../components/seo';
@@ -29,6 +35,8 @@ const CoursewarePage = ({ location }) => {
   const [syncedLoading, setSyncedLoading] = useState(true);
   const [syncedCourseware, setSyncedCourseware] = useState(null);
   const coursewareStore = new Store('ocw-store', 'courseware');
+  const [favoriteCoursewares, setFavoriteCoursewares] = useState([]);
+  const [favorite, setFavorite] = useState(null);
   const online = window.navigator.onLine;
   // During build, location.search is an empty string
   const hasParams = (location.search !== '');
@@ -83,6 +91,45 @@ const CoursewarePage = ({ location }) => {
           setVisits(newVisits);
         }
       }
+      // Get favorite coursewares from FaunaDB
+      if (isAuthenticated()) {
+        // Get user name from local storage
+        const user = window.localStorage.getItem('userName') || '';
+        // Check if user already exists in FaunaDb
+        const initResult = await client.query(
+          q.Map(
+            q.Paginate(
+              q.Match(q.Index('all_users')),
+            ),
+            q.Lambda('X', q.Get(q.Var('X'))),
+          ),
+        );
+        const users = initResult.data;
+        // User does not exist in FaunaDB, create one
+        // and populate favoriteCoursewares with empty array
+        if (users && !users.find(el => el.data.name === user)) {
+          // Create
+          await client.query(
+            q.Create(
+              q.Collection('users'), {
+                data: {
+                  name: user,
+                  favoriteCoursewares: [],
+                },
+              },
+            ),
+          );
+        // User exists, fetch favoriteCoursewares
+        } else {
+          const readResult = await client.query(
+            q.Get(
+              q.Match(q.Index('users_by_name'), user),
+            ),
+          );
+          setFavoriteCoursewares(readResult.data.favoriteCoursewares);
+          setFavorite(readResult.data.favoriteCoursewares.includes(coursewareUid));
+        }
+      }
       setVisitsLoading(false);
     };
     if (online) {
@@ -98,6 +145,38 @@ const CoursewarePage = ({ location }) => {
     };
     getSyncedData();
   }, []);
+
+  const changeFavorite = useCallback(
+    () => {
+      const updateFaunaDB = async () => {
+        if (isAuthenticated()) {
+          let newFavoriteCoursewares = [...favoriteCoursewares];
+          if (favorite) {
+            const index = newFavoriteCoursewares.indexOf(coursewareUid);
+            newFavoriteCoursewares.splice(index, 1);
+          } else {
+            newFavoriteCoursewares = [...newFavoriteCoursewares, coursewareUid];
+          }
+          setFavorite(!favorite);
+          // Update favorite courses on FaunaDB
+          const user = window.localStorage.getItem('userName') || '';
+          const readResult = await client.query(
+            q.Get(
+              q.Match(q.Index('users_by_name'), user),
+            ),
+          );
+          await client.query(
+            q.Update(readResult.ref, {
+              data: {
+                favoriteCoursewares: newFavoriteCoursewares,
+              },
+            }),
+          );
+        }
+      };
+      updateFaunaDB();
+    },
+  );
 
   if (coursewareUid) {
     let coursewareResult;
@@ -171,6 +250,9 @@ const CoursewarePage = ({ location }) => {
             url={url}
             title={title}
             visits={visits}
+            isAuthenticated={isAuthenticated}
+            favorite={favorite}
+            changeFavorite={changeFavorite}
             synced={syncedCourseware !== null}
             syncCourseware={syncCourseware}
           />

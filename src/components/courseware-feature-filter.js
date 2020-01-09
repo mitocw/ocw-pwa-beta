@@ -33,7 +33,7 @@ const CoursewareFeatureFilter = () => {
         outlined
         label="Feature"
         value={courseFeature}
-        onEnhancedChange={changeCourseFeature}
+        onChange={changeCourseFeature}
         className="filter"
         options={featureOptions}
       />

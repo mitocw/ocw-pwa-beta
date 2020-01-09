@@ -12,3 +12,17 @@
     font-size: 0.8rem;
   }
 }
+
+.icon {
+  display: inline-block;
+  margin-left: 0.5rem;
+  color: color(card-title-foreground);
+  &:hover {
+    cursor: pointer;
+  }
+  svg {
+    vertical-align: middle;
+    width: 1rem;
+    height: 1rem;
+  }
+}

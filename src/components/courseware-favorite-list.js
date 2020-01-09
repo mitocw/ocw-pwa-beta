@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
+import { IconButton } from '@rmwc/icon-button';
+import { MdCropPortrait, MdApps, MdDehaze } from 'react-icons/md';
 import { query as q } from 'faunadb';
 import { FaunaContext } from '../faunadb/client';
+import Store from '../store/store';
 import { getCoursewaresByIds } from '../datocms/query-datocms';
 import CoursewareLoading from './courseware-loading';
 import CoursewareCard from './courseware-card';
@@ -9,6 +12,11 @@ import shortid from '../scripts/shortid';
 import styles from './courseware-list.module.scss';
 
 const CoursewareFavoriteList = () => {
+  const {
+    favoriteCardType,
+    changeFavoriteCardType,
+  } = Store.useContainer();
+
   const [coursewares, setCoursewares] = useState([]);
   const [favoriteCoursewares, setFavoriteCoursewares] = useState([]);
   const [dataLoading, setDataLoading] = useState(true);
@@ -70,17 +78,49 @@ const CoursewareFavoriteList = () => {
   const coursewareCards = coursewares.map(courseware => (
     <CoursewareCard
       courseware={courseware}
-      cardType="condensed"
+      cardType={favoriteCardType}
       favoriteCoursewares={favoriteCoursewares}
       key={shortid()}
     />
   ));
-  const coursewareListClasses = `${styles.coursewareList} ${styles.coursewareListCondensed}`;
+  let coursewareListClasses;
+  switch (favoriteCardType) {
+    case 'condensed':
+      coursewareListClasses = `${styles.coursewareList} ${styles.coursewareListCondensed}`;
+      break;
+    case 'text':
+      coursewareListClasses = `${styles.coursewareList} ${styles.coursewareListText}`;
+      break;
+    // Regular cards
+    default:
+      coursewareListClasses = `${styles.coursewareList}`;
+  }
 
   return (
-    <div className={coursewareListClasses}>
-      {coursewareCards}
-    </div>
+    <>
+      <div className={styles.coursewareFavorite}>
+        <div className={styles.cardTypes}>
+          <IconButton
+            data-card-type="regular"
+            onClick={changeFavoriteCardType}
+            icon={<MdCropPortrait />}
+          />
+          <IconButton
+            data-card-type="condensed"
+            onClick={changeFavoriteCardType}
+            icon={<MdApps />}
+          />
+          <IconButton
+            data-card-type="text"
+            onClick={changeFavoriteCardType}
+            icon={<MdDehaze />}
+          />
+        </div>
+      </div>
+      <div className={coursewareListClasses}>
+        {coursewareCards}
+      </div>
+    </>
   );
 };
 
