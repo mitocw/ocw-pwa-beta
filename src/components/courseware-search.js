@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { Button } from '@rmwc/button';
 import { TextField } from '@rmwc/textfield';
-import { IconContext } from 'react-icons';
 import { MdSearch } from 'react-icons/md';
 import Store from '../store/store';
 import './courseware-search.scss';
@@ -26,11 +25,7 @@ const CoursewareSearch = () => {
       }
     },
   );
-  const searchIcon = (
-    <IconContext.Provider value={{ size: '2rem' }}>
-      <MdSearch />
-    </IconContext.Provider>
-  );
+  const searchIcon = <MdSearch />;
 
   return (
     <div className="search-group">
