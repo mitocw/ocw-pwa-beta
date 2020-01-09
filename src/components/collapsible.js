@@ -4,7 +4,12 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { MdExpandLess, MdExpandMore } from 'react-icons/md';
 import styles from './collapsible.module.scss';
 
-const Collapsible = ({ className, title, startOpen, children }) => {
+const Collapsible = ({
+  className,
+  title,
+  startOpen,
+  children,
+}) => {
   const classes = `${className} ${styles.collapsible}`;
   const [open, setOpen] = useState(false);
   useEffect(() => {
