@@ -1,48 +1,65 @@
 import React, { useState, useCallback } from 'react';
-import { Button } from '@rmwc/button';
+import { navigate } from 'gatsby';
 import { TextField } from '@rmwc/textfield';
 import { MdSearch } from 'react-icons/md';
 import Store from '../store/store';
 import './courseware-search.scss';
 
-const CoursewareSearch = () => {
+const CoursewareSearch = ({ searchType }) => {
   const {
     courseSearch,
-    changeCourseSearch,
+    setCourseSearch,
+    setCourseTopic,
+    setCourseFeature,
+    setCourseLevel,
   } = Store.useContainer();
   const [search, setSearch] = useState(courseSearch);
   const handleInputChange = useCallback(
     event => setSearch(event.currentTarget.value),
   );
-  const handleButtonClick = useCallback(
-    () => changeCourseSearch(search),
+  const changeSearch = useCallback(
+    () => {
+      setCourseSearch(search);
+      if (window.location !== '/discovery') {
+        setCourseTopic('All');
+        setCourseFeature('Any');
+        setCourseLevel('All');
+        navigate('discovery');
+      }
+    },
+  );
+  const handleIconClick = useCallback(
+    () => {
+      changeSearch();
+    },
   );
   const handleInputKeyUp = useCallback(
     (event) => {
       // "Enter" key code
       if (event.keyCode === 13) {
-        changeCourseSearch(search);
+        changeSearch();
       }
     },
   );
-  const searchIcon = <MdSearch />;
+  const searchIcon = (
+    <MdSearch
+      onClick={handleIconClick}
+    />
+  );
+  const searchClassName = searchType === 'header'
+    ? 'search-textfield search-textfield-header'
+    : 'search-textfield search-textfield-footer';
 
   return (
-    <div className="search-group">
-      <TextField
-        className="search-textfield"
-        label="Title contains"
-        outlined
-        value={search}
-        onChange={handleInputChange}
-        onKeyUp={handleInputKeyUp}
-      />
-      <Button
-        className="search-button"
-        icon={searchIcon}
-        onClick={handleButtonClick}
-      />
-    </div>
+    <TextField
+      className={searchClassName}
+      placeholder="MIT's instructional materials at your fingertips..."
+      outlined
+      value={search}
+      trailingIcon={searchIcon}
+      onChange={handleInputChange}
+      onKeyUp={handleInputKeyUp}
+    />
   );
 };
 

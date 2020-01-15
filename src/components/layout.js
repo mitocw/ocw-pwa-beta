@@ -4,6 +4,7 @@ import 'normalize.css';
 import 'typeface-roboto';
 import Header from './header';
 import Footer from './footer';
+import SearchFooter from './search-footer';
 import styles from './layout.module.scss';
 
 const breakpoints = {
@@ -20,6 +21,7 @@ const Layout = ({ children }) => (
       <Header />
       <main className={styles.main}>{children}</main>
       <Footer />
+      <SearchFooter />
     </div>
   </ReactBreakpoints>
 );

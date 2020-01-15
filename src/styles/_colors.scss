@@ -35,14 +35,19 @@ $default-palette: (
     'border':                       $silver-chalice
   ),
   'search': (
-    'background':                   $alto,
-    'foreground':                   $emperor
+    'background':                   $white,
+    'foreground':                   $emperor,
+    'focus':                        $black,
+    'caret':                        $black,
   ),
   'filters': (
     'foreground':                   $emperor
   ),
   'footer': (
     'background':                   $pampas
+  ),
+  'search-footer': (
+    'background':                   transparentize($emperor, 0.5)
   ),
   'card': (
     'background':                   $white,

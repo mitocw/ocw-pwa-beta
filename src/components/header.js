@@ -5,6 +5,7 @@ import { Switch } from '@rmwc/switch';
 import { IconContext } from 'react-icons';
 import { MdPermIdentity } from 'react-icons/md';
 import { isAuthenticated, logout } from '../scripts/auth';
+import CoursewareSearch from './courseware-search';
 import './header.scss';
 
 const Header = () => {
@@ -39,7 +40,7 @@ const Header = () => {
   const online = window.navigator.onLine;
   const logButton = online
     ? (
-      <Button className="header-button" onClick={navigateToAccount}>
+      <Button className="header-button header-button-right" onClick={navigateToAccount}>
         { isAuthenticated() ? 'Log out' : 'Log in' }
       </Button>
     )
@@ -49,7 +50,6 @@ const Header = () => {
       <IconContext.Provider value={{ size: '1.5rem' }}>
         <Button className="header-button header-favorite-button" onClick={navigateToFavoriteCoursewares}>
           <MdPermIdentity />
-          <span>My courses</span>
         </Button>
       </IconContext.Provider>
     )
@@ -69,11 +69,12 @@ const Header = () => {
   return (
     <header className="header-container">
       <div className="header-left-items">
-        <Button className="header-button" onClick={navigateToIndex}>
-          OpenCourseWare
+        <Button className="header-button header-button-left" onClick={navigateToIndex}>
+          MIT OpenCourseWare
           <br />
           <small>Next Gen Experiments</small>
         </Button>
+        <CoursewareSearch searchType="header" />
       </div>
       <div className="header-right-items">
         {favoriteCoursewaresButton}
