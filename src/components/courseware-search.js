@@ -1,19 +1,17 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { navigate } from 'gatsby';
 import { TextField } from '@rmwc/textfield';
 import { MdSearch } from 'react-icons/md';
 import Store from '../store/store';
 import './courseware-search.scss';
 
-const CoursewareSearch = ({ searchType }) => {
+const CoursewareSearch = ({ searchType, search, setSearch }) => {
   const {
-    courseSearch,
     setCourseSearch,
     setCourseTopic,
     setCourseFeature,
     setCourseLevel,
   } = Store.useContainer();
-  const [search, setSearch] = useState(courseSearch);
   const handleInputChange = useCallback(
     event => setSearch(event.currentTarget.value),
   );

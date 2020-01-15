@@ -8,7 +8,7 @@ import { isAuthenticated, logout } from '../scripts/auth';
 import CoursewareSearch from './courseware-search';
 import './header.scss';
 
-const Header = () => {
+const Header = ({ search, setSearch }) => {
   const [themeOn, setThemeOn] = useState(false);
   const changeTheme = useCallback(
     (event) => {
@@ -74,7 +74,7 @@ const Header = () => {
           <br />
           <small>Next Gen Experiments</small>
         </Button>
-        <CoursewareSearch searchType="header" />
+        <CoursewareSearch searchType="header" search={search} setSearch={setSearch} />
       </div>
       <div className="header-right-items">
         {favoriteCoursewaresButton}
