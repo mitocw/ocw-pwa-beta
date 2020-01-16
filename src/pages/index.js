@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/anchor-is-valid */
@@ -15,9 +16,11 @@ import {
   del,
   keys,
 } from 'idb-keyval';
+import { FaCircleNotch } from 'react-icons/fa';
 import { MdClose } from 'react-icons/md';
 import { FaunaContext } from '../faunadb/client';
 import useSiteMetadata from '../hooks/use-site-metadata';
+import useHomeQuery from '../hooks/use-home-query';
 import SEO from '../components/seo';
 import Layout from '../components/layout';
 import {
@@ -27,6 +30,7 @@ import {
 } from '../datocms/query-datocms';
 import OcwUsers from '../components/ocw-users';
 import OcwUserCard from '../components/ocw-user-card';
+import OcwStoriesSection from '../components/ocw-stories-section';
 import { isAuthenticated } from '../scripts/auth';
 import shortid from '../scripts/shortid';
 import '../styles/global.scss';
@@ -47,6 +51,7 @@ const IndexPage = () => {
   const randomItem = arr => arr[Math.floor(Math.random() * arr.length)];
 
   const { siteMetadata } = useSiteMetadata();
+  const { data, loading } = useHomeQuery();
 
   const getSyncedData = async () => {
     const indices = await keys(coursewareStore);
@@ -138,6 +143,16 @@ const IndexPage = () => {
     },
   );
 
+  if (loading) {
+    return (
+      <div className="spinner-container">
+        <FaCircleNotch className="spinner" />
+      </div>
+    );
+  }
+  const { home } = data;
+  const { storiesTitle, storiesDescription, stories } = home;
+
   let content;
 
   if (online) {
@@ -168,6 +183,11 @@ const IndexPage = () => {
             />
           </div>
         </div>
+        <OcwStoriesSection
+          title={storiesTitle}
+          description={storiesDescription}
+          stories={stories}
+        />
       </>
     );
   } else {

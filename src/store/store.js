@@ -10,6 +10,7 @@ const useStore = () => {
   const [courseLevel, setCourseLevel] = useState('All');
   const [cardType, setCardType] = useState('regular');
   const [favoriteCardType, setFavoriteCardType] = useState('condensed');
+  const [initSelectedStory, setInitSelectedStory] = useState('');
 
   const changeCourseSearch = useCallback(
     searchTerm => setTimeout(() => setCourseSearch(searchTerm), timeout),
@@ -62,6 +63,8 @@ const useStore = () => {
     changeCardType,
     favoriteCardType,
     changeFavoriteCardType,
+    initSelectedStory,
+    setInitSelectedStory,
   };
 };
 
