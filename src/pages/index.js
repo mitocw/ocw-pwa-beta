@@ -28,14 +28,12 @@ import {
   getEducatorCourseIds,
   getStudentCourseIds,
 } from '../datocms/query-datocms';
-import OcwUsers from '../components/ocw-users';
 import OcwUserCard from '../components/ocw-user-card';
 import OcwStoriesSection from '../components/ocw-stories-section';
 import { isAuthenticated } from '../scripts/auth';
 import shortid from '../scripts/shortid';
 import '../styles/global.scss';
 import styles from './index.module.scss';
-import userStyles from '../components/ocw-users.module.scss';
 import '../components/courseware-card.scss';
 
 const IndexPage = () => {
@@ -158,30 +156,20 @@ const IndexPage = () => {
   if (online) {
     content = (
       <>
-        <h3>What type of OCW user are you?</h3>
-        <OcwUsers />
-        <div className={`${userStyles.cardList} ${userStyles.cardListBottom}`}>
-          <div>
-            <p className={userStyles.cardDescription}>Lifelong learners view...</p>
-            <OcwUserCard
-              id={lifelongLearnerCourseId}
-              favoriteCoursewares={favoriteCoursewares}
-            />
-          </div>
-          <div>
-            <p className={userStyles.cardDescription}>Educators view...</p>
-            <OcwUserCard
-              id={educatorCourseId}
-              favoriteCoursewares={favoriteCoursewares}
-            />
-          </div>
-          <div>
-            <p className={userStyles.cardDescription}>Students view...</p>
-            <OcwUserCard
-              id={studentCourseId}
-              favoriteCoursewares={favoriteCoursewares}
-            />
-          </div>
+        <h3>Featured</h3>
+        <div>
+          <OcwUserCard
+            id={lifelongLearnerCourseId}
+            favoriteCoursewares={favoriteCoursewares}
+          />
+          <OcwUserCard
+            id={educatorCourseId}
+            favoriteCoursewares={favoriteCoursewares}
+          />
+          <OcwUserCard
+            id={studentCourseId}
+            favoriteCoursewares={favoriteCoursewares}
+          />
         </div>
         <OcwStoriesSection
           title={storiesTitle}
@@ -234,11 +222,6 @@ const IndexPage = () => {
         siteDescription={siteMetadata.description}
       />
       <div className={styles.index}>
-        <h3>About OCW</h3>
-        <p className={userStyles.ocwDescription}>
-          Thousands of people utilize OCW to support their lifelong learning, career advancement,
-          and instruction.
-        </p>
         {content}
       </div>
     </Layout>

@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 import { navigate } from 'gatsby';
 import Store from '../store/store';
 import shortid from '../scripts/shortid';
-import styles from './ocw-users.module.scss';
+import styles from './ocw-stories.module.scss';
 
 const OcwStories = ({ stories }) => {
   const {
