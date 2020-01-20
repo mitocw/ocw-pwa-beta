@@ -23,13 +23,8 @@ import useSiteMetadata from '../hooks/use-site-metadata';
 import useHomeQuery from '../hooks/use-home-query';
 import SEO from '../components/seo';
 import Layout from '../components/layout';
-import {
-  getLifelongLearnerCourseIds,
-  getEducatorCourseIds,
-  getStudentCourseIds,
-} from '../datocms/query-datocms';
-import OcwUserCard from '../components/ocw-user-card';
 import OcwStoriesSection from '../components/ocw-stories-section';
+import OcwFeaturedSection from '../components/ocw-featured-section';
 import { isAuthenticated } from '../scripts/auth';
 import shortid from '../scripts/shortid';
 import '../styles/global.scss';
@@ -37,16 +32,11 @@ import styles from './index.module.scss';
 import '../components/courseware-card.scss';
 
 const IndexPage = () => {
-  const [lifelongLearnerCourseId, setlifelongLearnerCourseId] = useState('');
-  const [studentCourseId, setStudentCourseId] = useState('');
-  const [educatorCourseId, setEducatorCourseId] = useState('');
   const [syncedCoursewares, setSyncedCoursewares] = useState([]);
   const [favoriteCoursewares, setFavoriteCoursewares] = useState([]);
   const client = useContext(FaunaContext);
   const coursewareStore = new Store('ocw-store', 'courseware');
   const online = window.navigator.onLine;
-
-  const randomItem = arr => arr[Math.floor(Math.random() * arr.length)];
 
   const { siteMetadata } = useSiteMetadata();
   const { data, loading } = useHomeQuery();
@@ -74,13 +64,6 @@ const IndexPage = () => {
 
   useEffect(() => {
     const getData = async () => {
-      let result;
-      result = await getLifelongLearnerCourseIds();
-      setlifelongLearnerCourseId(randomItem(result));
-      result = await getStudentCourseIds();
-      setStudentCourseId(randomItem(result));
-      result = await getEducatorCourseIds();
-      setEducatorCourseId(randomItem(result));
       setFavoriteCoursewares([]);
       if (isAuthenticated()) {
         // Get user name from local storage
@@ -149,28 +132,26 @@ const IndexPage = () => {
     );
   }
   const { home } = data;
-  const { storiesTitle, storiesDescription, stories } = home;
+  const {
+    featuredTitle,
+    featuredDescription,
+    featuredCourses,
+    storiesTitle,
+    storiesDescription,
+    stories,
+  } = home;
 
   let content;
 
   if (online) {
     content = (
       <>
-        <h3>Featured</h3>
-        <div>
-          <OcwUserCard
-            id={lifelongLearnerCourseId}
-            favoriteCoursewares={favoriteCoursewares}
-          />
-          <OcwUserCard
-            id={educatorCourseId}
-            favoriteCoursewares={favoriteCoursewares}
-          />
-          <OcwUserCard
-            id={studentCourseId}
-            favoriteCoursewares={favoriteCoursewares}
-          />
-        </div>
+        <OcwFeaturedSection
+          title={featuredTitle}
+          description={featuredDescription}
+          courses={featuredCourses}
+          favoriteCoursewares={favoriteCoursewares}
+        />
         <OcwStoriesSection
           title={storiesTitle}
           description={storiesDescription}

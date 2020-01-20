@@ -1,0 +1,22 @@
+@import '@material/button/mixins';
+@import '../styles/functions/color';
+
+.featured-section-container {
+  margin-bottom: 3rem;
+}
+
+.featured-section-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 1rem;
+}
+
+.featured-section-button {
+  // Increase specificity weight with double selector by using Sass interpolation
+  // https://stackoverflow.com/questions/47781073/increase-specificity-weight-with-double-selector-via-sass
+  &#{&} {
+    // Does not work with either $gallery or color(card-button-background)
+    @include mdc-button-filled-accessible(#757575);
+  }
+}

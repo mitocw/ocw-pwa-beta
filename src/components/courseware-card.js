@@ -287,6 +287,64 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
           </CardActions>
         </Card>
       );
+    // ##### Featured Card #####
+    case 'featured':
+      return (
+        <Card className="courseware-card courseware-card-featured">
+          <TextTruncate
+            containerClassName="courseware-card-title"
+            line={1}
+            element="span"
+            truncateText="…"
+            text={title}
+          />
+          <span className="courseware-card-subtitle">{`${departmentNumber}.${masterCourseNumber}, ${courseLevel} Level`}</span>
+          <CardMedia
+            title={trackingTitle}
+            sixteenByNine
+            style={{
+              backgroundImage: `url(${imageSrc})`,
+            }}
+          />
+          <TextTruncate
+            containerClassName="courseware-card-subsubtitle"
+            line={1}
+            element="span"
+            truncateText="…"
+            text={`Department: ${departmentNumber}`}
+          />
+          <TextTruncate
+            containerClassName="courseware-card-description"
+            line={2}
+            element="span"
+            truncateText="…"
+            text={striptags(description)}
+          />
+          <CardActions className="courseware-card-actions">
+            <CardActionButtons>
+              <Button
+                className="courseware-card-button"
+                dense
+                onClick={navigateToCourseware}
+              >
+                Go to Course
+              </Button>
+            </CardActionButtons>
+            <CardActionIcons>
+              <CardActionIcon
+                icon={favoriteIcon}
+                onClick={favoriteHandleClick}
+              />
+              <CardActionIcon
+                icon={shareIcon}
+                onClick={shareHandleClick}
+                onFocus={shareHandleFocus}
+                onBlur={shareHandleBlur}
+              />
+            </CardActionIcons>
+          </CardActions>
+        </Card>
+      );
     // ##### Text Card #####
     case 'text':
       return (
