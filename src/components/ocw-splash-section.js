@@ -1,4 +1,5 @@
 import React from 'react';
+import shortid from '../scripts/shortid';
 import styles from './ocw-splash-section.module.scss';
 
 const OcwSplashSection = ({
@@ -7,7 +8,7 @@ const OcwSplashSection = ({
   videos,
 }) => {
   const videosEl = videos.map(video => (
-    <>
+    <div key={shortid()}>
       <div className={styles.videoGroup}>
         <div>
           <div className={styles.videoContainer}>
@@ -28,7 +29,7 @@ const OcwSplashSection = ({
           <p>{video.description}</p>
         </div>
       </div>
-    </>
+    </div>
   ));
   const divStyle = {
     backgroundImage: `url(${image.responsiveImage.src})`,

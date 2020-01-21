@@ -1,0 +1,46 @@
+@import '@material/button/mixins';
+@import '../styles/functions/color';
+@import '../styles/mixins/breakpoints';
+
+.support-section-container {
+  margin-top: 2rem;
+  padding: 1rem 1rem;
+  @include media-breakpoint-up(sm) {
+    padding: 1rem 4rem;
+  }
+}
+
+.support-section-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  padding-top: 1rem;
+}
+
+.support-section-footer-left-items {
+  display: flex;
+  justify-content: start;
+  flex: 1 1 auto;
+}
+
+.support-section-footer-right-items {
+  display: flex;
+  justify-content: space-between;
+  flex: 0 1 auto;
+  button:first-child {
+    margin-right: 1rem;
+  }
+  button:last-child {
+    margin-right: 0;
+  }
+  
+}
+
+.support-section-button {
+  // Increase specificity weight with double selector by using Sass interpolation
+  // https://stackoverflow.com/questions/47781073/increase-specificity-weight-with-double-selector-via-sass
+  &#{&} {
+    // Does not work with either $gallery or color(card-button-background)
+    @include mdc-button-filled-accessible(#cccccc);
+  }
+}

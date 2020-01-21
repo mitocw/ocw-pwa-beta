@@ -24,8 +24,9 @@ import useHomeQuery from '../hooks/use-home-query';
 import SEO from '../components/seo';
 import Layout from '../components/layout';
 import OcwSplashSection from '../components/ocw-splash-section';
-import OcwStoriesSection from '../components/ocw-stories-section';
+import OcwSupportSection from '../components/ocw-support-section';
 import OcwFeaturedSection from '../components/ocw-featured-section';
+import OcwStoriesSection from '../components/ocw-stories-section';
 import { isAuthenticated } from '../scripts/auth';
 import shortid from '../scripts/shortid';
 import '../styles/global.scss';
@@ -155,6 +156,7 @@ const IndexPage = () => {
           imageLede={splashImageLede}
           videos={splashVideos}
         />
+        <OcwSupportSection />
         <OcwFeaturedSection
           title={featuredTitle}
           description={featuredDescription}
