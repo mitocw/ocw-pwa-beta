@@ -44,3 +44,14 @@
     @include mdc-button-filled-accessible(#cccccc);
   }
 }
+
+.support-section-icon {
+  display: inline-block;
+  margin-right: 0.5rem;
+  color: color(header-background);
+  svg {
+    vertical-align: bottom;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}

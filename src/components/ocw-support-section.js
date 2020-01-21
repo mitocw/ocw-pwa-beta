@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Button } from '@rmwc/button';
 import { Elevation } from '@rmwc/elevation';
+import { MdFavorite } from 'react-icons/md';
 import './ocw-support-section.scss';
 
 const OcwSupportSection = (() => {
@@ -24,7 +25,12 @@ const OcwSupportSection = (() => {
   return showSupport
     ? (
       <Elevation className="support-section-container" z="15">
-        <h3>Support OpenCourseWare</h3>
+        <h3>
+          <span className="support-section-icon">
+            <MdFavorite />
+          </span>
+          Support OpenCourseWare
+        </h3>
         <p>
           Donations from user like you support our efforts to provide
           free materials to any learner in the world
