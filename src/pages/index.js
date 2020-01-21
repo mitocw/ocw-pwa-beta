@@ -23,6 +23,7 @@ import useSiteMetadata from '../hooks/use-site-metadata';
 import useHomeQuery from '../hooks/use-home-query';
 import SEO from '../components/seo';
 import Layout from '../components/layout';
+import OcwSplashSection from '../components/ocw-splash-section';
 import OcwStoriesSection from '../components/ocw-stories-section';
 import OcwFeaturedSection from '../components/ocw-featured-section';
 import { isAuthenticated } from '../scripts/auth';
@@ -133,6 +134,9 @@ const IndexPage = () => {
   }
   const { home } = data;
   const {
+    splashImage,
+    splashImageLede,
+    splashVideos,
     featuredTitle,
     featuredDescription,
     featuredCourses,
@@ -146,6 +150,11 @@ const IndexPage = () => {
   if (online) {
     content = (
       <>
+        <OcwSplashSection
+          image={splashImage}
+          imageLede={splashImageLede}
+          videos={splashVideos}
+        />
         <OcwFeaturedSection
           title={featuredTitle}
           description={featuredDescription}

@@ -4,6 +4,20 @@ import { useQuery } from '@apollo/react-hooks';
 const HOME = gql`
   {
     home {
+      splashImage {
+        responsiveImage {
+          src
+          alt
+        }
+      }
+      splashImageLede
+      splashVideos {
+        title
+        description
+        youtubeUrl {
+          providerUid
+        }
+      }
       featuredTitle
       featuredDescription
       featuredCourses {
