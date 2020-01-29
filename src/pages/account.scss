@@ -22,8 +22,12 @@
 }
 
 .account-user {
-  padding: 0 1rem 1rem 1rem;
-  color: color(card-title-foreground);
-  font-weight: 500;
+  padding: 1rem 1rem 1rem 1rem;
+  color: color(courseware-number);
+  font-weight: bold;
+}
+
+.account-user-email {
+  font-style: oblique;
 }
 
