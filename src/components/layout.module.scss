@@ -11,6 +11,22 @@
   @include extract-colors($a11y-palette);
 }
 
+// https://css-tricks.com/simplified-fluid-typography/
+// Size varies gradually from 14px on a 320px screen to 16px on a 1000px screen
+html {
+  font-size: 14px;
+}
+@media screen and (min-width: 320px) {
+  html {
+    font-size: calc(14px + 2 * ((100vw - 320px) / 680));
+  }
+}
+@media screen and (min-width: 1000px) {
+  html {
+    font-size: 16px;
+  }
+} 
+
 .app {
   font-family: 'Roboto', sans-serif;
 }
