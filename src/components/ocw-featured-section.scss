@@ -1,5 +1,5 @@
 @import '@material/button/mixins';
-@import '../styles/functions/color';
+@import '../styles/colors';
 
 .featured-section-container {
   margin-top: 2rem;
@@ -16,7 +16,7 @@
   // Increase specificity weight with double selector by using Sass interpolation
   // https://stackoverflow.com/questions/47781073/increase-specificity-weight-with-double-selector-via-sass
   &#{&} {
-    // Does not work with either $gallery or color(card-button-background)
-    @include mdc-button-filled-accessible(#757575);
+    // Does not work color function
+    @include mdc-button-filled-accessible($shiraz);
   }
 }
