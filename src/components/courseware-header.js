@@ -1,13 +1,13 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useCallback } from 'react';
+import { Tooltip } from '@rmwc/tooltip';
 import {
   MdBookmark,
   MdBookmarkBorder,
   MdCloudDownload,
   MdCloudDone,
 } from 'react-icons/md';
-import Tooltip from 'react-tooltip-lite';
 import CoursewareBreadcrumb from './courseware-breadcrumb';
 import styles from './courseware-header.module.scss';
 
@@ -37,7 +37,7 @@ const CoursewareHeader = ({
       <MdBookmark />
     )
     : (
-      <Tooltip content="Please log in to bookmark course">
+      <Tooltip content="Please log in to bookmark course" showArrow>
         <MdBookmark />
       </Tooltip>
     );
@@ -46,19 +46,19 @@ const CoursewareHeader = ({
       <MdBookmarkBorder />
     )
     : (
-      <Tooltip content="Please log in to bookmark course">
+      <Tooltip content="Please log in to bookmark course" showArrow>
         <MdBookmarkBorder />
       </Tooltip>
     );
   const favoriteIcon = favorite ? filledFavoriteIcon : hollowFavoriteIcon;
   const syncIcon = !synced
     ? (
-      <Tooltip content="Sync for offline use">
+      <Tooltip content="Sync for offline use" showArrow>
         <MdCloudDownload />
       </Tooltip>
     )
     : (
-      <Tooltip content="Unsync from local storage">
+      <Tooltip content="Unsync from local storage" showArrow>
         <MdCloudDone />
       </Tooltip>
     );

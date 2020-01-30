@@ -16,11 +16,12 @@ import {
   CardActionIcon,
 } from '@rmwc/card';
 import { Button } from '@rmwc/button';
+import { Tooltip } from '@rmwc/tooltip';
 import {
   MdBookmark, MdBookmarkBorder, MdCloudDownload, MdCloudDone, MdShare,
 } from 'react-icons/md';
 import TextTruncate from 'react-text-truncate';
-import Tooltip from 'react-tooltip-lite';
+
 import { navigate } from 'gatsby';
 import { query as q } from 'faunadb';
 import striptags from 'striptags';
@@ -75,7 +76,7 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
       <MdBookmark />
     )
     : (
-      <Tooltip content="Please log in to bookmark course">
+      <Tooltip content="Please log in to bookmark course" showArrow>
         <MdBookmark />
       </Tooltip>
     );
@@ -84,30 +85,30 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
       <MdBookmarkBorder />
     )
     : (
-      <Tooltip content="Please log in to bookmark course">
+      <Tooltip content="Please log in to bookmark course" showArrow>
         <MdBookmarkBorder />
       </Tooltip>
     );
   const favoriteIcon = favorite ? filledFavoriteIcon : hollowFavoriteIcon;
   const syncIcon = !synced
     ? (
-      <Tooltip content="Sync for offline use">
+      <Tooltip content="Sync for offline use" showArrow>
         <MdCloudDownload />
       </Tooltip>
     )
     : (
-      <Tooltip content="Unsync from local storage">
+      <Tooltip content="Unsync from local storage" showArrow>
         <MdCloudDone />
       </Tooltip>
     );
   const shareIcon = !urlShared
     ? (
-      <Tooltip content="Copy url to clipboard">
+      <Tooltip content="Copy url to clipboard" showArrow>
         <MdShare />
       </Tooltip>
     )
     : (
-      <Tooltip content="Copied to clipboard">
+      <Tooltip content="Copied to clipboard" showArrow>
         <MdShare />
       </Tooltip>
     );

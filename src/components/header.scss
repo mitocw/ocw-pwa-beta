@@ -75,11 +75,19 @@
   }
 }
 
-.react-tooltip-lite {
-  background: color(tooltip-background);
-  color: color(tooltip-foreground);
+.rmwc-tooltip.rmwc-tooltip--show-arrow.rmwc-tooltip-placement-top {
+  .rmwc-tooltip-content {
+    .rmwc-tooltip-arrow {
+      border-top-color: color(tooltip-background);
+    }
+  }
 }
 
-.react-tooltip-lite-arrow {
-  border-color: color(tooltip-arrow-border);
+.rmwc-tooltip-inner {
+  &#{&} {
+    background: color(tooltip-background);
+    color: color(tooltip-foreground);
+    font-size: 1rem;
+    font-weight: bold;
+  }
 }
