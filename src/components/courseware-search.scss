@@ -9,26 +9,43 @@
   // https://stackoverflow.com/questions/47781073/increase-specificity-weight-with-double-selector-via-sass
   &#{&} {
     @include mdc-text-field-fill-color(color(search-background));
-    @include mdc-text-field-outline-shape-radius(15px);
     @include mdc-text-field-ink-color(color(search-foreground));
-    @include mdc-text-field-focused-outline-color(color(search-focus));
+    @include mdc-text-field-outline-color(color(search-background));
+    @include mdc-text-field-hover-outline-color(color(search-background));
+    @include mdc-text-field-focused-outline-color(color(search-background));
     @include mdc-text-field-caret-color(color(search-caret));
-    border-radius: 15px;
-    height: 100%;
+    border-radius: 5px 0 0 5px;
+    height: 2.75rem;
     flex: 1 1 auto;
   }
 }
 
-.search-textfield-header {
+.mdc-notched-outline__leading  {#EEEEEE
   &#{&} {
-    @include media-breakpoint-down(sm) {
-      display: none;
+    &#{&} {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
     }
   }
 }
 
-.search-textfield-footer {
-  margin: 0 0.5rem;
+.mdc-notched-outline__trailing  {
+  &#{&} {
+    &#{&} {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      
+    }
+  }
+}
+
+.mdc-text-field__icon {
+  outline: 0;
+  &:hover, &:focus {
+    svg {
+      color: color(search-foreground);
+    }
+  }
 }
 
 .mdc-text-field--with-trailing-icon.mdc-text-field--outlined .mdc-text-field__input.mdc-text-field__input {
@@ -43,4 +60,47 @@
   position: static; // override
   bottom: 0; // override
   padding: 0 0.5rem;
+}
+
+.search-button {
+  &#{&} {
+    @include mdc-button-filled-accessible($gallery);
+    flex: 0 0 auto;
+    svg {
+      color: color(search-foreground);
+      vertical-align: middle;
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+    padding: 0.38rem 0;
+    height: 2.75rem;
+    border-radius: 0 5px 5px 0;
+    min-width: 2.5rem;
+    border-left: none;
+    border-right: none;
+  }
+}
+
+.search-textfield-header {
+  &#{&} {
+    @include media-breakpoint-down(sm) {
+      display: none;
+    }
+  }
+}
+
+.search-textfield-footer {
+  margin-left: 0.5rem;
+}
+
+.search-button-header {
+  &#{&} {
+    @include media-breakpoint-down(sm) {
+      display: none;
+    }
+  }
+}
+
+.search-button-footer {
+  margin-right: 0.5rem;
 }
