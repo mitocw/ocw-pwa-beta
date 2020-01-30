@@ -41,7 +41,6 @@ const IndexPage = () => {
   const online = window.navigator.onLine;
 
   const { siteMetadata } = useSiteMetadata();
-  const { data, loading } = useHomeQuery();
 
   const getSyncedData = async () => {
     const indices = await keys(coursewareStore);
@@ -126,29 +125,30 @@ const IndexPage = () => {
     },
   );
 
-  if (loading) {
-    return (
-      <div className="spinner-container">
-        <FaCircleNotch className="spinner" />
-      </div>
-    );
-  }
-  const { home } = data;
-  const {
-    splashImage,
-    splashImageLede,
-    splashVideos,
-    featuredTitle,
-    featuredDescription,
-    featuredCourses,
-    storiesTitle,
-    storiesDescription,
-    stories,
-  } = home;
-
   let content;
 
   if (online) {
+    const { data, loading } = useHomeQuery();
+
+    if (loading) {
+      return (
+        <div className="spinner-container">
+          <FaCircleNotch className="spinner" />
+        </div>
+      );
+    }
+    const { home } = data;
+    const {
+      splashImage,
+      splashImageLede,
+      splashVideos,
+      featuredTitle,
+      featuredDescription,
+      featuredCourses,
+      storiesTitle,
+      storiesDescription,
+      stories,
+    } = home;
     content = (
       <>
         <OcwSplashSection
