@@ -54,7 +54,11 @@ $default-palette: (
     'hover-box-shadow':             $silver,
     'button-background':            $gallery,
     'title-foreground':             $mine-shaft,
-    'subtitle-foreground':          $boulder          
+    'subtitle-foreground':          $boulder
+  ),
+  'carousel': (
+    'arrow':                        transparentize($shiraz, 0.5),
+    'arrow-hover':                  $shiraz
   ),
   'user': (
     'foreground':                   $emperor

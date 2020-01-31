@@ -3,7 +3,7 @@ import Carousel from 'react-multi-carousel';
 import OcwCourseCard from './ocw-course-card';
 import shortid from '../scripts/shortid';
 import 'react-multi-carousel/lib/styles.css';
-import styles from './ocw-featured-courses.module.scss';
+import './ocw-featured-courses.scss';
 
 const OcwFeaturedCourses = ({
   courses,
@@ -20,10 +20,9 @@ const OcwFeaturedCourses = ({
   return (
     <Carousel
       additionalTransfrom={0}
-      containerClass={styles.container}
-      dotListClass={styles.dotList}
+      containerClass="carousel-container"
+      dotListClass="carousel-dot-list"
       focusOnSelect={false}
-      keyBoardControl
       minimumTouchDrag={80}
       renderDotsOutside
       responsive={{
