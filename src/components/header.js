@@ -3,11 +3,13 @@ import { navigate } from 'gatsby';
 import { Button } from '@rmwc/button';
 import { Switch } from '@rmwc/switch';
 import { IconContext } from 'react-icons';
+import { FiLogIn, FiLogOut } from 'react-icons/fi';
 import { MdPermIdentity } from 'react-icons/md';
 import { isAuthenticated, logout } from '../scripts/auth';
+import CoursewareSearch from './courseware-search';
 import './header.scss';
 
-const Header = () => {
+const Header = ({ search, setSearch }) => {
   const [themeOn, setThemeOn] = useState(false);
   const changeTheme = useCallback(
     (event) => {
@@ -39,9 +41,12 @@ const Header = () => {
   const online = window.navigator.onLine;
   const logButton = online
     ? (
-      <Button className="header-button" onClick={navigateToAccount}>
-        { isAuthenticated() ? 'Log out' : 'Log in' }
-      </Button>
+      <IconContext.Provider value={{ size: '1.40rem' }}>
+        <Button className="header-button header-log-button" onClick={navigateToAccount}>
+          <small>{isAuthenticated() ? 'Sign Out' : 'Sign In'}</small>
+          {isAuthenticated() ? <FiLogOut /> : <FiLogIn />}
+        </Button>
+      </IconContext.Provider>
     )
     : null;
   const favoriteCoursewaresButton = isAuthenticated()
@@ -49,7 +54,6 @@ const Header = () => {
       <IconContext.Provider value={{ size: '1.5rem' }}>
         <Button className="header-button header-favorite-button" onClick={navigateToFavoriteCoursewares}>
           <MdPermIdentity />
-          <span>My courses</span>
         </Button>
       </IconContext.Provider>
     )
@@ -69,11 +73,12 @@ const Header = () => {
   return (
     <header className="header-container">
       <div className="header-left-items">
-        <Button className="header-button" onClick={navigateToIndex}>
-          OpenCourseWare
+        <Button className="header-button header-button-left" onClick={navigateToIndex}>
+          MIT OpenCourseWare
           <br />
           <small>Next Gen Experiments</small>
         </Button>
+        <CoursewareSearch searchType="header" search={search} setSearch={setSearch} />
       </div>
       <div className="header-right-items">
         {favoriteCoursewaresButton}

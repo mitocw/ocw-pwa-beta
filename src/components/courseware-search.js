@@ -1,48 +1,93 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
+import { navigate } from 'gatsby';
 import { Button } from '@rmwc/button';
 import { TextField } from '@rmwc/textfield';
-import { MdSearch } from 'react-icons/md';
+import { MdClose, MdSearch } from 'react-icons/md';
 import Store from '../store/store';
 import './courseware-search.scss';
 
-const CoursewareSearch = () => {
+const CoursewareSearch = ({ searchType, search, setSearch }) => {
   const {
-    courseSearch,
-    changeCourseSearch,
+    setCourseSearch,
+    setCourseTopic,
+    setCourseFeature,
+    setCourseLevel,
   } = Store.useContainer();
-  const [search, setSearch] = useState(courseSearch);
-  const handleInputChange = useCallback(
-    event => setSearch(event.currentTarget.value),
-  );
-  const handleButtonClick = useCallback(
-    () => changeCourseSearch(search),
-  );
-  const handleInputKeyUp = useCallback(
-    (event) => {
-      // "Enter" key code
-      if (event.keyCode === 13) {
-        changeCourseSearch(search);
+
+  const changeSearch = useCallback(
+    () => {
+      setCourseSearch(search);
+      if (window.location !== '/discovery') {
+        setCourseTopic('All');
+        setCourseFeature('Any');
+        setCourseLevel('All');
+        navigate('discovery');
       }
     },
   );
-  const searchIcon = <MdSearch />;
+  const inputChange = useCallback(
+    event => setSearch(event.currentTarget.value),
+  );
+  const inputKeyUp = useCallback(
+    (event) => {
+      // "Enter" key code
+      if (event.keyCode === 13) {
+        changeSearch();
+      }
+    },
+  );
+  const closeIconClick = useCallback(
+    () => {
+      setSearch('');
+    },
+  );
+  const closeIconKeyUp = useCallback(
+    (event) => {
+      // "Enter" key code
+      if (event.keyCode === 13) {
+        setSearch('');
+      }
+    },
+  );
+  const searchButtonClick = useCallback(
+    () => {
+      changeSearch();
+    },
+  );
+
+  const closeIcon = search !== '' ? <MdClose /> : null;
+
+  const searchClassName = searchType === 'header'
+    ? 'search-textfield search-textfield-header'
+    : 'search-textfield search-textfield-footer';
+
+  const buttonClassName = searchType === 'header'
+    ? 'search-button search-button-header'
+    : 'search-button search-button-footer';
 
   return (
-    <div className="search-group">
+    <>
       <TextField
-        className="search-textfield"
-        label="Title contains"
+        className={searchClassName}
+        placeholder="MIT's instructional materials at your fingertips..."
         outlined
         value={search}
-        onChange={handleInputChange}
-        onKeyUp={handleInputKeyUp}
+        trailingIcon={{
+          icon: closeIcon,
+          tabIndex: 0,
+          onKeyUp: closeIconKeyUp,
+          onClick: closeIconClick,
+        }}
+        onChange={inputChange}
+        onKeyUp={inputKeyUp}
       />
       <Button
-        className="search-button"
-        icon={searchIcon}
-        onClick={handleButtonClick}
-      />
-    </div>
+        className={buttonClassName}
+        onClick={searchButtonClick}
+      >
+        <MdSearch />
+      </Button>
+    </>
   );
 };
 

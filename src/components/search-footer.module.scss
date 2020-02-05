@@ -1,0 +1,15 @@
+@import '../styles/functions/color';
+@import '../styles/mixins/breakpoints';
+
+.container {
+  display: flex;
+  @include media-breakpoint-up(md) {
+    display: none;
+  }
+  background: color(search-footer-background);
+  color: color(header-foreground);
+  padding: 0.5rem 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}

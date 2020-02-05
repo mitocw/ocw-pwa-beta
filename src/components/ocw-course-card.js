@@ -2,10 +2,7 @@ import React from 'react';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import CoursewareCard from './courseware-card';
-import OcwUserCardLoading from './ocw-user-card-loading';
-
-// The following logic was initially in use-ocw-user-query and was moved here in order for the
-// tests to pass.
+import OcwCourseCardLoading from './ocw-course-card-loading';
 
 export const COURSEWARE_QUERY = gql`
   query($coursewareUid: ItemId) {
@@ -28,7 +25,7 @@ export const COURSEWARE_QUERY = gql`
   }
 `;
 
-const OcwUserCard = ({ id, favoriteCoursewares }) => {
+const OcwCourseCard = ({ id, favoriteCoursewares }) => {
   const { data, loading } = useQuery(COURSEWARE_QUERY, {
     variables: {
       coursewareUid: id,
@@ -40,13 +37,13 @@ const OcwUserCard = ({ id, favoriteCoursewares }) => {
     return (
       <CoursewareCard
         courseware={data.allCoursewares[0]}
-        cardType="condensed"
+        cardType="featured"
         favoriteCoursewares={favoriteCoursewares}
       />
     );
   }
 
-  return <OcwUserCardLoading />;
+  return <OcwCourseCardLoading />;
 };
 
-export default OcwUserCard;
+export default OcwCourseCard;

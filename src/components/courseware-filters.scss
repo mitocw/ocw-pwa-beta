@@ -36,6 +36,11 @@ $mdc-theme-primary: black; // Sets the color of the select animated arrow
   @include media-breakpoint-up(md) {
     margin: 0 1rem 0 0;
   }
+  
+}
+
+.mdc-list-item {
+  --mdc-theme-primary: #555555;
 }
 
 @keyframes spin {

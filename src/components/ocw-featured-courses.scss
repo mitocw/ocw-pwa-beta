@@ -1,0 +1,17 @@
+@import '../styles/colors';
+@import '../styles/functions/color';
+
+.carousel-container {
+  padding: 0.5rem 0;
+}
+
+.carousel-dot-list {
+  position: relative;
+}
+
+.react-multiple-carousel__arrow {
+    background-color: color(carousel-arrow);
+    &:hover, &:focus {
+      background-color: color(carousel-arrow-hover);
+    }
+}

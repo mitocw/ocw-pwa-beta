@@ -75,6 +75,7 @@ const CoursewareFavoriteList = () => {
     return <CoursewareLoading />;
   }
 
+  const coursewareNumber = coursewares.length.toString();
   const coursewareCards = coursewares.map(courseware => (
     <CoursewareCard
       courseware={courseware}
@@ -98,7 +99,8 @@ const CoursewareFavoriteList = () => {
 
   return (
     <>
-      <div className={styles.coursewareFavorite}>
+      <div className={styles.coursewareNumber}>
+        <span>{`My Courses (${coursewareNumber})`}</span>
         <div className={styles.cardTypes}>
           <IconButton
             data-card-type="regular"

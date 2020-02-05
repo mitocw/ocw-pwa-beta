@@ -4,53 +4,103 @@
 @import '../styles/functions/color';
 @import '../styles/mixins/breakpoints';
 
-.search-container {
-  padding: 0 0 0 1rem;
-  @include media-breakpoint-up(md) {
-    padding: 0 0 1rem 1rem;
-  }
-}
-
-.search-title {
-  margin-top: 0;
-  padding-top: 1rem;
-  color: color(search-foreground);
-}
-
-.search-group {
-  display: flex;
-  align-items: center;
-  height: 3.5rem;
-}
-
 .search-textfield {
   // Increase specificity weight with double selector by using Sass interpolation
   // https://stackoverflow.com/questions/47781073/increase-specificity-weight-with-double-selector-via-sass
   &#{&} {
+    @include mdc-text-field-fill-color(color(search-background));
     @include mdc-text-field-ink-color(color(search-foreground));
-    @include mdc-text-field-label-color(rgba(0, 0, 0, 0.6));
-    @include mdc-text-field-focused-outline-color(rgba(0, 0, 0, 1));
-    @include mdc-text-field-caret-color(rgba(0, 0, 0, 1));
-    height: 100%;
+    @include mdc-text-field-outline-color(color(search-background));
+    @include mdc-text-field-hover-outline-color(color(search-background));
+    @include mdc-text-field-focused-outline-color(color(search-background));
+    @include mdc-text-field-caret-color(color(search-caret));
+    border-radius: 5px 0 0 5px;
+    height: 2.75rem;
+    flex: 1 1 auto;
   }
+}
+
+.mdc-notched-outline__leading  {
+  &#{&} {
+    &#{&} {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+  }
+}
+
+.mdc-notched-outline__trailing  {
+  &#{&} {
+    &#{&} {
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+      
+    }
+  }
+}
+
+.mdc-text-field__icon {
+  outline: 0;
+  &:hover, &:focus {
+    svg {
+      color: color(search-foreground);
+    }
+  }
+}
+
+.mdc-text-field--with-trailing-icon.mdc-text-field--outlined .mdc-text-field__input.mdc-text-field__input {
+  padding-right: 0.5rem;
+}
+
+.mdc-text-field--with-trailing-icon .mdc-text-field__icon.mdc-text-field__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  position: static; // override
+  bottom: 0; // override
+  padding: 0 0.5rem;
 }
 
 .search-button {
   &#{&} {
-    @include mdc-button-filled-accessible($alto); // Does not work with color(search-background)
-    @include mdc-button-ink-color(color(search-foreground));
-    height: 100%;
+    @include mdc-button-filled-accessible($gallery);
+    flex: 0 0 auto;
+    svg {
+      color: color(search-foreground);
+      vertical-align: middle;
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+    padding: 0.38rem 0;
+    height: 2.75rem;
+    border-radius: 0 5px 5px 0;
+    min-width: 2.5rem;
+    border-left: none;
+    border-right: none;
   }
 }
 
-.mdc-button {
-  .mdc-button__icon.mdc-button__icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    font-size: 2rem;
-    margin-right: 0;
+.search-textfield-header {
+  &#{&} {
+    @include media-breakpoint-down(sm) {
+      display: none;
+    }
   }
+}
+
+.search-textfield-footer {
+  margin-left: 0.5rem;
+}
+
+.search-button-header {
+  &#{&} {
+    @include media-breakpoint-down(sm) {
+      display: none;
+    }
+  }
+}
+
+.search-button-footer {
+  margin-right: 0.5rem;
 }

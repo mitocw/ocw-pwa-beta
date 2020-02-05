@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/anchor-is-valid */
@@ -15,36 +16,29 @@ import {
   del,
   keys,
 } from 'idb-keyval';
+import { FaCircleNotch } from 'react-icons/fa';
 import { MdClose } from 'react-icons/md';
 import { FaunaContext } from '../faunadb/client';
 import useSiteMetadata from '../hooks/use-site-metadata';
+import useHomeQuery from '../hooks/use-home-query';
 import SEO from '../components/seo';
 import Layout from '../components/layout';
-import {
-  getLifelongLearnerCourseIds,
-  getEducatorCourseIds,
-  getStudentCourseIds,
-} from '../datocms/query-datocms';
-import OcwUsers from '../components/ocw-users';
-import OcwUserCard from '../components/ocw-user-card';
+import OcwSplashSection from '../components/ocw-splash-section';
+import OcwSupportSection from '../components/ocw-support-section';
+import OcwFeaturedSection from '../components/ocw-featured-section';
+import OcwStoriesSection from '../components/ocw-stories-section';
 import { isAuthenticated } from '../scripts/auth';
 import shortid from '../scripts/shortid';
 import '../styles/global.scss';
 import styles from './index.module.scss';
-import userStyles from '../components/ocw-users.module.scss';
 import '../components/courseware-card.scss';
 
 const IndexPage = () => {
-  const [lifelongLearnerCourseId, setlifelongLearnerCourseId] = useState('');
-  const [studentCourseId, setStudentCourseId] = useState('');
-  const [educatorCourseId, setEducatorCourseId] = useState('');
   const [syncedCoursewares, setSyncedCoursewares] = useState([]);
   const [favoriteCoursewares, setFavoriteCoursewares] = useState([]);
   const client = useContext(FaunaContext);
   const coursewareStore = new Store('ocw-store', 'courseware');
   const online = window.navigator.onLine;
-
-  const randomItem = arr => arr[Math.floor(Math.random() * arr.length)];
 
   const { siteMetadata } = useSiteMetadata();
 
@@ -71,13 +65,6 @@ const IndexPage = () => {
 
   useEffect(() => {
     const getData = async () => {
-      let result;
-      result = await getLifelongLearnerCourseIds();
-      setlifelongLearnerCourseId(randomItem(result));
-      result = await getStudentCourseIds();
-      setStudentCourseId(randomItem(result));
-      result = await getEducatorCourseIds();
-      setEducatorCourseId(randomItem(result));
       setFavoriteCoursewares([]);
       if (isAuthenticated()) {
         // Get user name from local storage
@@ -141,33 +128,46 @@ const IndexPage = () => {
   let content;
 
   if (online) {
+    const { data, loading } = useHomeQuery();
+
+    if (loading) {
+      return (
+        <div className="spinner-container">
+          <FaCircleNotch className="spinner" />
+        </div>
+      );
+    }
+    const { home } = data;
+    const {
+      splashImage,
+      splashImageLede,
+      splashVideos,
+      featuredTitle,
+      featuredDescription,
+      featuredCourses,
+      storiesTitle,
+      storiesDescription,
+      stories,
+    } = home;
     content = (
       <>
-        <h3>What type of OCW user are you?</h3>
-        <OcwUsers />
-        <div className={`${userStyles.cardList} ${userStyles.cardListBottom}`}>
-          <div>
-            <p className={userStyles.cardDescription}>Lifelong learners view...</p>
-            <OcwUserCard
-              id={lifelongLearnerCourseId}
-              favoriteCoursewares={favoriteCoursewares}
-            />
-          </div>
-          <div>
-            <p className={userStyles.cardDescription}>Educators view...</p>
-            <OcwUserCard
-              id={educatorCourseId}
-              favoriteCoursewares={favoriteCoursewares}
-            />
-          </div>
-          <div>
-            <p className={userStyles.cardDescription}>Students view...</p>
-            <OcwUserCard
-              id={studentCourseId}
-              favoriteCoursewares={favoriteCoursewares}
-            />
-          </div>
-        </div>
+        <OcwSplashSection
+          image={splashImage}
+          imageLede={splashImageLede}
+          videos={splashVideos}
+        />
+        <OcwSupportSection />
+        <OcwFeaturedSection
+          title={featuredTitle}
+          description={featuredDescription}
+          courses={featuredCourses}
+          favoriteCoursewares={favoriteCoursewares}
+        />
+        <OcwStoriesSection
+          title={storiesTitle}
+          description={storiesDescription}
+          stories={stories}
+        />
       </>
     );
   } else {
@@ -214,11 +214,6 @@ const IndexPage = () => {
         siteDescription={siteMetadata.description}
       />
       <div className={styles.index}>
-        <h3>About OCW</h3>
-        <p className={userStyles.ocwDescription}>
-          Thousands of people utilize OCW to support their lifelong learning, career advancement,
-          and instruction.
-        </p>
         {content}
       </div>
     </Layout>
