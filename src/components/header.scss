@@ -50,8 +50,18 @@
   margin-right: 1rem;
 }
 
-.header-button-right {
-  text-align: right;
+.header-log-button {
+  .mdc-button__label {
+    display: flex;
+    align-items: center;
+    small {
+      font-size: 80%;
+      padding-right: 0.25rem;
+    }
+    svg {
+      margin-bottom: 0.1rem;
+    }
+  }
 }
 
 .header-switch {

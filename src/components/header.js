@@ -3,6 +3,7 @@ import { navigate } from 'gatsby';
 import { Button } from '@rmwc/button';
 import { Switch } from '@rmwc/switch';
 import { IconContext } from 'react-icons';
+import { FiLogIn, FiLogOut } from 'react-icons/fi';
 import { MdPermIdentity } from 'react-icons/md';
 import { isAuthenticated, logout } from '../scripts/auth';
 import CoursewareSearch from './courseware-search';
@@ -40,9 +41,12 @@ const Header = ({ search, setSearch }) => {
   const online = window.navigator.onLine;
   const logButton = online
     ? (
-      <Button className="header-button header-button-right" onClick={navigateToAccount}>
-        { isAuthenticated() ? 'Log out' : 'Log in' }
-      </Button>
+      <IconContext.Provider value={{ size: '1.40rem' }}>
+        <Button className="header-button header-log-button" onClick={navigateToAccount}>
+          <small>{isAuthenticated() ? 'Sign Out' : 'Sign In'}</small>
+          {isAuthenticated() ? <FiLogOut /> : <FiLogIn />}
+        </Button>
+      </IconContext.Provider>
     )
     : null;
   const favoriteCoursewaresButton = isAuthenticated()
