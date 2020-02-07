@@ -15,7 +15,7 @@
 
 .header-left-items {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center; 
   flex: 1 1 auto;
   max-width: 57.5rem;
@@ -24,7 +24,7 @@
 
 .header-right-items {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   flex: 0 0 auto;
 }
