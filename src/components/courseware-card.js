@@ -73,7 +73,9 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
 
   const filledFavoriteIcon = isAuthenticated()
     ? (
-      <MdBookmark />
+      <Tooltip content="Remove bookmark" showArrow>
+        <MdBookmark />
+      </Tooltip>
     )
     : (
       <Tooltip content="Please log in to bookmark course" showArrow>
@@ -82,7 +84,9 @@ const CoursewareCard = ({ courseware, cardType, favoriteCoursewares }) => {
     );
   const hollowFavoriteIcon = isAuthenticated()
     ? (
-      <MdBookmarkBorder />
+      <Tooltip content="Add bookmark" showArrow>
+        <MdBookmarkBorder />
+      </Tooltip>
     )
     : (
       <Tooltip content="Please log in to bookmark course" showArrow>

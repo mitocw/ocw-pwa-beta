@@ -34,7 +34,9 @@ const CoursewareHeader = ({
   );
   const filledFavoriteIcon = isAuthenticated()
     ? (
-      <MdBookmark />
+      <Tooltip content="Remove bookmark" showArrow>
+        <MdBookmark />
+      </Tooltip>
     )
     : (
       <Tooltip content="Please log in to bookmark course" showArrow>
@@ -43,7 +45,9 @@ const CoursewareHeader = ({
     );
   const hollowFavoriteIcon = isAuthenticated()
     ? (
-      <MdBookmarkBorder />
+      <Tooltip content="Add bookmark" showArrow>
+        <MdBookmarkBorder />
+      </Tooltip>
     )
     : (
       <Tooltip content="Please log in to bookmark course" showArrow>
