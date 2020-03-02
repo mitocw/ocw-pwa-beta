@@ -11,6 +11,7 @@ const useStore = () => {
   const [cardType, setCardType] = useState('regular');
   const [favoriteCardType, setFavoriteCardType] = useState('condensed');
   const [initSelectedStory, setInitSelectedStory] = useState('');
+  const [initSelectedVideo, setInitSelectedVideo] = useState('3221855'); // TODO remove hard-coding
 
   const changeCourseSearch = useCallback(
     searchTerm => setTimeout(() => setCourseSearch(searchTerm), timeout),
@@ -65,6 +66,8 @@ const useStore = () => {
     changeFavoriteCardType,
     initSelectedStory,
     setInitSelectedStory,
+    initSelectedVideo,
+    setInitSelectedVideo,
   };
 };
 

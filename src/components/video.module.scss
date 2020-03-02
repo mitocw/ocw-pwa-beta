@@ -1,0 +1,30 @@
+@import '../styles/colors';
+
+.video {
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.video-container {
+  overflow: hidden;
+  padding-bottom: 56.25%; // To get a 16:9 ratio
+  position: relative;
+  height: 0;
+}
+
+.video-iframe {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.captions {
+  height: 12.5rem;
+  line-height: 1.25rem;
+  margin-top: 1rem;
+  padding: 0 1rem 1rem 1rem;
+  border: 1px solid $silver;
+  overflow-y: scroll;
+}
