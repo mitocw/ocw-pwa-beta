@@ -12,6 +12,7 @@ const useStore = () => {
   const [favoriteCardType, setFavoriteCardType] = useState('condensed');
   const [initSelectedStory, setInitSelectedStory] = useState('');
   const [initSelectedVideo, setInitSelectedVideo] = useState('3221855'); // TODO remove hard-coding
+  const [initSelectedModule, setInitSelectedModule] = useState('3669122'); // TODO remove hard-coding
 
   const changeCourseSearch = useCallback(
     searchTerm => setTimeout(() => setCourseSearch(searchTerm), timeout),
@@ -68,6 +69,8 @@ const useStore = () => {
     setInitSelectedStory,
     initSelectedVideo,
     setInitSelectedVideo,
+    initSelectedModule,
+    setInitSelectedModule,
   };
 };
 

@@ -9,7 +9,7 @@ import fetch from 'isomorphic-fetch';
   2. Content Delivery API with draft content -> GraphQL Endpoint: https://graphql.datocms.com/preview
 */
 const httpLink = createHttpLink({
-  uri: 'https://graphql.datocms.com',
+  uri: 'https://graphql.datocms.com/preview',
 });
 
 const authLink = setContext((_, { headers }) => (

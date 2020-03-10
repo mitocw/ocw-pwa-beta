@@ -2,7 +2,7 @@
 @import '../styles/functions/color';
 @import '../styles/mixins/breakpoints';
 
-.featured-stories-container {
+.all-modules-container {
   display: flex;
   @include media-breakpoint-down(sm) {
     flex-direction: column;
@@ -28,10 +28,10 @@
   }
 }
 
-.stories-container {
+.videos-container {
   padding-left: 0.2rem;
+  flex: 1;
   @include media-breakpoint-down(sm) {
     padding-left: 0;
   }
 }
-
