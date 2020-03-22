@@ -1,10 +1,10 @@
 import React from 'react';
-import Markdown from 'markdown-to-jsx';
+import Markdown from './markdown';
 
 const OcwStoriesHeader = ({ title, description }) => (
   <div>
     <h3>{title}</h3>
-    <Markdown>{description}</Markdown>
+    <Markdown content={description} />
   </div>
 );
 

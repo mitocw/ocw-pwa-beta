@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from 'react';
-import Markdown from 'markdown-to-jsx';
+import Markdown from './markdown';
 import styles from './story.module.scss';
 
 const Story = ({ story, selectedStoryUid }) => {
@@ -33,8 +33,8 @@ const Story = ({ story, selectedStoryUid }) => {
           </small>
         </div>
         <div>
-          <img src={featuredUserImage.responsiveImage.src} className={styles.image} alt="jm" />
-          <Markdown>{body}</Markdown>
+          <img src={featuredUserImage.responsiveImage.src} className={styles.image} alt={title} />
+          <Markdown content={body} />
         </div>
         <div className={styles.footer}>
           We hope you’ve been inspired by this story and by OCW’s effort to meet the needs of
