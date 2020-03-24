@@ -1,5 +1,6 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
+import ExternalVideo from './external-video';
 import Collapsible from './collapsible';
 import shortid from '../scripts/shortid';
 import styles from './courseware-pages.module.scss';
@@ -20,21 +21,12 @@ const CoursewarePages = ({ className, coursePages, courseVideos }) => {
     const coursePageVideoUids = coursePage.videos.split(',');
     const coursePageVideosEl = coursePageVideoUids.map(uid => {
       const video = courseVideos.find(el => el.uid === uid);
-      const youtubeUrl = `https://www.youtube.com/embed/${video.youtubeStream}`;
       return (
         <Collapsible className={styles.coursePage} title={video.title} key={shortid()}>
-          <div className={styles.videoContainer}>
-            <iframe
-              className={styles.videoIframe}
-              width="965"
-              height="543"
-              title={video.title}
-              src={youtubeUrl}
-              frameBorder="0"
-              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
+          <ExternalVideo
+            youtubeId={video.youtubeStream}
+            youtubeTitle={video.title}
+          />
         </Collapsible>
       );
     });

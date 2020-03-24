@@ -5,6 +5,7 @@ import React, {
   useRef,
 } from 'react';
 import ModalVideo from 'react-modal-video';
+import ExternalVideo from './external-video';
 import shortid from '../scripts/shortid';
 import styles from './ocw-splash-section.module.scss';
 
@@ -52,56 +53,30 @@ const OcwSplashSection = ({
     },
   );
 
-  // To load a thumbnail of a YouTube video:
-  // https://stackoverflow.com/questions/2068344/how-do-i-get-a-youtube-video-thumbnail-from-the-youtube-api#2068371
-  const displayImage = true;
-  const getVideoEl = (youtubeId, youtubeTitle) => (displayImage
-    ? (
-      <img
-        className={styles.videoImage}
-        src={`https://img.youtube.com/vi/${youtubeId}/maxresdefault.jpg`}
-        alt={youtubeTitle}
-        tabIndex="0"
-        role="button"
-        onClick={openVideo}
-        onKeyDown={openVideo}
-        data-youtube-id={youtubeId}
-        ref={videoImageRefs.get(youtubeId)}
-      />
-    )
-    : (
-      <iframe
-        className={styles.videoIframe}
-        width="965"
-        height="543"
-        title={youtubeTitle}
-        src={`https://www.youtube.com/embed/${youtubeId}`}
-        frameBorder="0"
-        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-      />
-    )
+  const getVideoEl = (youtubeId, youtubeTitle) => (
+    <ExternalVideo
+      youtubeId={youtubeId}
+      youtubeTitle={youtubeTitle}
+      openVideo={openVideo}
+      videoImageRef={videoImageRefs.get(youtubeId)}
+      displayAsThumbnail
+    />
   );
-  const getVideoModal = youtubeId => (displayImage
-    ? (
-      <ModalVideo
-        channel="youtube"
-        isOpen={openYoutubeId === youtubeId}
-        videoId={youtubeId}
-        onClose={closeVideo}
-        key={shortid()}
-      />
-    )
-    : null
+  const getVideoModal = youtubeId => (
+    <ModalVideo
+      channel="youtube"
+      isOpen={openYoutubeId === youtubeId}
+      videoId={youtubeId}
+      onClose={closeVideo}
+      key={shortid()}
+    />
   );
 
   const videosEl = videos.map(video => (
     <div key={shortid()}>
       <div className={styles.videoGroup}>
         <div>
-          <div className={styles.videoContainer}>
-            {getVideoEl(video.youtubeUrl.providerUid, video.title)}
-          </div>
+          {getVideoEl(video.youtubeUrl.providerUid, video.title)}
         </div>
         <div>
           <h4>{video.title}</h4>
