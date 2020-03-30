@@ -7,7 +7,8 @@
     "develop": "gatsby develop",
     "start": "npm run develop",
     "serve": "gatsby serve",
-    "test": "jest"
+    "test": "jest",
+    "build-fragment": "node src/apollo/schemaQuery.js"
   },
   "repository": {
     "type": "git",
@@ -78,6 +79,7 @@
     "@testing-library/react": "^10.0.1",
     "babel-jest": "^25.1.0",
     "canvas": "^2.6.1",
+    "dotenv": "^8.2.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-plugin-import": "^2.20.1",

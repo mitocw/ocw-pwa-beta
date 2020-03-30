@@ -1,0 +1,1 @@
+{"__schema":{"types":[{"kind":"UNION","name":"StoryAlternateModelContentField","possibleTypes":[{"name":"VideoRecord"},{"name":"ImageRecord"},{"name":"QuoteRecord"},{"name":"TextRecord"},{"name":"AuthorRecord"}]},{"kind":"UNION","name":"ModuleModelContentField","possibleTypes":[{"name":"VideoRecord"},{"name":"ImageRecord"},{"name":"TextRecord"}]}]}}
