@@ -14,15 +14,19 @@ const CoursewareSearch = ({ searchType, search, setSearch }) => {
     setCourseLevel,
   } = Store.useContainer();
 
+  const navigateToDiscovery = () => {
+    if (window.location !== '/discovery') {
+      setCourseTopic('All');
+      setCourseFeature('Any');
+      setCourseLevel('All');
+      navigate('discovery');
+    }
+  };
+
   const changeSearch = useCallback(
     () => {
       setCourseSearch(search);
-      if (window.location !== '/discovery') {
-        setCourseTopic('All');
-        setCourseFeature('Any');
-        setCourseLevel('All');
-        navigate('discovery');
-      }
+      navigateToDiscovery();
     },
   );
   const inputChange = useCallback(
@@ -49,6 +53,12 @@ const CoursewareSearch = ({ searchType, search, setSearch }) => {
       }
     },
   );
+  const exploreButtonClick = useCallback(
+    () => {
+      setCourseSearch('');
+      navigateToDiscovery();
+    },
+  );
   const searchButtonClick = useCallback(
     () => {
       changeSearch();
@@ -59,14 +69,24 @@ const CoursewareSearch = ({ searchType, search, setSearch }) => {
 
   const searchClassName = searchType === 'header'
     ? 'search-textfield search-textfield-header'
-    : 'search-textfield search-textfield-footer';
+    : 'search-textfield';
 
-  const buttonClassName = searchType === 'header'
-    ? 'search-button search-button-header'
+  const exploreButtonClassName = searchType === 'header'
+    ? 'explore-button button-header'
+    : 'explore-button explore-button-footer';
+
+  const searchButtonClassName = searchType === 'header'
+    ? 'search-button button-header'
     : 'search-button search-button-footer';
 
   return (
     <>
+      <Button
+        className={exploreButtonClassName}
+        onClick={exploreButtonClick}
+      >
+        Explore
+      </Button>
       <TextField
         className={searchClassName}
         placeholder="MIT's instructional materials at your fingertips..."
@@ -82,7 +102,7 @@ const CoursewareSearch = ({ searchType, search, setSearch }) => {
         onKeyUp={inputKeyUp}
       />
       <Button
-        className={buttonClassName}
+        className={searchButtonClassName}
         onClick={searchButtonClick}
       >
         <MdSearch />

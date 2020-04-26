@@ -14,7 +14,7 @@
     @include mdc-text-field-hover-outline-color(color(search-background));
     @include mdc-text-field-focused-outline-color(color(search-background));
     @include mdc-text-field-caret-color(color(search-caret));
-    border-radius: 5px 0 0 5px;
+    border-radius: 0;
     height: 2.75rem;
     flex: 1 1 auto;
   }
@@ -62,6 +62,18 @@
   padding: 0 0.5rem;
 }
 
+.explore-button {
+  &#{&} {
+    @include mdc-button-filled-accessible($gallery);
+    flex: 0 0 auto;
+    padding: 0.38rem 0.5rem;
+    height: 2.75rem;
+    border-radius: 5px 0 0 5px;
+    border-left: none;
+    border-right: none;
+  }
+}
+
 .search-button {
   &#{&} {
     @include mdc-button-filled-accessible($gallery);
@@ -89,16 +101,16 @@
   }
 }
 
-.search-textfield-footer {
-  margin-left: 0.5rem;
-}
-
-.search-button-header {
+.button-header {
   &#{&} {
     @include media-breakpoint-down(sm) {
       display: none;
     }
   }
+}
+
+.explore-button-footer {
+  margin-left: 0.5rem;
 }
 
 .search-button-footer {
